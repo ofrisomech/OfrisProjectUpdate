@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "997986569241",
+    "project_id": "ofrisproject",
+    "storage_bucket": "ofrisproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997986569241:android:64f0f9ec6d9f6136a86e88",
+        "android_client_info": {
+          "package_name": "com.example.ofrisproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997986569241-srb3f004skgv399nnqji3bltrn1qvq0g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA09PUnggQVnXXxVmnwMQI6OjHAyGooRvA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997986569241-srb3f004skgv399nnqji3bltrn1qvq0g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
