@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 public class HomePage extends AppCompatActivity {
 
+    private int count;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
