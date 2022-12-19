@@ -3,15 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9D0C35"
     tools:context=".HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:layout_width="362dp"
+        android:layout_height="173dp"
+        android:layout_gravity="center"
+        android:text="home"
+        android:textSize="100dp" />
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="home"
-        android:textSize="100dp"
-        android:layout_gravity="center"/>
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="100dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="OPRIX | KARAOKE"
+        android:textColor="#F3EFF1"
+        android:textSize="80px"
+        android:textStyle="bold" />
 
 </FrameLayout>

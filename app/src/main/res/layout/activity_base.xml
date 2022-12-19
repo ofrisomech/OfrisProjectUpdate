@@ -7,50 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".BaseActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="100dp"
-        android:fontFamily="sans-serif-condensed-light"
-        android:text="OPRIX | KARAOKE"
-        android:textColor="#F3EFF1"
-        android:textSize="80px"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="286dp"
-        android:layout_height="104dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="560dp"
+        android:layout_width="407dp"
+        android:layout_height="670dp"
+        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="411dp"
-        android:layout_height="57dp"
+        android:layout_width="410dp"
+        android:layout_height="60dp"
         android:layout_marginEnd="1dp"
-
+        android:layout_marginBottom="1dp"
         app:itemIconSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         app:menu="@menu/bottom_navmenu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

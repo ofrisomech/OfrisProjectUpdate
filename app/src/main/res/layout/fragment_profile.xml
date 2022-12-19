@@ -9,7 +9,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="100dp"
-        android:text="profile" />
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="Profile"
+        android:textColor="#F3ECEF"
+        android:textSize="50dp"
+        android:textStyle="bold" />
 
 </FrameLayout>
