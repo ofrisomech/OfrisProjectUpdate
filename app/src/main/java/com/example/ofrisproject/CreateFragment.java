@@ -2,12 +2,15 @@ package com.example.ofrisproject;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -66,16 +69,24 @@ public class CreateFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_create, container, false);
     }
 
-        private FirebaseFirestore db=FirebaseFirestore.getInstance();
+    //upload Recording
 
-        public void uploadRecording(String id, String artist) {
+
+    private FirebaseFirestore db=FirebaseFirestore.getInstance();
+
+    public void uploadRecording(String id, String artist) {
             Recording Record= new Recording(id, artist);
             db.collection("Recordings").add(Record).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText( getActivity(), "success", Toast.LENGTH_SHORT).show();
 
                 }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             });
-
     }
 }
