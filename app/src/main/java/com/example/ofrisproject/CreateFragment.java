@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CreateFragment#newInstance} factory method to
@@ -60,5 +64,18 @@ public class CreateFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create, container, false);
+    }
+
+        private FirebaseFirestore db=FirebaseFirestore.getInstance();
+
+        public void uploadRecording(String id, String artist) {
+            Recording Record= new Recording(id, artist);
+            db.collection("Recordings").add(Record).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+
+                }
+            });
+
     }
 }
