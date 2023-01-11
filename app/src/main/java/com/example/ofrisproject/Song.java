@@ -12,5 +12,9 @@ public class Song {
         artistSong=_artist;
     }
 
+    public String GetName(){return nameSong;}
+    public String GetGenre(){return genre; }
+    public String GetArtistSong(){return artistSong;}
+
 
 }

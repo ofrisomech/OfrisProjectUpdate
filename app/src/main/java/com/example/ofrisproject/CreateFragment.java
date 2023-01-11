@@ -3,7 +3,9 @@ package com.example.ofrisproject;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,10 +71,17 @@ public class CreateFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create, container, false);
+
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        recyclerView = getView().findViewById(R.id.recyclerView);
     }
 
     //upload Recording
-
 
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
 
@@ -89,4 +100,11 @@ public class CreateFragment extends Fragment {
                 }
             });
     }
+
+
+
+    //array of Songs
+
+    private RecyclerView recyclerView;
+
 }
