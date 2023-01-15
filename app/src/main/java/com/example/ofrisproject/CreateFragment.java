@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -64,6 +65,7 @@ public class CreateFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -72,13 +74,21 @@ public class CreateFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create, container, false);
 
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
+        list = new ArrayList<>();
+        list.add(new Song("lla", "pop","Maya"));
+        list.add(new Song("opp", "R&B", "Alon"));
+
+        //חיבור לתצוגה
+
+        adapter =new CustomAdapter(list);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     //upload Recording
@@ -102,9 +112,10 @@ public class CreateFragment extends Fragment {
     }
 
 
-
-    //array of Songs
-
+    private ArrayList<Song> list;
     private RecyclerView recyclerView;
+    private CustomAdapter adapter;
+
+
 
 }
