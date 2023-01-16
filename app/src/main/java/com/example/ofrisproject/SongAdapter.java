@@ -21,14 +21,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         songs=list;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public final TextView artistName;
         public final TextView songName;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this::select);
-            view.setOnLongClickListener(this);
             artistName = view.findViewById(R.id.artistName);
             songName = view.findViewById(R.id.songName);
         }
@@ -37,12 +36,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             Toast.makeText(itemView.getContext(), "Click "+ getAdapterPosition(), Toast.LENGTH_SHORT).show();
         }
 
-        @Override
-        public boolean onLongClick(View view) {
-            songs.remove(getAdapterPosition());
-            notifyDataSetChanged();
-            return true;
-        }
     }
 
     @Override
