@@ -76,20 +76,28 @@ public class CreateFragment extends Fragment {
 
     }
 
+    private ArrayList<Song> list;
+    private RecyclerView recyclerView;
+    private SongAdapter adapter;
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
-        list = new ArrayList<>();
+        list = new ArrayList<Song>();
         list.add(new Song("lla", "pop","Maya"));
         list.add(new Song("opp", "R&B", "Alon"));
 
         //חיבור לתצוגה
 
-        adapter =new CustomAdapter(list);
+        adapter = new SongAdapter(list);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
     }
+
+
 
     //upload Recording
 
@@ -110,12 +118,5 @@ public class CreateFragment extends Fragment {
                 }
             });
     }
-
-
-    private ArrayList<Song> list;
-    private RecyclerView recyclerView;
-    private CustomAdapter adapter;
-
-
 
 }

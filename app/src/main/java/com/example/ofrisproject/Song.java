@@ -1,20 +1,20 @@
 package com.example.ofrisproject;
 
 public class Song {
-    private String nameSong;
+    private String songName;
     private String genre;// מתוך סט אפשרויות
-    private String artistSong;
+    private String artistName;
 
     public Song(String _name, String _genre, String _artist)
     {
-        nameSong=_name;
+        songName=_name;
         genre=_genre;
-        artistSong=_artist;
+        artistName=_artist;
     }
 
-    public String GetName(){return nameSong;}
+    public String GetArtistName(){return artistName;}
     public String GetGenre(){return genre; }
-    public String GetArtistSong(){return artistSong;}
+    public String GetSongName(){return songName;}
 
 
 }
