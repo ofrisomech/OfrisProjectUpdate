@@ -7,9 +7,9 @@
     <item android:title="Music"
         android:icon="@drawable/ic_baseline_music_note_24"
         android:id="@+id/music"/>
-    <item android:title="Create"
-        android:icon="@drawable/ic_baseline_add_24"
-        android:id="@+id/create"/>
+    <item android:title="Notifications"
+        android:icon="@drawable/ic_baseline_comment_24"
+        android:id="@+id/notifications"/>
     <item android:title="Profile"
         android:icon="@drawable/ic_baseline_person_24"
         android:id="@+id/profile"/>
