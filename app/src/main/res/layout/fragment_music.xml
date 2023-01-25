@@ -38,7 +38,7 @@
         android:layout_height="150dp"
         android:layout_marginLeft="235dp"
         android:layout_marginTop="120dp"
-        android:text="RB" />
+        android:text="R&amp;B" />
 
     <ImageButton
         android:id="@+id/Rockbutton"
@@ -57,7 +57,7 @@
         android:text="ROCK" />
 
     <ImageButton
-        android:id="@+id/Rapbutton"
+        android:id="@+id/Hiphopbutton"
         style="@style/MyImageButtonStyle"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="250dp"
@@ -65,13 +65,13 @@
         />
 
     <TextView
-        android:id="@+id/RapText"
+        android:id="@+id/HiphopText"
         style="@style/MyEditTextStyle"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="290dp"
-        android:text="RAP" />
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="300dp"
+        android:text="HIPHOP" />
 
 
     <ImageButton
@@ -89,10 +89,10 @@
         android:layout_height="150dp"
         android:layout_marginLeft="45dp"
         android:layout_marginTop="470dp"
-        android:text="MIzrah" />
+        android:text="MIzrahi" />
 
     <ImageButton
-        android:id="@+id/Somethingbutton"
+        android:id="@+id/Latinbutton"
         style="@style/MyImageButtonStyle"
         android:layout_marginLeft="210dp"
         android:layout_marginTop="425dp"
@@ -100,13 +100,13 @@
         android:text="SOMETHING"/>
 
     <TextView
-        android:id="@+id/SomethingText"
+        android:id="@+id/LatinText"
         style="@style/MyEditTextStyle"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginLeft="225dp"
         android:layout_marginTop="470dp"
-        android:text="SOME" />
+        android:text="LATIN" />
 
 
 
