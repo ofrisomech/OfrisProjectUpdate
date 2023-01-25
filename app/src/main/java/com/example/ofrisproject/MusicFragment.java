@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,5 +61,15 @@ public class MusicFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_music, container, false);
+    }
+
+
+    public void getGenre(View v) {
+        Button b = (Button) v;
+        String genre = b.getTag().toString();
+
+        ((BaseActivity) getActivity()).replaceFragment(new CreateFragment(genre));
+
+
     }
 }

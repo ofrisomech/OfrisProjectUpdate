@@ -11,6 +11,8 @@
     <ImageButton
         android:id="@+id/POPbutton"
         style="@style/MyImageButtonStyle"
+        android:tag="pop"
+        android:onClick="getGenre"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="75dp"
         android:layout_marginRight="50dp" />
@@ -20,13 +22,15 @@
         style="@style/MyEditTextStyle"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="130dp"
         android:text="POP" />
 
     <ImageButton
         android:id="@+id/RandBbutton"
         style="@style/MyImageButtonStyle"
+        android:tag="RandB"
+        android:onClick="getGenre"
         android:layout_marginLeft="210dp"
         android:layout_marginTop="75dp"
         android:layout_marginRight="40dp" />
@@ -36,12 +40,14 @@
         style="@style/MyEditTextStyle"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginLeft="235dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginLeft="245dp"
+        android:layout_marginTop="130dp"
         android:text="R&amp;B" />
 
     <ImageButton
         android:id="@+id/Rockbutton"
+        android:tag="rock"
+        android:onClick="getGenre"
         style="@style/MyImageButtonStyle"
         android:layout_marginLeft="210dp"
         android:layout_marginTop="250dp"
@@ -52,12 +58,14 @@
         style="@style/MyEditTextStyle"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginLeft="225dp"
-        android:layout_marginTop="290dp"
+        android:layout_marginLeft="240dp"
+        android:layout_marginTop="305dp"
         android:text="ROCK" />
 
     <ImageButton
         android:id="@+id/Hiphopbutton"
+        android:tag="hiphop"
+        android:onClick="getGenre"
         style="@style/MyImageButtonStyle"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="250dp"
@@ -70,7 +78,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginLeft="60dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="305dp"
         android:text="HIPHOP" />
 
 
@@ -78,6 +86,8 @@
         android:id="@+id/Mizrahitbutton"
         style="@style/MyImageButtonStyle"
         android:layout_marginLeft="40dp"
+        android:tag="mizrahi"
+        android:onClick="getGenre"
         android:layout_marginTop="425dp"
         android:layout_marginRight="50dp"
         android:text="MIZRAHIT"/>
@@ -87,13 +97,15 @@
         style="@style/MyEditTextStyle"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="470dp"
-        android:text="MIzrahi" />
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="480dp"
+        android:text="MIZRAHI" />
 
     <ImageButton
         android:id="@+id/Latinbutton"
         style="@style/MyImageButtonStyle"
+        android:tag="latin"
+        android:onClick="getGenre"
         android:layout_marginLeft="210dp"
         android:layout_marginTop="425dp"
         android:layout_marginRight="40dp"
@@ -104,10 +116,9 @@
         style="@style/MyEditTextStyle"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginLeft="225dp"
-        android:layout_marginTop="470dp"
+        android:layout_marginLeft="235dp"
+        android:layout_marginTop="480dp"
         android:text="LATIN" />
-
 
 
 </FrameLayout>

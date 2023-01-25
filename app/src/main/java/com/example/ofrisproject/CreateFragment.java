@@ -9,15 +9,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 
@@ -36,10 +43,16 @@ public class CreateFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String genre;
 
     public CreateFragment() {
         // Required empty public constructor
     }
+
+    public CreateFragment(String genre) {
+        this.genre = genre;
+    }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -87,7 +100,7 @@ public class CreateFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
         list = new ArrayList<Song>();
-        list.add(new Song("lla", "pop","Maya"));
+        list.add(new Song("lla", "pop", "Maya"));
         list.add(new Song("opp", "R&B", "Alon"));
 
         //חיבור לתצוגה
@@ -101,22 +114,49 @@ public class CreateFragment extends Fragment {
 
     //upload Recording
 
-    private FirebaseFirestore db=FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public void uploadRecording(String id, String artist) {
-            Recording Record= new Recording(id, artist);
-            db.collection("Recordings").add(Record).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Toast.makeText( getActivity(), "success", Toast.LENGTH_SHORT).show();
+        Recording Record = new Recording(id, artist);
+        db.collection("Recordings").add(Record).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Toast.makeText(getActivity(), "success", Toast.LENGTH_SHORT).show();
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+    private Song song;
+    private DocumentReference songReference;
+
+    public void getSongsByGenre() {
+        db.collection("Song")
+                .whereEqualTo("genre", genre)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        // notify presenter there are no  open games
+                        if (task.isSuccessful()) {
+                            if (task.getResult().size() == 0)
+
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    // get the game
+                                    song = document.toObject(Song.class);
+                                    songReference = document.getReference();
+                                    //    document.getReference().set(game, SetOptions.merge());
+                                    songReference.set(song, SetOptions.merge());
+                                }
+                        } else {
+                            //("error", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
 }
