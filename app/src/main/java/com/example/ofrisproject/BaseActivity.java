@@ -6,6 +6,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.ofrisproject.databinding.ActivityBaseBinding;
 import com.example.ofrisproject.databinding.ActivityMainBinding;
@@ -47,6 +50,14 @@ public class BaseActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
+    }
+
+
+    public void getGenre(View view) {
+        ImageButton b = (ImageButton) view;
+        String genre = b.getTag().toString();
+        replaceFragment(new CreateFragment(genre));
+
     }
 }
 

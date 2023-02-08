@@ -99,15 +99,7 @@ public class CreateFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
-        list = new ArrayList<Song>();
-        list.add(new Song("lla", "pop", "Maya"));
-        list.add(new Song("opp", "R&B", "Alon"));
-
-        //חיבור לתצוגה
-
-        adapter = new SongAdapter(list);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        getSongsByGenre();
 
     }
 
@@ -136,6 +128,8 @@ public class CreateFragment extends Fragment {
     private DocumentReference songReference;
 
     public void getSongsByGenre() {
+
+        ArrayList<Song> arr = new ArrayList<>();
         db.collection("Song")
                 .whereEqualTo("genre", genre)
                 .get()
@@ -144,17 +138,31 @@ public class CreateFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         // notify presenter there are no  open games
                         if (task.isSuccessful()) {
-                            if (task.getResult().size() == 0)
+
+                            // task.getResult() -> array of songs
+                            if (task.getResult().size() > 0) {
 
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     // get the game
-                                    song = document.toObject(Song.class);
+                                    Song s = document.toObject(Song.class);
                                     songReference = document.getReference();
+
+                                    arr.add(s);
                                     //    document.getReference().set(game, SetOptions.merge());
-                                    songReference.set(song, SetOptions.merge());
+                              //?????LATER      songReference.set(song, SetOptions.merge());
                                 }
-                        } else {
-                            //("error", "Error getting documents: ", task.getException());
+
+
+                                //חיבור לתצוגה
+
+                                adapter = new SongAdapter(arr);
+                                recyclerView.setAdapter(adapter);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+                                // display oin recycler view
+                            } else {
+                                Toast.makeText(getContext(), "Error getting documents: " +  task.getException(),Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });

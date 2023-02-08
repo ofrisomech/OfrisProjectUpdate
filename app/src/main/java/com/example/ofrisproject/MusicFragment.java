@@ -64,12 +64,4 @@ public class MusicFragment extends Fragment {
     }
 
 
-    public void getGenre(View v) {
-        Button b = (Button) v;
-        String genre = b.getTag().toString();
-
-        ((BaseActivity) getActivity()).replaceFragment(new CreateFragment(genre));
-
-
-    }
 }
