@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/purple_200"
     tools:context=".ProfileFragment"
     >
 
@@ -10,17 +11,11 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="382dp"
-        android:fontFamily="sans-serif-condensed-light"
+        android:layout_height="100dp"
+        style="@style/MyEditTextStyle"
         android:text="Profile"
         android:textColor="#F3ECEF"
         android:textSize="50dp"
         android:textStyle="bold" />
-
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
 
 </FrameLayout>
