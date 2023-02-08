@@ -59,5 +59,10 @@ public class BaseActivity extends AppCompatActivity {
         replaceFragment(new CreateFragment(genre));
 
     }
+
+    public void Comeback(View view){
+        //ImageButton b = (ImageButton) view;
+        replaceFragment(new MusicFragment());
+    }
 }
 

@@ -143,10 +143,8 @@ public class CreateFragment extends Fragment {
                             if (task.getResult().size() > 0) {
 
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    // get the game
                                     Song s = document.toObject(Song.class);
                                     songReference = document.getReference();
-
                                     arr.add(s);
                                     //    document.getReference().set(game, SetOptions.merge());
                               //?????LATER      songReference.set(song, SetOptions.merge());
