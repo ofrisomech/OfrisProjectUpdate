@@ -128,38 +128,29 @@ public class CreateFragment extends Fragment {
     private DocumentReference songReference;
 
     public void getSongsByGenre() {
-
         ArrayList<Song> arr = new ArrayList<>();
         db.collection("Song")
-                .whereEqualTo("genre", genre)
+               .whereEqualTo("genre", genre)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        // notify presenter there are no  open games
                         if (task.isSuccessful()) {
-
                             // task.getResult() -> array of songs
-                            if (task.getResult().size() > 0) {
+                            if (task.getResult().getDocuments().size() > 0) {
 
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Song s = document.toObject(Song.class);
                                     songReference = document.getReference();
                                     arr.add(s);
-                                    //    document.getReference().set(game, SetOptions.merge());
-                              //?????LATER      songReference.set(song, SetOptions.merge());
+                                    //חיבור לתצוגה
+                                    adapter = new SongAdapter(arr);
+                                    recyclerView.setAdapter(adapter);
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                    // display oin recycler view
                                 }
-
-
-                                //חיבור לתצוגה
-
-                                adapter = new SongAdapter(arr);
-                                recyclerView.setAdapter(adapter);
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-                                // display oin recycler view
                             } else {
-                                Toast.makeText(getContext(), "Error getting documents: " +  task.getException(),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Error getting documents: " + task.getException(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

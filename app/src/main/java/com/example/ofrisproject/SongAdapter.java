@@ -51,8 +51,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder,  int position)
     {
-        viewHolder.artistName.setText(songs.get(position).GetArtistName());
-        viewHolder.songName.setText(""+songs.get(position).GetSongName());
+        viewHolder.artistName.setText(songs.get(position).getArtistName());
+        viewHolder.songName.setText(""+songs.get(position).getSongName());
         viewHolder.getAdapterPosition();
     }
     @Override

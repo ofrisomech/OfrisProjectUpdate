@@ -12,9 +12,30 @@ public class Song {
         artistName=_artist;
     }
 
-    public String GetArtistName(){return artistName;}
-    public String GetGenre(){return genre; }
-    public String GetSongName(){return songName;}
+    public Song() {
+    }
 
+    public String getSongName() {
+        return songName;
+    }
 
+    public void setSongName(String songName) {
+        this.songName = songName;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
 }
