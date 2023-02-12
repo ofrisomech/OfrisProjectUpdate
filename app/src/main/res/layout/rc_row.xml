@@ -15,6 +15,7 @@
         android:layout_height="41dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        style="@style/MyEditTextStyle"
         android:text="TextView"
         android:textSize="25dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +23,7 @@
 
     <TextView
         android:id="@+id/artistName"
+        style="@style/MyEditTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
