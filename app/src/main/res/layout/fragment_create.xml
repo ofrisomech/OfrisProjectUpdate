@@ -10,6 +10,7 @@
     <EditText
         android:id="@+id/textView3"
         android:layout_width="300dp"
+        style="@style/MyEditTextStyle"
         android:layout_height="55dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="45dp"
@@ -24,8 +25,10 @@
 
     <ImageButton
         android:id="@+id/comeback"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/transparent"
         android:onClick="Comeback"
         android:src="@drawable/ic_outline_arrow_back_24" />
 

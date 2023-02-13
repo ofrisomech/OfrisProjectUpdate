@@ -14,10 +14,11 @@
     <style name="MyImageButtonStyle" >
         <item name="android:layout_width">170dp</item>
         <item name="android:layout_height">170dp</item>
-        <item name="android:background">#9E0C35</item>
+        <item name="android:background">#00000000</item>
         <item name="android:src">@drawable/button</item>
 
     </style>
+
 
 
 </resources>
