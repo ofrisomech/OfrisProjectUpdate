@@ -144,7 +144,7 @@ public class CreateFragment extends Fragment {
                                     songReference = document.getReference();
                                     arr.add(s);
                                     //חיבור לתצוגה
-                                    adapter = new SongAdapter(arr);
+                                    adapter = new SongAdapter(arr,(SongAdapter.AdapterCallback) getActivity());
                                     recyclerView.setAdapter(adapter);
                                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                     // display oin recycler view

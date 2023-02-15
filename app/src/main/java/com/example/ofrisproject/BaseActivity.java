@@ -8,16 +8,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowInsetsController;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.ofrisproject.databinding.ActivityBaseBinding;
 import com.example.ofrisproject.databinding.ActivityMainBinding;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements SongAdapter.AdapterCallback {
+
+
+
 
     com.example.ofrisproject.databinding.ActivityBaseBinding binding;
 
@@ -71,12 +76,24 @@ public class BaseActivity extends AppCompatActivity {
         ImageButton b = (ImageButton) view;
         String genre = b.getTag().toString();
         replaceFragment(new CreateFragment(genre));
-
     }
 
     public void Comeback(View view){
         //ImageButton b = (ImageButton) view;
         replaceFragment(new MusicFragment());
+    }
+
+    public void MoveToEditorPage(Song s){
+        //ImageButton b = (ImageButton) view;
+        Intent i = new Intent(getApplicationContext(),EditorActivity.class);
+        startActivity(i);
+    }
+
+    @Override
+    public void songChosen(Song s) {
+        // intent -> name,
+        Toast.makeText(this,"received " + s.getSongName(),Toast.LENGTH_SHORT).show();
+        MoveToEditorPage(s);
     }
 }
 

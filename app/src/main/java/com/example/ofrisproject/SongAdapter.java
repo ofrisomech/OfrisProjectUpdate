@@ -1,5 +1,6 @@
 package com.example.ofrisproject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -14,12 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>  {
 
     private ArrayList<Song> songs;
-    public SongAdapter(ArrayList<Song> list) {
+
+    private AdapterCallback currentActivity;
+    public SongAdapter(ArrayList<Song> list, AdapterCallback activity) {
         songs=list;
+        this.currentActivity = activity;
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public final TextView artistName;
@@ -33,7 +38,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         }
 
         public void select(View v){
-            Toast.makeText(itemView.getContext(), "Click "+ getAdapterPosition(), Toast.LENGTH_SHORT).show();
+            currentActivity.songChosen(songs.get(getAdapterPosition()));
         }
 
     }
@@ -59,5 +64,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     public int getItemCount() {
         return songs.size();
     }
+
+
+
+    public interface AdapterCallback
+    {
+        void songChosen(Song s);
+    }
+
 }
 
