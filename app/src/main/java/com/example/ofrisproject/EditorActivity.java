@@ -24,8 +24,9 @@ public class EditorActivity extends AppCompatActivity {
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-               String videoId = "XwPEtD0_mx4";
-                youTubePlayer.loadVideo(videoId, 0);
+
+                // save reference to the youtube player
+                EditorActivity.this.youTubePlayer=youTubePlayer;
                 playerReady = true;
             }
 
@@ -39,11 +40,15 @@ public class EditorActivity extends AppCompatActivity {
         if(view.getId()==R.id.startVideo) {
             String videoId = "XwPEtD0_mx4";
             youTubePlayer.loadVideo(videoId, 0);
+            view.setVisibility(view.GONE);
         }
-
     }
 
-    public void StopVideo(){
-
+    public void StopVideo(View view){
+        ImageView imageView=(ImageView)view;
+        if(view.getId()==R.id.stopVideo) {
+            youTubePlayer.pause();
+            view.setVisibility(view.GONE);
+        }
     }
 }

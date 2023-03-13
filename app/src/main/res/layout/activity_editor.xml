@@ -24,6 +24,13 @@ tools:context=".EditorActivity">
         android:layout_marginTop="575dp"
         android:layout_marginLeft="150dp"
         app:srcCompat="@drawable/button2" />
-
+    <ImageView
+        android:id="@+id/stopVideo"
+        android:layout_width="wrap_content"
+        android:onClick="PlayVideo"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="575dp"
+        android:layout_marginLeft="150dp"
+        app:srcCompat="@drawable/stopbutton" />
 
 </FrameLayout>
