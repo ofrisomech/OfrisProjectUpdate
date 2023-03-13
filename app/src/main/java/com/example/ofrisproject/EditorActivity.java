@@ -33,18 +33,26 @@ public class EditorActivity extends AppCompatActivity {
         });
     }
 
-    public void PlayVideo(View view){
-        if(!playerReady)
+    public void PlayVideo(View view, boolean type) {
+        if (!playerReady)
             return;
-        if(view.getId()==R.id.startVideo) {
-            String videoId = "XwPEtD0_mx4";
-            youTubePlayer.loadVideo(videoId, 0);
-            view.setVisibility(view.GONE);
+        //type- true-----> play video
+        //type- false------> stop video
+        if (type) {
+            if (view.getId() == R.id.startVideo) {
+                String videoId = "XwPEtD0_mx4";
+                youTubePlayer.loadVideo(videoId, 0);
+                view.setVisibility(view.GONE);
+                type = false;
+            }
         }
-        else if(view.getId()==R.id.stopVideo){
-            youTubePlayer.pause();
-            //view.setVisibility(view.GONE);
+        else {
+            if (view.getId() == R.id.stopVideo) {
+                youTubePlayer.pause();
+                view.setVisibility(view.GONE);
+                type = true;
+            }
         }
-    }
 
+    }
 }
