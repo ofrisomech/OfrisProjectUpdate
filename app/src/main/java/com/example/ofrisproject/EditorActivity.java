@@ -42,13 +42,10 @@ public class EditorActivity extends AppCompatActivity {
             youTubePlayer.loadVideo(videoId, 0);
             view.setVisibility(view.GONE);
         }
-    }
-
-    public void StopVideo(View view){
-        ImageView imageView=(ImageView)view;
-        if(view.getId()==R.id.stopVideo) {
+        else if(view.getId()==R.id.stopVideo){
             youTubePlayer.pause();
             view.setVisibility(view.GONE);
         }
     }
+
 }
