@@ -36,7 +36,6 @@ public class EditorActivity extends AppCompatActivity {
     public void PlayVideo(View view){
         if(!playerReady)
             return;
-        ImageView imageView=(ImageView)view;
         if(view.getId()==R.id.startVideo) {
             String videoId = "XwPEtD0_mx4";
             youTubePlayer.loadVideo(videoId, 0);
@@ -44,7 +43,7 @@ public class EditorActivity extends AppCompatActivity {
         }
         else if(view.getId()==R.id.stopVideo){
             youTubePlayer.pause();
-            view.setVisibility(view.GONE);
+            //view.setVisibility(view.GONE);
         }
     }
 
