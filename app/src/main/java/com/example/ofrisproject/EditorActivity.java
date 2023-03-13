@@ -24,8 +24,8 @@ public class EditorActivity extends AppCompatActivity {
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-               String videoId = "XwPEtD0_mx4";
-                youTubePlayer.loadVideo(videoId, 0);
+              // String videoId = "XwPEtD0_mx4";
+                //youTubePlayer.loadVideo(videoId, 0);
                 playerReady = true;
             }
 
