@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".MainActivity"
-    android:orientation="horizontal">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/editor_pic"
+    android:layout_height="match_parent"
+tools:context=".EditorActivity">
 
 <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
     android:id="@+id/youtube_player_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:videoId="S0Q4gqBUs7c"
+    android:layout_marginTop="5dp"
+    android:padding="10dp"
+    app:videoId="XwPEtD0_mx4"
     app:autoPlay="true" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
         android:layout_marginTop="575dp"
-        android:layout_marginEnd="186dp"
-        android:layout_marginBottom="81dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="150dp"
         app:srcCompat="@drawable/button2" />
 
 
-</LinearLayout>
+</FrameLayout>
