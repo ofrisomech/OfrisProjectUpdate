@@ -14,7 +14,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 public class EditorActivity extends AppCompatActivity {
     YouTubePlayerView youTubePlayerView;
     YouTubePlayer youTubePlayer;
-    boolean playerReady = true;
+    boolean playerReady = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +24,8 @@ public class EditorActivity extends AppCompatActivity {
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-              // String videoId = "XwPEtD0_mx4";
-                //youTubePlayer.loadVideo(videoId, 0);
+               String videoId = "XwPEtD0_mx4";
+                youTubePlayer.loadVideo(videoId, 0);
                 playerReady = true;
             }
 
