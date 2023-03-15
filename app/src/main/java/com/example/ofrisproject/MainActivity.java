@@ -32,23 +32,17 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
 
 
     public void MoveToHomePage(){
-        Intent intent = new Intent(this, HomePage.class);
+        Intent intent = new Intent(this, BaseActivity.class);
         startActivity(intent);
     }
 
     public void Register(View view){
 
         //שמירת נתונים
-        EditText etName=findViewById(R.id.editTextTextPersonName);
-        String Name= etName.getText().toString();
         EditText etMail = findViewById(R.id.editTextTextEmailAddress);
         String mail = etMail.getText().toString();
         EditText etPassword = findViewById(R.id.editTextTextPassword);
         String password = etPassword.getText().toString();
-        EditText etPhone = findViewById(R.id.editTextPhone);
-        String Phone = etPhone.getText().toString();
-        EditText etNickname = findViewById(R.id.editTextTextPersonName2);
-        String Nickname = etNickname.getText().toString();
         authentication.registerUser(mail, password);
 
     }
@@ -56,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
     @Override
     public void authenticateResult(boolean success) {
         if(success){
-            Intent intent= new Intent(this, MainActivity.class);
+            Intent intent= new Intent(this, BaseActivity.class);
         }
     }
 }

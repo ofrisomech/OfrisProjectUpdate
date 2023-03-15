@@ -15,6 +15,9 @@ public class FBAuthentication {
     private RegisterCallback MActivity;
     private RegisterCallback registerCallback;
 
+    public FBAuthentication() {
+    }
+
     public FBAuthentication(MainActivity activity){
         this.MActivity=activity;
     }
@@ -42,5 +45,13 @@ public class FBAuthentication {
     public boolean isRegistered()
     {
         return mAuth.getCurrentUser()!=null;
+    }
+
+    public String getUserEmail()
+    {
+        if(isRegistered())
+            return mAuth.getCurrentUser().getEmail();
+        else
+            return "";
     }
 }
