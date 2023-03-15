@@ -221,8 +221,6 @@ public class EditorActivity extends AppCompatActivity {
                 });
 
 
-
-
             }
         });
 
