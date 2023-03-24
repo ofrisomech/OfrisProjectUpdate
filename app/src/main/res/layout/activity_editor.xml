@@ -20,6 +20,7 @@
         android:id="@+id/startVideo"
         android:layout_width="wrap_content"
         android:onClick="PlayVideo"
+
         android:layout_height="wrap_content"
         android:layout_marginTop="575dp"
         android:layout_marginLeft="150dp"

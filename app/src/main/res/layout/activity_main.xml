@@ -37,13 +37,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editTextPersonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="91dp"
         android:layout_marginTop="60dp"
         android:ems="10"
-        android:hint="Name"
+        android:hint="Nickname"
         android:textColorHint="@color/black"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,7 @@
         android:hint="E-mail"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPersonName" />
 
     <EditText
         android:id="@+id/editTextTextPassword"
@@ -69,37 +69,12 @@
         android:layout_marginTop="38dp"
         android:layout_marginEnd="1dp"
         android:ems="10"
-        android:textColorHint="@color/black"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/editTextTextEmailAddress"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
 
-    <EditText
-        android:id="@+id/editTextPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="41dp"
-        android:ems="10"
-        android:hint="Phone"
-        android:textColorHint="@color/black"
-        android:inputType="phone"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        android:textColorHint="@color/black"
-        android:hint="Nickname"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/editTextPhone"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
 
     <Button
         android:id="@+id/button"
@@ -110,6 +85,6 @@
         android:text="Next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

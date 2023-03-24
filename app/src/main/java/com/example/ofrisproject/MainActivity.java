@@ -48,9 +48,13 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
     }
 
     @Override
-    public void authenticateResult(boolean success) {
+    public void authenticateResult(boolean success,String message) {
         if(success){
             Intent intent= new Intent(this, BaseActivity.class);
+            startActivity(intent);
         }
+        else
+            Toast.makeText(this,"register fail " + message,Toast.LENGTH_SHORT).show();
+
     }
 }

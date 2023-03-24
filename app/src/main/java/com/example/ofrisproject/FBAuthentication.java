@@ -30,13 +30,14 @@ public class FBAuthentication {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    MActivity.authenticateResult(true);
+                    MActivity.authenticateResult(true,"");
                 }
                 else
                 {
+                    MActivity.authenticateResult(false,task.getException().getMessage());
+
 
                 }
-
             }
         });
     }

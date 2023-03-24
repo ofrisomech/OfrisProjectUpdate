@@ -48,23 +48,20 @@ public class EditorActivity extends AppCompatActivity {
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_editor);
 
         if(!checkPermissions())
         {
             ActivityCompat.requestPermissions(EditorActivity.this, new String[]{
                     Manifest.permission.RECORD_AUDIO},1);
-
-
         }
         else
             startTheProcess();
-
 
            }
 
@@ -127,6 +124,10 @@ public class EditorActivity extends AppCompatActivity {
             isPlaying = false;
             b.setImageResource(R.drawable.button2);
             StopRecording();
+
+            //add support for long click for stop
+            // , pause and resume recording
+
         }
     }
 
@@ -155,6 +156,7 @@ public class EditorActivity extends AppCompatActivity {
                     try {
                         mediaRecorder.prepare();
                         mediaRecorder.start();
+
                         Toast.makeText(EditorActivity.this, "recording started", Toast.LENGTH_SHORT).show();
 
                         Log.d("Media Recorder test", "StartRecording: start" );

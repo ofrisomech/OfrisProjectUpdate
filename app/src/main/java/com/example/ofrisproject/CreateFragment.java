@@ -130,8 +130,7 @@ public class CreateFragment extends Fragment {
     public void getSongsByGenre() {
         ArrayList<Song> arr = new ArrayList<>();
         db.collection("Song")
-               .whereEqualTo("genre", genre)
-                .get()
+               .whereEqualTo("genre", genre).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -153,6 +152,8 @@ public class CreateFragment extends Fragment {
                                 Toast.makeText(getContext(), "Error getting documents: " + task.getException(), Toast.LENGTH_SHORT).show();
                             }
                         }
+                        else
+                            Toast.makeText(getActivity()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
     }
