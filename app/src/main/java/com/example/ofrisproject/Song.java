@@ -4,6 +4,7 @@ public class Song {
     private String songName;
     private String genre;// מתוך סט אפשרויות
     private String artistName;
+    private String songId;
 
     public Song(String _name, String _genre, String _artist)
     {
@@ -38,4 +39,9 @@ public class Song {
     public void setArtistName(String artistName) {
         this.artistName = artistName;
     }
+
+    public String getSongId(){ return songId;}
+
+    public void setSongId(String songId){ this.songId=songId;}
+
 }
