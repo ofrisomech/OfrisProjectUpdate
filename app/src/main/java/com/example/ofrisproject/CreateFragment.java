@@ -105,7 +105,6 @@ public class CreateFragment extends Fragment {
 
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private Song song;
     private DocumentReference songReference;
 
     public void getSongsByGenre() {
