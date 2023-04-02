@@ -104,26 +104,7 @@ public class CreateFragment extends Fragment {
     }
 
 
-    //upload Recording
-
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-    public void uploadRecording(String id, String artist) {
-        Recording Record = new Recording(id, artist);
-        db.collection("Recordings").add(Record).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(getActivity(), "success", Toast.LENGTH_SHORT).show();
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private Song song;
     private DocumentReference songReference;
 

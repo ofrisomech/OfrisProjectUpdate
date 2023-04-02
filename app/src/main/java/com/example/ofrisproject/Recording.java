@@ -2,13 +2,13 @@ package com.example.ofrisproject;
 
 public class Recording{
 
-    private String SongID;
+    private String SongName;
     private String artistUser;
     private boolean Isprivate;
     private String url;
 
-    public Recording(String songID, String artistUser, boolean isprivate, String url) {
-        SongID = songID;
+    public Recording(String songname, String artistUser, boolean isprivate, String url) {
+        SongName = songname;
         this.artistUser = artistUser;
         Isprivate = isprivate;
         this.url = url;
@@ -25,26 +25,20 @@ public class Recording{
         this.url = url;
     }
 
-    public Recording(String id, String _artist)
+    public Recording(String name, String _artist)
     {
-        SongID=id;
+        SongName=name;
         artistUser=_artist;
         Isprivate=true; //מוגדר כערך התחלתי כפרטי
     }
 
-    public Recording(String artistUser) {
-        this.artistUser = artistUser;
-        this.SongID = "123";
-        Isprivate=true; //מוגדר כערך התחלתי כפרטי
 
+    public String getSongName() {
+        return SongName;
     }
 
-    public String getSongID() {
-        return SongID;
-    }
-
-    public void setSongID(String songID) {
-        SongID = songID;
+    public void setSongName(String songID) {
+        SongName = songID;
     }
 
     public String getArtistUser() {

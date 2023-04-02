@@ -86,6 +86,8 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
     public void MoveToEditorPage(Song s){
         //ImageButton b = (ImageButton) view;
         Intent i = new Intent(getApplicationContext(),EditorActivity.class);
+        i.putExtra("songName", s.getSongName());
+        i.putExtra("songId", s.getSongId());
         startActivity(i);
     }
 

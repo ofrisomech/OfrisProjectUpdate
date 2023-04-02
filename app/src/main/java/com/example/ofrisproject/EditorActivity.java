@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +48,12 @@ public class EditorActivity extends AppCompatActivity {
     FirebaseFirestore fb = FirebaseFirestore.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
+
+    private String songName= getIntent().getStringExtra("songName");
+    private String videoId= getIntent().getStringExtra("songId");
+
+
+    ImageView imageView = (ImageView) findViewById(R.id.startVideo);
 
 
 
@@ -100,13 +108,13 @@ public class EditorActivity extends AppCompatActivity {
                 EditorActivity.this.youTubePlayer=youTubePlayer;
                 playerReady = true;
                 // get video id from intent
-                String videoId = "XwPEtD0_mx4";
                 youTubePlayer.loadVideo(videoId, 0);
 
             }
         });
 
     }
+
 
     public void PlayVideo(View view) {
         if(!playerReady)
@@ -117,6 +125,15 @@ public class EditorActivity extends AppCompatActivity {
             isPlaying = true;
             b.setImageResource(R.drawable.stopbutton);
            StartRecording();
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View v) {
+                    finishRecordingAndUploadToFirebase();
+                    return true;
+                }
+            });
+
         }
         // currently playing - stop, and change background
         else{
@@ -143,9 +160,7 @@ public class EditorActivity extends AppCompatActivity {
 
 
     public void StartRecording(){
-
-                    AudioSavePath=getApplicationInfo().dataDir +"/" + "recordingAudio.mp3";
-
+        AudioSavePath=getApplicationInfo().dataDir +"/" + "recordingAudio.mp3";
 //Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"recordingAudio.mp3";
                     mediaRecorder=new MediaRecorder();
                     mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -173,10 +188,9 @@ public class EditorActivity extends AppCompatActivity {
     public void StopRecording(){
 
                 mediaRecorder.stop();
-
                 mediaRecorder.release();
                 Toast.makeText(EditorActivity.this, "recording stopped", Toast.LENGTH_SHORT).show();
-                finishRecordingAndUploadToFirebase();
+
 
             }
 
@@ -187,12 +201,10 @@ public class EditorActivity extends AppCompatActivity {
         FBAuthentication auth = new FBAuthentication();
         String mail =auth.getUserEmail();
         // create recoding in firestore database
-        Recording r = new Recording(mail);
+        Recording r = new Recording(songName, mail);
         // create new document and get the reference
         DocumentReference ref = fb.collection("recording").document();
-
         r.setUrl(ref.toString());
-
         ref.set(r).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -226,10 +238,5 @@ public class EditorActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
-
-
 }
