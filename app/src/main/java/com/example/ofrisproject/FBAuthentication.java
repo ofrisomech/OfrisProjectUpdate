@@ -36,7 +36,6 @@ public class FBAuthentication {
                 {
                     MActivity.authenticateResult(false,task.getException().getMessage());
 
-
                 }
             }
         });

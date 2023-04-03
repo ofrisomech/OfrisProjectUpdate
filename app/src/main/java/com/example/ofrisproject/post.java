@@ -3,12 +3,14 @@ package com.example.ofrisproject;
 public class post {
 
     private String userName;
-    private String subject;
+    private String songName;
+    private String artistName;
     private String content;
 
-    public post(String userName, String subject, String content) {
+    public post(String userName, String songName, String artistName, String content) {
         this.userName = userName;
-        this.subject = subject;
+        this.songName = songName;
+        this.artistName=artistName;
         this.content = content;
     }
 
@@ -16,9 +18,11 @@ public class post {
         return userName;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getSongName() {
+        return songName;
     }
+
+    public String getArtistName(){return artistName;}
 
     public String getContent() {
         return content;
@@ -28,8 +32,11 @@ public class post {
         this.userName = userName;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setSongName(String songName) {
+        this.songName = songName;
+    }
+    public void setArtistNameName(String artistName) {
+        this.artistName = artistName;
     }
 
     public void setContent(String content) {
