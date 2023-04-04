@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgrondselectphoto"
+    tools:context=".SelectPhoto">
+
+    <!--Button to open the image selector-->
+
+    <!--ImageView to preview the selected image-->
+
+    <Button
+        android:id="@+id/BSelectImage"
+        android:layout_width="207dp"
+        android:layout_height="214dp"
+        android:backgroundTint="#372AAE"
+        android:text="Select Image"
+        style="@style/MyEditTextStyle"
+        android:textSize="30sp"
+        android:textColor="@color/white"
+        tools:layout_editor_absoluteX="102dp"
+        tools:layout_editor_absoluteY="261dp" />
+
+    <ImageView
+        android:id="@+id/IVPreviewImage"
+        android:layout_width="197dp"
+        android:layout_height="142dp"
+        android:layout_below="@id/BSelectImage" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
