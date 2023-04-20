@@ -23,7 +23,7 @@ android:background="@drawable/border">
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/artistName"
+        android:id="@+id/UserName"
         style="@style/MyEditTextStyle"
         android:layout_width="104dp"
         android:layout_height="30dp"
@@ -100,13 +100,13 @@ android:background="@drawable/border">
         tools:layout_editor_absoluteY="442dp" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/artistName"
         style="@style/MyEditTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="83dp"
+        android:layout_height="17dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="190dp"
-        tools:layout_editor_absoluteY="342dp" />
+        tools:layout_editor_absoluteX="182dp"
+        tools:layout_editor_absoluteY="348dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

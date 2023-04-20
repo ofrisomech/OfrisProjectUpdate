@@ -2,11 +2,24 @@ package com.example.ofrisproject;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,5 +73,42 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference RecordingReference;
+    private RecyclerView recyclerView;
+    private SongAdapter adapter;
+    //צריך שהמשתמש יקבל רק את ההקלטות שלו ולא של אחרים
+
+    public void getRecordingByPrivacy() {
+        ArrayList<Recording> arr = new ArrayList<>();
+        db.collection("recording")
+                .whereEqualTo("isprivate", true).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // task.getResult() -> array of recordings
+                            if (task.getResult().getDocuments().size() > 0) {
+
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Recording r = document.toObject(Recording.class);
+                                    RecordingReference = document.getReference();
+                                    arr.add(r);
+                                    //חיבור לתצוגה
+                                    adapter = new SongAdapter(arr,(SongAdapter.AdapterCallback) getActivity());
+                                    recyclerView.setAdapter(adapter);
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                    // display oin recycler view
+                                }
+                            } else {
+                                Toast.makeText(getContext(), "Error getting documents: " + task.getException(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else
+                            Toast.makeText(getActivity()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
