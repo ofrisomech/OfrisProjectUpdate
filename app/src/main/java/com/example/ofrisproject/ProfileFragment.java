@@ -78,7 +78,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference RecordingReference;
     private RecyclerView recyclerView;
-    private SongAdapter adapter;
+    private RecordingAdapter adapter;
     //צריך שהמשתמש יקבל רק את ההקלטות שלו ולא של אחרים
 
     public void getRecordingByPrivacy() {
@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
                                     RecordingReference = document.getReference();
                                     arr.add(r);
                                     //חיבור לתצוגה
-                                    adapter = new SongAdapter(arr,(SongAdapter.AdapterCallback) getActivity());
+                                    adapter = new RecordingAdapter(arr,(RecordingAdapter.AdapterCallback) getActivity());
                                     recyclerView.setAdapter(adapter);
                                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                     // display oin recycler view

@@ -32,9 +32,8 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         }
 
         public void select(View v){
-            currentActivity.RecordingChosen(Chosen(recordings.get(getAdapterPosition()));
+            currentActivity.RecordingChosen(recordings.get(getAdapterPosition()));
         }
-
     }
 
     @Override
@@ -42,7 +41,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.post, viewGroup, false);
-        RecordingAdapter.ViewHolder viewHolder = new Recording.ViewHolder(contactView);
+        RecordingAdapter.ViewHolder viewHolder = new RecordingAdapter.ViewHolder(contactView);
         return viewHolder;
     }
 
