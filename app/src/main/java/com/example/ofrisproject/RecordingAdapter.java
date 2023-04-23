@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,12 +24,14 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
     public class ViewHolder extends RecyclerView.ViewHolder{
         public final TextView UserName;
         public final TextView songName;
+        public final ImageView recImage;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this::select);
             UserName = view.findViewById(R.id.UserName);
             songName = view.findViewById(R.id.songName);
+            recImage=view.findViewById(R.id.recImage);
         }
 
         public void select(View v){
@@ -50,7 +53,8 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
     public void onBindViewHolder(RecordingAdapter.ViewHolder viewHolder, int position)
     {
         viewHolder.UserName.setText(recordings.get(position).getArtistUser());
-        viewHolder.songName.setText(""+recordings.get(position).getSongName());
+        viewHolder.songName.setText(recordings.get(position).getSongName());
+        //viewHolder.recImage.setImageResource(recordings.get(position).getUrl());
         viewHolder.getAdapterPosition();
     }
     @Override

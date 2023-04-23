@@ -55,7 +55,7 @@ android:background="@drawable/border">
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/recImage"
         android:layout_width="370dp"
         android:layout_height="289dp"
         android:layout_marginTop="20dp"
@@ -68,6 +68,7 @@ android:background="@drawable/border">
         android:id="@+id/seekBar2"
         android:layout_width="299dp"
         android:layout_height="30dp"
+        android:layout_marginBottom="68dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"

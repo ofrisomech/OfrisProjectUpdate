@@ -27,13 +27,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>  {
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        public final TextView UserName;
+        public final TextView artistName;
         public final TextView songName;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this::select);
-            UserName = view.findViewById(R.id.artistName);
+            artistName = view.findViewById(R.id.artistName);
             songName = view.findViewById(R.id.songName);
         }
 
@@ -57,8 +57,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>  {
     public void onBindViewHolder(ViewHolder viewHolder,  int position)
     {
         //artistName
-        ViewHolder.UserName.setText(songs.get(position).getArtistName());
-        viewHolder.songName.setText(""+songs.get(position).getSongName());
+        ViewHolder.artistName.setText(songs.get(position).getArtistName());
+        viewHolder.songName.setText(songs.get(position).getSongName());
         viewHolder.getAdapterPosition();
     }
     @Override

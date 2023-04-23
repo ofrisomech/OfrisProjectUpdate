@@ -90,7 +90,6 @@ public class CreateFragment extends Fragment {
 
     }
 
-    private ArrayList<Song> list;
     private RecyclerView recyclerView;
     private SongAdapter adapter;
 
