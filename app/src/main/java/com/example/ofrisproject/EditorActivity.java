@@ -201,7 +201,7 @@ public class EditorActivity extends AppCompatActivity {
         FBAuthentication auth = new FBAuthentication();
         String mail =auth.getUserEmail();
         // create recoding in firestore database
-        Recording r = new Recording(songName, mail);
+        Recording r = new Recording(songName, mail, "lla", "lla", false, "");
         // create new document and get the reference
         DocumentReference ref = fb.collection("recording").document();
         r.setUrl(ref.toString());

@@ -52,7 +52,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
     @Override
     public void onBindViewHolder(RecordingAdapter.ViewHolder viewHolder, int position)
     {
-        viewHolder.UserName.setText(recordings.get(position).getArtistUser());
+        viewHolder.UserName.setText(recordings.get(position).getArtistName());
         viewHolder.songName.setText(recordings.get(position).getSongName());
         //viewHolder.recImage.setImageResource(recordings.get(position).getUrl());
         viewHolder.getAdapterPosition();
