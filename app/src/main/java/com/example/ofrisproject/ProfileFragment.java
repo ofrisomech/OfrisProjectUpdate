@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -81,9 +83,20 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
-        getRecordingByPrivacy();
 
     }
+
+    public void privacySettings(View view){
+        ImageButton b = (ImageButton) view;
+        if(view.getId()==R.id.imagePrivate) {
+            getRecordingByPrivacy(true);
+        }
+       else if(view.getId()==R.id.imagePublic) {
+            getRecordingByPrivacy(false);
+       }
+
+    }
+
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference RecordingReference;
@@ -91,10 +104,10 @@ public class ProfileFragment extends Fragment {
     private RecordingAdapter adapter;
     //צריך שהמשתמש יקבל רק את ההקלטות שלו ולא של אחרים
 
-    public void getRecordingByPrivacy() {
+    public void getRecordingByPrivacy(boolean isPrivate) {
         ArrayList<Recording> arr = new ArrayList<>();
         db.collection("recording")
-                .whereEqualTo("isprivate", true).get()
+                .whereEqualTo("isprivate", isPrivate).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

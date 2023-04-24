@@ -32,18 +32,20 @@
         tools:layout_editor_absoluteY="320dp" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imagePrivate"
         android:layout_width="205dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
+        android:onClick="privacySettings"
         android:src="@drawable/ic_baseline_lock_24" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/imagePublic"
         android:layout_width="205dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:layout_marginLeft="205dp"
+        android:onClick="privacySettings"
         android:src="@drawable/ic_baseline_people_alt_24" />
 
     <androidx.recyclerview.widget.RecyclerView
