@@ -94,7 +94,7 @@
         android:layout_width="154dp"
         android:layout_height="150dp"
         android:layout_marginTop="32dp"
-        android:src="@drawable/stopbutton"
+        android:src="@drawable/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
