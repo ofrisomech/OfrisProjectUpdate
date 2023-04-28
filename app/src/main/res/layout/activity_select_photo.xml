@@ -27,13 +27,46 @@
 
     <ImageView
         android:id="@+id/IVPreviewImage"
-        android:layout_width="181dp"
-        android:layout_height="115dp"
+        android:layout_width="193dp"
+        android:layout_height="213dp"
         android:layout_below="@id/BSelectImage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Switch
+        android:id="@+id/switch1"
+        style="@style/MyEditTextStyle"
+        android:layout_width="305dp"
+        android:layout_height="95dp"
+        android:checked="true"
+        android:gravity="center"
+        android:text="Private Recording"
+        android:textColor="@color/white"
+        android:textOff="No"
+        android:textOn="Yes"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/BSelectImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.381" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/MyEditTextStyle"
+        android:text="POST"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:backgroundTint="#DB5DF1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BSelectImage"
+        app:layout_constraintVertical_bias="0.62" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -105,8 +105,11 @@ public class ProfileFragment extends Fragment {
     //צריך שהמשתמש יקבל רק את ההקלטות שלו ולא של אחרים
 
     public void getRecordingByPrivacy(boolean isPrivate) {
+        FBAuthentication auth = new FBAuthentication();
+        String mail =auth.getUserEmail();
+
         ArrayList<Recording> arr = new ArrayList<>();
-        db.collection("recording")
+        db.collection("recording").whereEqualTo("email", mail)
                 .whereEqualTo("isprivate", isPrivate).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

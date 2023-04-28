@@ -45,11 +45,12 @@ public class EditorActivity extends AppCompatActivity {
     boolean playerReady = false;
     private boolean isPlaying = false;
 
-    FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    FirebaseStorage storage = FirebaseStorage.getInstance();
+    //FirebaseFirestore fb = FirebaseFirestore.getInstance();
+    //FirebaseStorage storage = FirebaseStorage.getInstance();
 
 
     private String songName= getIntent().getStringExtra("songName");
+    private String artistName=getIntent().getStringExtra("artistName");
     private String videoId= getIntent().getStringExtra("songId");
 
 
@@ -129,7 +130,13 @@ public class EditorActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onLongClick(View v) {
-                    finishRecordingAndUploadToFirebase();
+                    //finishRecordingAndUploadToFirebase();
+                    String urlRec= TransferRecording();
+                    Intent intent=new Intent(EditorActivity.this, SelectPhoto.class);
+                    intent.putExtra("url", urlRec);
+                    intent.putExtra("songName", songName);
+                    intent.putExtra("artistName",artistName);
+                    startActivity(intent);
                     return true;
                 }
             });
@@ -194,14 +201,13 @@ public class EditorActivity extends AppCompatActivity {
 
             }
 
-
-    public void finishRecordingAndUploadToFirebase()
+    /*public void finishRecordingAndUploadToFirebase()
     {
         // recording name -> documet reference
         FBAuthentication auth = new FBAuthentication();
         String mail =auth.getUserEmail();
         // create recoding in firestore database
-        Recording r = new Recording(songName, mail, "lla", "lla", false, "");
+        Recording r = new Recording(songName, mail, "lla", "lla", false, "", "");
         // create new document and get the reference
         DocumentReference ref = fb.collection("recording").document();
         r.setUrl(ref.toString());
@@ -238,5 +244,11 @@ public class EditorActivity extends AppCompatActivity {
             }
         });
 
+    }*/
+
+    public String TransferRecording()
+    {
+        //url recording
+        return "";
     }
 }

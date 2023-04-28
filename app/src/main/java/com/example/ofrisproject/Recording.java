@@ -1,21 +1,23 @@
 package com.example.ofrisproject;
 
+import android.widget.ImageView;
+
 public class Recording{
 
     private String songName;
     private String userName;
     private String artistName;
-    private String emailUser;
     private boolean isPrivate;
     private String url;
+    private String imageRec;
 
-    public Recording(String songName, String userName, String artistName, String emailUser, boolean isPrivate, String url) {
+    public Recording(String songName, String userName, String artistName, boolean isPrivate, String url, String imageRec) {
         this.songName = songName;
         this.userName=userName;
         this.artistName=artistName;
-        this.emailUser=emailUser;
         this.isPrivate=isPrivate;
         this.url=url;
+        this.imageRec=imageRec;
     }
 
     public Recording() {
@@ -43,14 +45,6 @@ public class Recording{
 
     public void setArtistName(String artistName) {
         this.artistName = artistName;
-    }
-
-    public String getEmailUser() {
-        return emailUser;
-    }
-
-    public void setEmailUser(String emailUser) {
-        this.emailUser = emailUser;
     }
 
     public boolean isPrivate() {
