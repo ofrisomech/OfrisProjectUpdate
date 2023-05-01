@@ -121,13 +121,14 @@ public class CreateFragment extends Fragment {
                                     Song s = document.toObject(Song.class);
                                     songReference = document.getReference();
                                     arr.add(s);
+                                }
                                     //חיבור לתצוגה
                                     adapter = new SongAdapter(arr,(SongAdapter.AdapterCallback) getActivity());
                                     recyclerView.setAdapter(adapter);
                                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                     // display oin recycler view
                                 }
-                            } else {
+                             else {
                                 Toast.makeText(getContext(), "Error getting documents: " + task.getException(), Toast.LENGTH_SHORT).show();
                             }
                         }

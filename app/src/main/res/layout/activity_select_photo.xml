@@ -11,27 +11,19 @@
 
     <!--ImageView to preview the selected image-->
 
-    <Button
+
+    <ImageView
         android:id="@+id/BSelectImage"
         style="@style/MyEditTextStyle"
-        android:layout_width="211dp"
-        android:layout_height="212dp"
-        android:backgroundTint="#372AAE"
-        android:text="Select Image"
+        android:layout_width="236dp"
+        android:layout_height="219dp"
+        android:background="#4B16A8"
+        android:text="SELECT IMAGE"
         android:textColor="@color/white"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/IVPreviewImage"
-        android:layout_width="193dp"
-        android:layout_height="213dp"
-        android:layout_below="@id/BSelectImage"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,6 +51,7 @@
         android:layout_height="wrap_content"
         style="@style/MyEditTextStyle"
         android:text="POST"
+        android:onClick="GetCurrentUser"
         android:textSize="25dp"
         android:textColor="@color/white"
         android:backgroundTint="#DB5DF1"

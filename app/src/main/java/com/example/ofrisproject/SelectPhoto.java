@@ -3,6 +3,7 @@ package com.example.ofrisproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 
@@ -31,15 +32,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 
 public class SelectPhoto extends AppCompatActivity {
 
-    // One Button
-    Button BSelectImage;
 
     // One Preview Image
-    ImageView IVPreviewImage;
+    ImageView selectImage;
 
     // constant to compare
     // the activity result code
@@ -52,9 +52,8 @@ public class SelectPhoto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_photo);
-        BSelectImage = findViewById(R.id.BSelectImage);
-        IVPreviewImage = findViewById(R.id.IVPreviewImage);
-        BSelectImage.setOnClickListener(new View.OnClickListener() {
+        selectImage = findViewById(R.id.BSelectImage);
+        selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imageChooser();
@@ -90,27 +89,23 @@ public class SelectPhoto extends AppCompatActivity {
                 imageRecUrl=selectedImageUri.toString();
                 if (null != selectedImageUri) {
                     // update the preview image in the layout
-                    IVPreviewImage.setImageURI(selectedImageUri);
+                    selectImage.setImageURI(selectedImageUri);
                 }
             }
         }
     }
 
 
-    public Recording createRecording(){
+    // 1
+    public void createRecording(User u){
 
         String songName= getIntent().getStringExtra("songName");
-        String userName= GetCurrentUser().getUserName();
+        String userName= u.getUserName();
         String artistName=getIntent().getStringExtra("artistName");
         boolean isPrivate= Isprivate();
-        String Url= getIntent().getStringExtra("url");
-        Recording r=new Recording(songName, userName, artistName, isPrivate, Url, imageRecUrl);
-        return r;
-    }
+    //    String Url= getIntent().getStringExtra("url");
+        Recording r=new Recording(songName, userName, artistName, isPrivate, "", imageRecUrl);
 
-    public void UploadRecordingToFB()
-    {
-        Recording r=createRecording();
         FirebaseFirestore fb = FirebaseFirestore.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -123,6 +118,12 @@ public class SelectPhoto extends AppCompatActivity {
                 // upload file to strorage
 
                 // My Projetc reference
+                UploadRecordingToFB(r);
+    }
+
+    public void UploadRecordingToFB(Recording r)
+    {
+
                 StorageReference sRef = storage.getReference().child(r.getUrl() + ".mp3");
 
                 File f = new File(getApplicationInfo().dataDir + "/" + "recordingAudio.mp3");
@@ -157,7 +158,7 @@ public class SelectPhoto extends AppCompatActivity {
         return false;
     }
 
-    public User GetCurrentUser(){
+    public void GetCurrentUser(View v){
         final User[] user = {new User()};
         FBAuthentication auth = new FBAuthentication();
         String mail =auth.getUserEmail();
@@ -171,11 +172,14 @@ public class SelectPhoto extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 user[0] = document.toObject(User.class);
+
                             }
+                            createRecording(user[0]);
+
                         }
                         else
                             Toast.makeText(getApplicationContext()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show(); };
                 });
-        return user[0];
     }
+
 }

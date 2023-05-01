@@ -13,7 +13,6 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:padding="10dp"
-    app:videoId="XwPEtD0_mx4"
     app:autoPlay="false" />
 
     <ImageView

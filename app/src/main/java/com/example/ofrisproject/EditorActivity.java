@@ -45,16 +45,16 @@ public class EditorActivity extends AppCompatActivity {
     boolean playerReady = false;
     private boolean isPlaying = false;
 
-    //FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    //FirebaseStorage storage = FirebaseStorage.getInstance();
+    FirebaseFirestore fb = FirebaseFirestore.getInstance();
+    FirebaseStorage storage = FirebaseStorage.getInstance();
 
 
-    private String songName= getIntent().getStringExtra("songName");
-    private String artistName=getIntent().getStringExtra("artistName");
-    private String videoId= getIntent().getStringExtra("songId");
+    private String songName;
+    private String artistName;
+    private String videoId;
 
 
-    ImageView imageView = (ImageView) findViewById(R.id.startVideo);
+    ImageView imageView;
 
 
 
@@ -63,6 +63,12 @@ public class EditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+
+        imageView = (ImageView) findViewById(R.id.startVideo);
+
+        songName= getIntent().getStringExtra("songName");
+         artistName=getIntent().getStringExtra("artistName");
+         videoId= getIntent().getStringExtra("songId");
 
         if(!checkPermissions())
         {
@@ -116,6 +122,7 @@ public class EditorActivity extends AppCompatActivity {
 
     }
 
+    private boolean startedRecoding = false;
 
     public void PlayVideo(View view) {
         if(!playerReady)
@@ -125,18 +132,25 @@ public class EditorActivity extends AppCompatActivity {
             youTubePlayer.play();
             isPlaying = true;
             b.setImageResource(R.drawable.stopbutton);
-           StartRecording();
+            if(!startedRecoding) {
+                StartRecording();
+                startedRecoding = true;
+            }
+            else {
+
+                mediaRecorder.resume();
+            }
             imageView.setOnLongClickListener(new View.OnLongClickListener() {
 
                 @Override
                 public boolean onLongClick(View v) {
-                    //finishRecordingAndUploadToFirebase();
-                    String urlRec= TransferRecording();
+                    youTubePlayer.pause();
+                    StopRecording();
                     Intent intent=new Intent(EditorActivity.this, SelectPhoto.class);
-                    intent.putExtra("url", urlRec);
                     intent.putExtra("songName", songName);
                     intent.putExtra("artistName",artistName);
                     startActivity(intent);
+
                     return true;
                 }
             });
@@ -147,7 +161,9 @@ public class EditorActivity extends AppCompatActivity {
             youTubePlayer.pause();
             isPlaying = false;
             b.setImageResource(R.drawable.button2);
-            StopRecording();
+           // StopRecording();
+
+            mediaRecorder.pause();
 
             //add support for long click for stop
             // , pause and resume recording
@@ -196,6 +212,8 @@ public class EditorActivity extends AppCompatActivity {
 
                 mediaRecorder.stop();
                 mediaRecorder.release();
+
+
                 Toast.makeText(EditorActivity.this, "recording stopped", Toast.LENGTH_SHORT).show();
 
 
@@ -207,7 +225,7 @@ public class EditorActivity extends AppCompatActivity {
         FBAuthentication auth = new FBAuthentication();
         String mail =auth.getUserEmail();
         // create recoding in firestore database
-        Recording r = new Recording(songName, mail, "lla", "lla", false, "", "");
+        Recording r = new Recording(songName, "lla", "lla", false, "", "");
         // create new document and get the reference
         DocumentReference ref = fb.collection("recording").document();
         r.setUrl(ref.toString());
@@ -244,11 +262,7 @@ public class EditorActivity extends AppCompatActivity {
             }
         });
 
+
     }*/
 
-    public String TransferRecording()
-    {
-        //url recording
-        return "";
-    }
 }
