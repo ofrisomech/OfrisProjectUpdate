@@ -95,8 +95,7 @@
         android:layout_height="150dp"
         android:layout_marginTop="32dp"
         android:onClick="imageChooser"
-
-        android:src="@drawable/profile"
+        android:src="@drawable/ic_baseline_person_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"

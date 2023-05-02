@@ -1,5 +1,8 @@
 package com.example.ofrisproject;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,7 +25,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -83,7 +90,12 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
-
+        ImageView imageView= getView().findViewById(R.id.imagePrivate);
+        TextView textView=getView().findViewById(R.id.nickname);
+        String uriString=getActivity().getIntent().getStringExtra("Uri");
+        Uri uri = Uri.parse(uriString);
+        imageView.setImageURI(uri);
+        textView.setText(getActivity().getIntent().getStringExtra("nickname"));
     }
 
     public void privacySettings(View view){
@@ -98,14 +110,30 @@ public class ProfileFragment extends Fragment {
     }
 
 
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference RecordingReference;
     private RecyclerView recyclerView;
     private RecordingAdapter adapter;
+    private FBAuthentication auth = new FBAuthentication();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+
+
+    /*public void setProfileImage(){
+
+        ImageView imageView= getView().findViewById(R.id.imagePrivate);
+        String mail=auth.getUserEmail();
+        StorageReference ref = storage.getReference().child("profiles/" + mail + ".jpg");
+        File imgFile = new File(ref.toString());
+        if (imgFile.exists()) {
+            Bitmap imgBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            imageView.setImageBitmap(imgBitmap);
+        }
+    }*/
+
     //צריך שהמשתמש יקבל רק את ההקלטות שלו ולא של אחרים
 
     public void getRecordingByPrivacy(boolean isPrivate) {
-        FBAuthentication auth = new FBAuthentication();
         String mail =auth.getUserEmail();
 
         ArrayList<Recording> arr = new ArrayList<>();

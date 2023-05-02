@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
 
     private static final int SELECT_PICTURE = 1;
     private FBAuthentication authentication;
+    private String nickname="";
+    private Uri selectedProfileImageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
 
     public void MoveToHomePage(){
         Intent intent = new Intent(this, BaseActivity.class);
+       // intent.putExtra("nickname",nickname);
+        //intent.putExtra("Uri",selectedProfileImageUri.toString());
         startActivity(intent);
     }
 
@@ -108,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
             EditText etMail = findViewById(R.id.editTextTextEmailAddress);
             String mail = etMail.getText().toString();
             EditText nickName=findViewById(R.id.editTextPersonName);
+            nickname=nickName.toString();
             String userName = nickName.getText().toString();
             ImageView profileImg= findViewById(R.id.profileImage);
             UploadUserToFirebase(userName, mail, profileImg);
@@ -146,9 +151,7 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
                 Uri selectedImageUri = data.getData();
                 ImageView profileImg= findViewById(R.id.profileImage);
                 profileImg.setImageURI(selectedImageUri);
-
-
-
+                selectedProfileImageUri=selectedImageUri;
 
             }
         }
