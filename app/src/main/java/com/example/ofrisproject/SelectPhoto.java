@@ -18,6 +18,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -97,17 +98,16 @@ public class SelectPhoto extends AppCompatActivity {
 
 
     // 1
-    public void createRecording(User u){
+    public void createRecording(User u) {
 
-        String songName= getIntent().getStringExtra("songName");
-        String userName= u.getUserName();
-        String artistName=getIntent().getStringExtra("artistName");
-        boolean isPrivate= Isprivate();
-    //    String Url= getIntent().getStringExtra("url");
-        Recording r=new Recording(songName, userName, artistName, isPrivate, "", imageRecUrl);
+        String songName = getIntent().getStringExtra("songName");
+        String userName = u.getUserName();
+        String artistName = getIntent().getStringExtra("artistName");
+        boolean isPrivate = Isprivate();
+        //    String Url= getIntent().getStringExtra("url");
+        Recording r = new Recording(songName, userName, artistName, isPrivate, "", imageRecUrl);
 
         FirebaseFirestore fb = FirebaseFirestore.getInstance();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
 
         DocumentReference ref = fb.collection("recording").document();
         r.setUrl(ref.toString());
@@ -119,12 +119,23 @@ public class SelectPhoto extends AppCompatActivity {
 
                 // My Projetc reference
                 UploadRecordingToFB(r);
-    }
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String m = e.getMessage();
 
+                        Toast.makeText(SelectPhoto.this,m,Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
     public void UploadRecordingToFB(Recording r)
     {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
 
-                StorageReference sRef = storage.getReference().child(r.getUrl() + ".mp3");
+
+        StorageReference sRef = storage.getReference().child(r.getUrl() + ".mp3");
 
                 File f = new File(getApplicationInfo().dataDir + "/" + "recordingAudio.mp3");
 
@@ -146,8 +157,8 @@ public class SelectPhoto extends AppCompatActivity {
                     }
                 });
             }
-        });
-    }
+
+
 
 
     public boolean Isprivate()

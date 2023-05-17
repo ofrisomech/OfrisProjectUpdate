@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements RecordingAdapter.AdapterCallback{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment {
 
     public void getPosts(){
         ArrayList<Recording> arr = new ArrayList<>();
-        db.collection("recording").get()
+        db.collection("recording").whereEqualTo("isprivate", false).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -106,12 +106,12 @@ public class HomeFragment extends Fragment {
                                     arr.add(r);
                                 }
                                 //חיבור לתצוגה
-                                adapter = new RecordingAdapter(arr,(RecordingAdapter.AdapterCallback) getActivity());
+                                adapter = new RecordingAdapter(arr,(RecordingAdapter.AdapterCallback) HomeFragment.this);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 // display on recycler view
                             }
                             else {
-                                Toast.makeText(getContext(), "Error getting documents: " + task.getException(), Toast.LENGTH_SHORT).show();
+                        //        Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
                             }
                         }
                         else
@@ -120,4 +120,8 @@ public class HomeFragment extends Fragment {
                 });
     }
 
+    @Override
+    public void RecordingChosen(Recording r) {
+
+    }
 }

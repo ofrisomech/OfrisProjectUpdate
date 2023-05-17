@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -90,22 +92,79 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
-        ImageView imageView= getView().findViewById(R.id.imagePrivate);
+        ImageView imageView= getView().findViewById(R.id.imageProfile);
         TextView textView=getView().findViewById(R.id.nickname);
-        String uriString=getActivity().getIntent().getStringExtra("Uri");
-        Uri uri = Uri.parse(uriString);
-        imageView.setImageURI(uri);
-        textView.setText(getActivity().getIntent().getStringExtra("nickname"));
+        getCurrentUser(imageView,textView);
+
+        ImageButton ibPublic = getView().findViewById(R.id.imagePublic);
+        ibPublic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getRecordingByPrivacy(false);
+            }
+        });
+
+        ImageButton ibPrivate = getView().findViewById(R.id.imagePrivate);
+        ibPrivate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getRecordingByPrivacy(true);
+            }
+
+        });
     }
 
-    public void privacySettings(View view){
-        ImageButton b = (ImageButton) view;
-        if(view.getId()==R.id.imagePrivate) {
-            getRecordingByPrivacy(true);
-        }
-       else if(view.getId()==R.id.imagePublic) {
-            getRecordingByPrivacy(false);
-       }
+    public void getCurrentUser(ImageView iv,TextView tv){
+        final User[] user = {new User()};
+        FBAuthentication auth = new FBAuthentication();
+        String mail =auth.getUserEmail();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("User")
+                .whereEqualTo("email", mail).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                user[0] = document.toObject(User.class);
+
+                            }
+                            tv.setText(user[0].getUserName());
+                            getImageFromFB(iv,user[0].getEmail());
+
+
+
+                        }
+                        else
+                            Toast.makeText(getActivity()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show(); };
+                });
+    }
+
+    private void getImageFromFB(ImageView iv, String email) {
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference ref = storage.getReference().child("profiles/" + email);
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                // convert bytes to bitmap.. and set in image view
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                iv.setImageBitmap(bitmap);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+
+
+            }
+        });
 
     }
 
