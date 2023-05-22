@@ -4,33 +4,33 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="wrap_content"
 android:layout_height="500dp"
-android:layout_marginLeft="2dp"
-android:layout_marginRight="2dp"
-android:layout_marginBottom="7dp"
+android:layout_marginLeft="20dp"
+android:layout_marginRight="20dp"
+android:layout_marginTop="7dp"
 android:background="@drawable/border">
 
 
     <TextView
         android:id="@+id/songName"
         style="@style/MyEditTextStyle"
-        android:layout_width="88dp"
-        android:layout_height="29dp"
+        android:layout_width="94dp"
+        android:layout_height="32dp"
         android:layout_marginStart="88dp"
-        android:layout_marginTop="336dp"
+        android:layout_marginTop="332dp"
         android:text="TextView"
-        android:textSize="25dp"
+        android:textSize="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/UserName"
         style="@style/MyEditTextStyle"
-        android:layout_width="104dp"
-        android:layout_height="30dp"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
         android:layout_marginStart="88dp"
         android:layout_marginTop="4dp"
         android:text="TextView"
-        android:textSize="25dp"
+        android:textSize="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/songName" />
 
@@ -38,31 +38,34 @@ android:background="@drawable/border">
         android:id="@+id/divider"
         android:layout_width="409dp"
         android:layout_height="3dp"
+        android:layout_marginBottom="188dp"
         android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="320dp" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/profileImage"
         android:layout_width="52dp"
         android:layout_height="44dp"
+        android:src="@drawable/stopbutton"
         android:layout_marginStart="28dp"
         android:layout_marginBottom="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+         />
 
     <ImageView
         android:id="@+id/recImage"
-        android:layout_width="370dp"
-        android:layout_height="289dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="273dp"
+        android:layout_height="302dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/profile"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/seekBar2"
@@ -73,41 +76,53 @@ android:background="@drawable/border">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.592" />
+        app:layout_constraintTop_toBottomOf="@+id/recImage"
+        app:layout_constraintVertical_bias="0.967" />
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="73dp"
         android:layout_height="55dp"
-        app:srcCompat="@drawable/ic_baseline_play_arrow_24"
-        tools:layout_editor_absoluteX="55dp"
-        tools:layout_editor_absoluteY="437dp" />
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+        app:layout_constraintHorizontal_bias="0.539"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_play_arrow_24" />
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="49dp"
-        android:layout_height="42dp"
-        app:srcCompat="@drawable/ic_baseline_favorite_24"
-        tools:layout_editor_absoluteX="168dp"
-        tools:layout_editor_absoluteY="442dp" />
+        android:layout_width="52dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView6"
+        app:srcCompat="@drawable/ic_baseline_favorite_24" />
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="56dp"
-        android:layout_height="44dp"
-        app:srcCompat="@drawable/ic_baseline_comment_24"
-        tools:layout_editor_absoluteX="260dp"
-        tools:layout_editor_absoluteY="442dp" />
+        android:layout_width="61dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_comment_24" />
 
     <TextView
         android:id="@+id/artistName"
         style="@style/MyEditTextStyle"
-        android:layout_width="83dp"
-        android:layout_height="17dp"
+        android:layout_width="101dp"
+        android:layout_height="29dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="182dp"
-        tools:layout_editor_absoluteY="348dp" />
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/songName"
+        app:layout_constraintTop_toBottomOf="@+id/recImage"
+        app:layout_constraintVertical_bias="0.166" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

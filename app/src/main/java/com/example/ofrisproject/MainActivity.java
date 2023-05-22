@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
 
         authentication=new FBAuthentication(this);
         if(authentication.isRegistered())//אם המשתמש כבר רשום למערכת
-           MoveToHomePage();//עבור ישירות לעמוד הבית
+          MoveToHomePage();//עבור ישירות לעמוד הבית
     }
 
 

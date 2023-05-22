@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -135,7 +138,7 @@ public class SelectPhoto extends AppCompatActivity {
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
 
-        StorageReference sRef = storage.getReference().child(r.getUrl() + ".mp3");
+        StorageReference sRef = storage.getReference().child("recordings/" + r.getUrl() + ".mp3");
 
                 File f = new File(getApplicationInfo().dataDir + "/" + "recordingAudio.mp3");
 
@@ -149,8 +152,13 @@ public class SelectPhoto extends AppCompatActivity {
                 sRef.putStream(stream).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful())
+                        if (task.isSuccessful()) {
+
                             Log.d("storage upload ", "onComplete: success ");
+                            uploadRecordingImageToFB(r);
+
+                        }
+
                         else
                             Log.d("storage upload ", "onComplete: fail " + task.getException());
 
@@ -158,7 +166,40 @@ public class SelectPhoto extends AppCompatActivity {
                 });
             }
 
+    private void uploadRecordingImageToFB(Recording r) {
 
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+
+        StorageReference sRef = storage.getReference().child("recordingphoto/" + r.getUrl() + ".jpeg");
+        Bitmap b = ((BitmapDrawable) selectImage.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+
+        sRef.putBytes(data).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    Log.d("storage upload ", "onComplete: success ");
+
+                    Intent i = new Intent(SelectPhoto.this,BaseActivity.class);
+                    startActivity(i);
+                    finish();
+
+
+
+                }
+
+                else
+                    Log.d("storage upload ", "onComplete: fail " + task.getException());
+
+            }
+        });
+    }
 
 
     public boolean Isprivate()

@@ -9,7 +9,6 @@ public class Recording{
     private String artistName;
     private boolean isPrivate;
     private String url;
-    private String imageRec;
 
     public Recording(String songName, String userName, String artistName, boolean isPrivate, String url, String imageRec) {
         this.songName = songName;
@@ -17,7 +16,6 @@ public class Recording{
         this.artistName=artistName;
         this.isPrivate=isPrivate;
         this.url=url;
-        this.imageRec=imageRec;
     }
 
     public Recording() {
@@ -62,4 +60,5 @@ public class Recording{
     public void setUrl(String url) {
         this.url = url;
     }
+
 }

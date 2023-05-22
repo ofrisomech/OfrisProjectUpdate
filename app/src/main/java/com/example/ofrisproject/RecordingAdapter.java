@@ -15,16 +15,21 @@ public class RecordingAdapter extends RecyclerView.Adapter<RecordingAdapter.View
 
 private ArrayList<Recording> recordings;
 private AdapterCallback currentActivity;
+private FBStorage fbStorage;
 
 public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         recordings=list;
         this.currentActivity = activity;
+
+        fbStorage = new FBStorage();
         }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public final TextView UserName;
         public final TextView songName;
+        public final TextView singerName;
         public final ImageView recImage;
+        public final ImageView profileImage;
 
         public ViewHolder(View view) {
             super(view);
@@ -32,6 +37,8 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
             UserName = view.findViewById(R.id.UserName);
             songName = view.findViewById(R.id.songName);
             recImage=view.findViewById(R.id.recImage);
+            singerName=view.findViewById(R.id.artistName);
+            profileImage=view.findViewById(R.id.profileImage);
         }
 
         public void select(View v){
@@ -52,17 +59,22 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
     @Override
     public void onBindViewHolder(RecordingAdapter.ViewHolder viewHolder, int position)
     {
-        viewHolder.UserName.setText(recordings.get(position).getArtistName());
-        viewHolder.songName.setText(recordings.get(position).getSongName());
-        //viewHolder.recImage.setImageResource(recordings.get(position).getUrl());
+        Recording r = recordings.get(position);
+        viewHolder.UserName.setText(r.getUserName());
+        viewHolder.songName.setText(r.getSongName());
+        viewHolder.singerName.setText(r.getArtistName());
+        //viewHolder.recImage.setImageResource(recordings.get(position).getUrl().getBytes());
+        //viewHolder.profileImage.setImageResource(recordings.get(position).get);
+
+       // fbStorage.downloadImageFromStorage(viewHolder.profileImage,"profiles/" + r.getEmail() +".jpeg");
+        fbStorage.downloadImageFromStorage(viewHolder.recImage,"recordingphoto/" + r.getUrl() +".jpeg");
+
         viewHolder.getAdapterPosition();
     }
     @Override
     public int getItemCount() {
         return recordings.size();
     }
-
-
 
     public interface AdapterCallback
     {

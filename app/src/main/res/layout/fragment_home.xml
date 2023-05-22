@@ -8,23 +8,22 @@
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-condensed-light"
         android:text="OPRIX | KARAOKE"
         android:textColor="#BD186B"
-        android:textSize="80px"
+        android:textSize="70px"
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView1"
-        android:layout_marginTop="150dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="640dp"
+        android:layout_marginTop="90dp" />
 
 
 </FrameLayout>

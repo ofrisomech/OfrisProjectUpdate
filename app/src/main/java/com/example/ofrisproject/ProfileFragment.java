@@ -114,7 +114,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void getCurrentUser(ImageView iv,TextView tv){
+     public void getCurrentUser(ImageView iv,TextView tv){
         final User[] user = {new User()};
         FBAuthentication auth = new FBAuthentication();
         String mail =auth.getUserEmail();
@@ -132,8 +132,6 @@ public class ProfileFragment extends Fragment {
                             }
                             tv.setText(user[0].getUserName());
                             getImageFromFB(iv,user[0].getEmail());
-
-
 
                         }
                         else
@@ -197,7 +195,7 @@ public class ProfileFragment extends Fragment {
 
         ArrayList<Recording> arr = new ArrayList<>();
         db.collection("recording").whereEqualTo("email", mail)
-                .whereEqualTo("isprivate", isPrivate).get()
+                .whereEqualTo("private", isPrivate).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

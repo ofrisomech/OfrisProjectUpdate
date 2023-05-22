@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment implements RecordingAdapter.AdapterCa
 
     public void getPosts(){
         ArrayList<Recording> arr = new ArrayList<>();
-        db.collection("recording").whereEqualTo("isprivate", false).get()
+        db.collection("recording").whereEqualTo("private", false).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -109,9 +109,10 @@ public class HomeFragment extends Fragment implements RecordingAdapter.AdapterCa
                                 adapter = new RecordingAdapter(arr,(RecordingAdapter.AdapterCallback) HomeFragment.this);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 // display on recycler view
+                                recyclerView.setAdapter(adapter);
                             }
                             else {
-                        //        Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
+                               Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
                             }
                         }
                         else
