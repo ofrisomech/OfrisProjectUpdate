@@ -49,7 +49,9 @@ android:background="@drawable/border">
         android:id="@+id/profileImage"
         android:layout_width="52dp"
         android:layout_height="44dp"
-        android:src="@drawable/stopbutton"
+        android:background="@drawable/roundedimage"
+        android:clipToOutline="true"
+        android:src="@drawable/profile"
         android:layout_marginStart="28dp"
         android:layout_marginBottom="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,12 +60,13 @@ android:background="@drawable/border">
 
     <ImageView
         android:id="@+id/recImage"
-        android:layout_width="273dp"
-        android:layout_height="302dp"
-        android:layout_marginTop="4dp"
-        android:src="@drawable/profile"
+        android:layout_width="339dp"
+        android:layout_height="289dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintHorizontal_bias="0.419"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
