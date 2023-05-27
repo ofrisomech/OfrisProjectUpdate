@@ -38,7 +38,7 @@ android:background="@drawable/border">
         android:id="@+id/divider"
         android:layout_width="409dp"
         android:layout_height="3dp"
-        android:layout_marginBottom="188dp"
+        android:layout_marginBottom="180dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,13 +60,13 @@ android:background="@drawable/border">
 
     <ImageView
         android:id="@+id/recImage"
-        android:layout_width="339dp"
-        android:layout_height="289dp"
+        android:layout_width="340dp"
+        android:layout_height="290dp"
         android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
         android:src="@drawable/background_1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.419"
+        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

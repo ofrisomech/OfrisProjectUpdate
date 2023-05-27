@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgrondselectphoto"
+    android:background="@drawable/ombre_background"
     tools:context=".SelectPhoto">
 
     <!--Button to open the image selector-->
@@ -15,18 +15,20 @@
     <ImageView
         android:id="@+id/BSelectImage"
         style="@style/MyEditTextStyle"
-        android:layout_width="236dp"
-        android:layout_height="219dp"
-        android:background="#4B16A8"
+        android:layout_width="340dp"
+        android:layout_height="290dp"
+        android:background="@drawable/background_1"
+        android:padding="3dp"
+        android:scaleType="centerCrop"
         android:text="SELECT IMAGE"
         android:textColor="@color/white"
         android:textSize="30sp"
-        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.469" />
 
     <Switch
         android:id="@+id/switch1"
@@ -36,7 +38,7 @@
         android:checked="true"
         android:gravity="center"
         android:text="Private Recording"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textOff="No"
         android:textOn="Yes"
         android:textSize="25dp"

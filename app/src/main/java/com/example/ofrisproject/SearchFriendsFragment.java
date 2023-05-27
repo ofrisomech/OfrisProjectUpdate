@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -24,10 +23,13 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link SearchFriendsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements RecordingAdapter.AdapterCallback{
+public class SearchFriendsFragment extends Fragment {
+
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,7 +40,7 @@ public class HomeFragment extends Fragment implements RecordingAdapter.AdapterCa
     private String mParam1;
     private String mParam2;
 
-    public HomeFragment() {
+    public SearchFriendsFragment() {
         // Required empty public constructor
     }
 
@@ -48,11 +50,11 @@ public class HomeFragment extends Fragment implements RecordingAdapter.AdapterCa
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
+     * @return A new instance of fragment SearchFriendsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public static SearchFriendsFragment newInstance(String param1, String param2) {
+        SearchFriendsFragment fragment = new SearchFriendsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,27 +74,26 @@ public class HomeFragment extends Fragment implements RecordingAdapter.AdapterCa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+
+        return inflater.inflate(R.layout.fragment_search_friends, container, false);
+
     }
 
 
     private RecyclerView recyclerView;
-    private RecordingAdapter adapter;
+    private UserAdapter adapter;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = getView().findViewById(R.id.recyclerView1);
-        getPosts();
+        recyclerView = getView().findViewById(R.id.searchFriendsRV);
+        getUsers();
     }
 
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference RecordingReference;
-
-    public void getPosts(){
-        ArrayList<Recording> arr = new ArrayList<>();
-        db.collection("recording").whereEqualTo("private", false).get()
+    public void getUsers(){
+        ArrayList<User> arr = new ArrayList<>();
+        db.collection("User").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -101,18 +102,17 @@ public class HomeFragment extends Fragment implements RecordingAdapter.AdapterCa
                             if (task.getResult().getDocuments().size() > 0) {
 
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Recording r = document.toObject(Recording.class);
-                                    RecordingReference = document.getReference();
-                                    arr.add(r);
+                                    User user = document.toObject(User.class);
+                                    arr.add(user);
                                 }
                                 //חיבור לתצוגה
-                                adapter = new RecordingAdapter(arr,(RecordingAdapter.AdapterCallback) HomeFragment.this);
+                                adapter = new UserAdapter(arr,(UserAdapter.AdapterCallback) SearchFriendsFragment.this);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 // display on recycler view
                                 recyclerView.setAdapter(adapter);
                             }
                             else {
-                               Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
                             }
                         }
                         else
@@ -120,10 +120,4 @@ public class HomeFragment extends Fragment implements RecordingAdapter.AdapterCa
                     }
                 });
     }
-
-    @Override
-    public void RecordingChosen(Recording r) {
-
-    }
-
 }
