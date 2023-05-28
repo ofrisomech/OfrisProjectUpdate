@@ -2,6 +2,8 @@ package com.example.ofrisproject;
 
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 public class Recording{
 
     private String songName;
@@ -9,16 +11,11 @@ public class Recording{
     private String artistName;
     private boolean isPrivate;
     private String url;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     private String email;
+    private ArrayList<String> likeArr;
+    //private ArrayList<Comment> commentsArr;
+    private int numLikes;
+
 
     public Recording(String songName, String userName, String artistName, boolean isPrivate, String url, String imageRec, String email) {
         this.songName = songName;
@@ -27,6 +24,8 @@ public class Recording{
         this.isPrivate=isPrivate;
         this.url=url;
         this.email=email;
+        numLikes=0;
+        likeArr=new ArrayList<>(numLikes);
     }
 
     public Recording() {
@@ -71,5 +70,15 @@ public class Recording{
     public void setUrl(String url) {
         this.url = url;
     }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getNumLikes(){return numLikes;}
+    public void setNumLikes(int numLikes){this.numLikes=numLikes;}
 
 }

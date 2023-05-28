@@ -26,6 +26,7 @@ public class RecordingAdapter extends RecyclerView.Adapter<RecordingAdapter.View
 private ArrayList<Recording> recordings;
 private AdapterCallback currentActivity;
 private FBStorage fbStorage;
+//private ArrayList<String>
 
 public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         recordings=list;
@@ -73,12 +74,8 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         viewHolder.UserName.setText(r.getUserName());
         viewHolder.songName.setText(r.getSongName());
         viewHolder.singerName.setText(r.getArtistName());
-        //viewHolder.recImage.setImageResource(recordings.get(position).getUrl().getBytes());
-        //viewHolder.profileImage.setImageResource(recordings.get(position).get);
-
-       // fbStorage.downloadImageFromStorage(viewHolder.profileImage,"profiles/" + r.getEmail() +".jpeg");
+        fbStorage.downloadImageFromStorage(viewHolder.profileImage,"profiles/" + r.getEmail() +".jpeg");
         fbStorage.downloadImageFromStorage(viewHolder.recImage,"recordingphoto/" + r.getUrl() +".jpeg");
-
         viewHolder.getAdapterPosition();
     }
     @Override

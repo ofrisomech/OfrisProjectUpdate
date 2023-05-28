@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 public class otherUserFragment extends Fragment {
 
-
     public otherUserFragment() {
         // Required empty public constructor
     }
