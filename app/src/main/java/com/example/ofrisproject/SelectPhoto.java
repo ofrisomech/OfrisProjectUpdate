@@ -107,8 +107,9 @@ public class SelectPhoto extends AppCompatActivity {
         String userName = u.getUserName();
         String artistName = getIntent().getStringExtra("artistName");
         boolean isPrivate = Isprivate();
+        String email=u.getEmail();
         //    String Url= getIntent().getStringExtra("url");
-        Recording r = new Recording(songName, userName, artistName, isPrivate, "", imageRecUrl);
+        Recording r = new Recording(songName, userName, artistName, isPrivate, "", imageRecUrl, email);
 
         FirebaseFirestore fb = FirebaseFirestore.getInstance();
 

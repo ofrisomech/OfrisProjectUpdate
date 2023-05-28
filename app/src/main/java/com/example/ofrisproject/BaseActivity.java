@@ -82,9 +82,15 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
         replaceFragment(new MusicFragment());
     }
 
+    public void oveToSearchPage(View view){
+
+        replaceFragment(new SearchFriendsFragment());}
+
     public void searchFriends(View view){
         replaceFragment(new SearchFriendsFragment());
     }
+
+    public void moveToSetting(View view){replaceFragment(new settingFragment());}
 
     public void MoveToEditorPage(Song s){
         //ImageButton b = (ImageButton) view;
@@ -93,6 +99,10 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
         i.putExtra("artistName", s.getArtistName());
         i.putExtra("songId", s.getSongId());
         startActivity(i);
+    }
+
+    public void MoveToHomePage(View view){
+        replaceFragment(new HomeFragment());
     }
 
     @Override
@@ -104,6 +114,7 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
 
     public void userChosen(User u){
         Toast.makeText(this,"received " + u.getUserName(),Toast.LENGTH_SHORT).show();
+        replaceFragment(new otherUserFragment());
     }
 }
 

@@ -9,11 +9,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,22 +31,10 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CreateFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CreateFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private String genre;
+    private ArrayList<Song> arr;
 
     public CreateFragment() {
         // Required empty public constructor
@@ -54,31 +45,9 @@ public class CreateFragment extends Fragment {
     }
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreateFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CreateFragment newInstance(String param1, String param2) {
-        CreateFragment fragment = new CreateFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
     }
 
@@ -99,7 +68,39 @@ public class CreateFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
         getSongsByGenre();
+        EditText edittext = getView().findViewById(R.id.searchSongs);
+        edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                findSongs(editable.toString());
+            }
+        });
+
+    }
+
+    public void findSongs(String text) {
+        ArrayList<Song> brr = new ArrayList<>();
+        if (!text.trim().isEmpty()) {
+            for (int i = 0; i < arr.size(); i++) {
+                if (arr.get(i).getSongName().startsWith(text.trim()))
+                    brr.add(arr.get(i));
+            }
+            if (brr.size() == 0)
+                Toast.makeText(getActivity(), "NO RESULTS FOUND", Toast.LENGTH_SHORT).show();
+            adapter.setSongs(brr);
+        } else
+            adapter.setSongs(arr);
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -107,7 +108,7 @@ public class CreateFragment extends Fragment {
     private DocumentReference songReference;
 
     public void getSongsByGenre() {
-        ArrayList<Song> arr = new ArrayList<>();
+        arr = new ArrayList<>();
         db.collection("Song")
                .whereEqualTo("genre", genre).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

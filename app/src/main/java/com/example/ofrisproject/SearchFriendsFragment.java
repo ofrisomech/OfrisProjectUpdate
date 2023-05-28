@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,54 +24,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchFriendsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SearchFriendsFragment extends Fragment {
-
-
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ArrayList<User> arr;
 
     public SearchFriendsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchFriendsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SearchFriendsFragment newInstance(String param1, String param2) {
-        SearchFriendsFragment fragment = new SearchFriendsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -88,12 +53,46 @@ public class SearchFriendsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.searchFriendsRV);
         getUsers();
+        EditText edittext = getView().findViewById(R.id.searchUsers);
+        edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                findMatchedFriends(editable.toString());
+            }
+        });
+    }
+
+    public void findMatchedFriends(String text) {
+        ArrayList<User> brr = new ArrayList<>();
+        if (!text.trim().isEmpty()) {
+            for (int i = 0; i < arr.size(); i++) {
+                if (arr.get(i).getUserName() != null && arr.get(i).getUserName().startsWith(text.trim()))
+                    brr.add(arr.get(i));
+            }
+            if (brr.size() == 0)
+                Toast.makeText(getActivity(), "NO RESULTS FOUND", Toast.LENGTH_SHORT).show();
+            adapter.setUsers(brr);
+        } else
+            adapter.setUsers(arr);
+        adapter.notifyDataSetChanged();
     }
 
 
-    public void getUsers(){
-        ArrayList<User> arr = new ArrayList<>();
-        db.collection("User").get()
+    public void getUsers() {
+        arr = new ArrayList<>();
+        FBAuthentication auth = new FBAuthentication();
+        String mail =auth.getUserEmail();
+        db.collection("User").whereNotEqualTo("email", mail).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -106,18 +105,18 @@ public class SearchFriendsFragment extends Fragment {
                                     arr.add(user);
                                 }
                                 //חיבור לתצוגה
-                                adapter = new UserAdapter(arr,(UserAdapter.AdapterCallback) SearchFriendsFragment.this);
+                                adapter = new UserAdapter(arr, (UserAdapter.AdapterCallback) getActivity());
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 // display on recycler view
                                 recyclerView.setAdapter(adapter);
-                            }
-                            else {
+                            } else {
                                 Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
                             }
-                        }
-                        else
-                            Toast.makeText(getActivity()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                            getView().findViewById(R.id.searchUsers).setEnabled(true);
+                        } else
+                            Toast.makeText(getActivity(), " " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
 }

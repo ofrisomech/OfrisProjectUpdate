@@ -24,6 +24,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>  {
         songs=list;
         this.currentActivity = activity;
     }
+    public void setSongs(ArrayList<Song> brr) {
+        this.songs = brr;
+    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{

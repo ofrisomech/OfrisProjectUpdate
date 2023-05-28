@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements RecordingAdapter.AdapterCallback{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = getView().findViewById(R.id.recyclerView);
+        recyclerView = getView().findViewById(R.id.profilerecycler);
         ImageView imageView= getView().findViewById(R.id.imageProfile);
         TextView textView=getView().findViewById(R.id.nickname);
         getCurrentUser(imageView,textView);
@@ -142,7 +142,7 @@ public class ProfileFragment extends Fragment {
     private void getImageFromFB(ImageView iv, String email) {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference ref = storage.getReference().child("profiles/" + email);
+        StorageReference ref = storage.getReference().child("profiles/" + email + ".jpg");
 
         final long ONE_MEGABYTE = 1024 * 1024;
         ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -159,6 +159,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
+
+                Toast.makeText(getActivity()," image failed " + exception.getMessage(),Toast.LENGTH_SHORT).show();
 
 
             }
@@ -188,6 +190,8 @@ public class ProfileFragment extends Fragment {
         }
     }*/
 
+
+
     //צריך שהמשתמש יקבל רק את ההקלטות שלו ולא של אחרים
 
     public void getRecordingByPrivacy(boolean isPrivate) {
@@ -207,12 +211,13 @@ public class ProfileFragment extends Fragment {
                                     Recording r = document.toObject(Recording.class);
                                     RecordingReference = document.getReference();
                                     arr.add(r);
+                                }
                                     //חיבור לתצוגה
-                                    adapter = new RecordingAdapter(arr,(RecordingAdapter.AdapterCallback) getActivity());
+                                    adapter = new RecordingAdapter(arr,(RecordingAdapter.AdapterCallback) ProfileFragment.this);
                                     recyclerView.setAdapter(adapter);
                                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                     // display oin recycler view
-                                }
+
                             } else {
                                 Toast.makeText(getContext(), "Error getting documents: " + task.getException(), Toast.LENGTH_SHORT).show();
                             }
@@ -222,4 +227,9 @@ public class ProfileFragment extends Fragment {
                     }
                 });
     }
+
+    public void RecordingChosen(Recording r) {
+
+    }
+
 }

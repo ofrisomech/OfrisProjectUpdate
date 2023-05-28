@@ -10,12 +10,23 @@ public class Recording{
     private boolean isPrivate;
     private String url;
 
-    public Recording(String songName, String userName, String artistName, boolean isPrivate, String url, String imageRec) {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String email;
+
+    public Recording(String songName, String userName, String artistName, boolean isPrivate, String url, String imageRec, String email) {
         this.songName = songName;
         this.userName=userName;
         this.artistName=artistName;
         this.isPrivate=isPrivate;
         this.url=url;
+        this.email=email;
     }
 
     public Recording() {

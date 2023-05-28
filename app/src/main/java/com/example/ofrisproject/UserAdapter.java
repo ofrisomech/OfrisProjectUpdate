@@ -12,19 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private ArrayList<User> users;
 
     private AdapterCallback currentActivity;
 
     public UserAdapter(ArrayList<User> list, AdapterCallback activity) {
-        users=list;
+        users = list;
         this.currentActivity = activity;
     }
 
+    public void setUsers(ArrayList<User> brr) {
+        this.users = brr;
+    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView UserName;
         public final ImageView UserImage;
 
@@ -35,7 +39,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             UserImage = view.findViewById(R.id.imageUser);
         }
 
-        public void select(View v){
+        public void select(View v) {
             currentActivity.userChosen(users.get(getAdapterPosition()));
         }
 
@@ -52,21 +56,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder,  int position)
-    {
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.UserName.setText(users.get(position).getUserName());
         //viewHolder.UserImage.setI(users.get(position).getProfileImage());
         viewHolder.getAdapterPosition();
     }
+
     @Override
     public int getItemCount() {
         return users.size();
     }
 
 
-
-    public interface AdapterCallback
-    {
+    public interface AdapterCallback {
         void userChosen(User user);
     }
 
