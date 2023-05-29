@@ -7,16 +7,16 @@ public class User {
     private String userName;
     private String email;
     private String profileImage;
-    private int numFollowers;
-    private int numFollowing;
+    private String followers;
+    private String following;
 
-    public User(String userName, String email, String profileImage)
+    public User(String userName, String email, String profileImage, String followers, String following)
     {
         this.userName=userName;
         this.email=email;
         this.profileImage=profileImage;
-        numFollowers=0;
-        numFollowing=0;
+        this.followers=followers;
+        this.following=following;
     }
     public User() {
     }
@@ -45,19 +45,19 @@ public class User {
         this.profileImage = profileImage;
     }
 
-    public int getNumFollowers() {
-        return numFollowers;
+    public String getFollowers() {
+        return followers;
     }
 
-    public void setNumFollowers(int numFollowers) {
-        this.numFollowers = numFollowers;
+    public void setFollowers(String followers) {
+        this.followers = followers;
     }
 
-    public int getNumFollowing() {
-        return numFollowing;
+    public String getFollowing() {
+        return following;
     }
 
-    public void setNumFollowing(int numFollowing) {
-        this.numFollowing = numFollowing;
+    public void setFollowing(String following) {
+        this.following = following;
     }
 }

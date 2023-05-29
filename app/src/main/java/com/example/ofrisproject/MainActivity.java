@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
 
         // 1
         // convert image to byte array
-        User user=new User(userName, email, email);
+        User user=new User(userName, email, email, "", "");
         fb.collection("User").add(user).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {

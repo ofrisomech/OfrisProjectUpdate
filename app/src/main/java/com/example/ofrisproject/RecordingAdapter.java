@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,19 +42,23 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         public final TextView singerName;
         public final ImageView recImage;
         public final ImageView profileImage;
+        public final ImageView playRec;
+        public final SeekBar seekBarRec;
 
         public ViewHolder(View view) {
             super(view);
-            view.setOnClickListener(this::select);
+            playRec=view.findViewById(R.id.playRecording);
+            playRec.setOnClickListener(this::select);
             UserName = view.findViewById(R.id.UserName);
             songName = view.findViewById(R.id.songName);
             recImage=view.findViewById(R.id.recImage);
             singerName=view.findViewById(R.id.artistName);
             profileImage=view.findViewById(R.id.profileImage);
+            seekBarRec=view.findViewById(R.id.seekBarRec);
         }
 
         public void select(View v){
-            currentActivity.RecordingChosen(recordings.get(getAdapterPosition()));
+            currentActivity.RecordingChosen(recordings.get(getAdapterPosition()), seekBarRec);
         }
     }
 
@@ -74,8 +79,9 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         viewHolder.UserName.setText(r.getUserName());
         viewHolder.songName.setText(r.getSongName());
         viewHolder.singerName.setText(r.getArtistName());
-        fbStorage.downloadImageFromStorage(viewHolder.profileImage,"profiles/" + r.getEmail() +".jpeg");
+        fbStorage.downloadImageFromStorage(viewHolder.profileImage,"profiles/" + r.getEmail() +".jpg");
         fbStorage.downloadImageFromStorage(viewHolder.recImage,"recordingphoto/" + r.getUrl() +".jpeg");
+        fbStorage.playRecordingFromStorage();
         viewHolder.getAdapterPosition();
     }
     @Override
@@ -155,7 +161,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
 
     public interface AdapterCallback
     {
-        void RecordingChosen(Recording r);
+        void RecordingChosen(Recording r, SeekBar s);
     }
 }
 

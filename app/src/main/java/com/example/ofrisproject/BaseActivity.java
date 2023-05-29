@@ -10,17 +10,28 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowInsetsController;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.ofrisproject.databinding.ActivityBaseBinding;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
-public class BaseActivity extends AppCompatActivity implements SongAdapter.AdapterCallback , UserAdapter.AdapterCallback{
+public class BaseActivity extends AppCompatActivity implements SongAdapter.AdapterCallback , UserAdapter.AdapterCallback, RecordingAdapter.AdapterCallback{
 
 
     com.example.ofrisproject.databinding.ActivityBaseBinding binding;
@@ -101,6 +112,10 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
         startActivity(i);
     }
 
+
+    public void MoveToProfilePage(View view){
+        replaceFragment(new ProfileFragment());
+    }
     public void MoveToHomePage(View view){
         replaceFragment(new HomeFragment());
     }
@@ -114,7 +129,75 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
 
     public void userChosen(User u){
         Toast.makeText(this,"received " + u.getUserName(),Toast.LENGTH_SHORT).show();
-        replaceFragment(new otherUserFragment());
+        replaceFragment(new otherUserFragment(u));
     }
-}
+
+    public void RecordingChosen(Recording r, SeekBar sb) {
+        StorageReference ref = FirebaseStorage.getInstance().getReference();
+        ref = ref.child("recordings/" + r.getUrl() + ".mp3");
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                try {
+
+                        MediaPlayer player = new MediaPlayer();
+                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+                        String path = uri.toString();
+                        player.setDataSource(path);
+                        player.prepare();
+                        player.start();
+
+
+                        sb.setMax(player.getDuration());
+
+                        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                        @Override
+                        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                            player.seekTo(i*1000);
+                        }
+
+                        @Override
+                        public void onStartTrackingTouch(SeekBar seekBar) {
+
+                        }
+
+                        @Override
+                        public void onStopTrackingTouch(SeekBar seekBar) {
+
+                        }
+                    });
+
+
+
+
+                    Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
+                            sb.setProgress(player.getCurrentPosition());
+
+                            if(player.getDuration() == player.getCurrentPosition())
+                                timer.cancel();
+                        }
+                    },0,1000);
+
+
+
+
+                    }
+
+
+
+
+                catch (IOException e) {
+                    Toast.makeText(BaseActivity.this,"error playing recording " +e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+    }
+
 

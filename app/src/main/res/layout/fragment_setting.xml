@@ -27,5 +27,12 @@
         android:inputType="textPersonName"
         android:hint="New nickname" />
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="61dp"
+        android:layout_height="58dp"
+        android:onClick="MoveToProfilePage"
+        android:src="@drawable/ic_outline_arrow_back_24" />
+
 
 </FrameLayout>

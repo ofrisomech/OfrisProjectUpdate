@@ -36,4 +36,8 @@ public class FBStorage {
         });
 
     }
+
+    public void playRecordingFromStorage(){
+
+    }
 }

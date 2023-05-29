@@ -33,7 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment implements RecordingAdapter.AdapterCallback{
+public class ProfileFragment extends Fragment {
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -161,7 +161,7 @@ public class ProfileFragment extends Fragment implements RecordingAdapter.Adapte
                                     arr.add(r);
                                 }
                                     //חיבור לתצוגה
-                                    adapter = new RecordingAdapter(arr,(RecordingAdapter.AdapterCallback) ProfileFragment.this);
+                                    adapter = new RecordingAdapter(arr,(RecordingAdapter.AdapterCallback) getActivity());
                                     recyclerView.setAdapter(adapter);
                                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                     // display oin recycler view
@@ -176,8 +176,5 @@ public class ProfileFragment extends Fragment implements RecordingAdapter.Adapte
                 });
     }
 
-    public void RecordingChosen(Recording r) {
-
-    }
 
 }
