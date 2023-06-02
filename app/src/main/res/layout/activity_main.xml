@@ -4,77 +4,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ombre_background"
+    android:background="@drawable/backgroundLogin2"
     tools:context=".MainActivity">
 
     <!--  android:background="#E8CAED"-->
 
+
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif-condensed-light"
-        android:text="welcome!"
+        android:layout_width="121dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="56dp"
+        android:fontFamily="casual"
+        android:text="Login"
         android:textColor="#F3F0F1"
-        android:textSize="80px"
+        android:textSize="120px"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="17dp"
-        android:text="Please enter your personal information"
-        android:textColor="#EDEFF8"
-        android:textSize="50px"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
     <EditText
         android:id="@+id/editTextPersonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="91dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/loginbuttons"
         android:ems="10"
         android:hint="Nickname"
-        android:textColorHint="@color/black"
+
+        android:includeFontPadding="true"
         android:inputType="textPersonName"
+        android:textColorHint="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="91dp"
-        android:layout_marginTop="31dp"
+        android:layout_width="244dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/loginbuttons"
         android:ems="10"
-        android:textColorHint="@color/black"
         android:hint="E-mail"
         android:inputType="textEmailAddress"
+        android:textColorHint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPersonName" />
 
     <EditText
         android:id="@+id/editTextTextPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
-        android:layout_marginEnd="1dp"
+        android:layout_width="230dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/loginbuttons"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
-
 
     <Button
         android:id="@+id/button"
@@ -91,17 +91,16 @@
 
     <ImageView
         android:id="@+id/profileImage"
-        android:layout_width="154dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="133dp"
+        android:layout_height="121dp"
+        android:layout_marginTop="20dp"
         android:onClick="imageChooser"
         android:src="@drawable/profile"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
 
-       />
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
