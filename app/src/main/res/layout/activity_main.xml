@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroundLogin2"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/backgroundLogin4"
     tools:context=".MainActivity">
 
     <!--  android:background="#E8CAED"-->
@@ -14,93 +17,67 @@
         android:id="@+id/textView4"
         android:layout_width="121dp"
         android:layout_height="78dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="casual"
         android:text="Login"
         android:textColor="#F3F0F1"
         android:textSize="120px"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/editTextPersonName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="130dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="30dp"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="70dp"
         android:background="@drawable/loginbuttons"
-        android:ems="10"
         android:hint="Nickname"
-
         android:includeFontPadding="true"
         android:inputType="textPersonName"
-        android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        android:textColorHint="@color/white" />
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"
-        android:layout_width="244dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/loginbuttons"
-        android:ems="10"
         android:hint="E-mail"
         android:inputType="textEmailAddress"
-        android:textColorHint="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPersonName" />
+        android:textColorHint="@color/white"
+        />
 
     <EditText
         android:id="@+id/editTextTextPassword"
-        android:layout_width="230dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/loginbuttons"
-        android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:textColorHint="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextEmailAddress"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="216dp"
-        android:onClick="Register"
-        android:text="Next"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+        android:textColorHint="@color/white"
+        />
 
 
     <ImageView
         android:id="@+id/profileImage"
-        android:layout_width="133dp"
-        android:layout_height="121dp"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
         android:layout_marginTop="20dp"
         android:onClick="imageChooser"
         android:src="@drawable/profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
-
+        android:background="@drawable/roundedimage"
+        android:clipToOutline="true"
         />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:onClick="Register"
+        android:text="Next"
+         />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

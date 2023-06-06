@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="370dp"
-android:layout_height="500dp"
+android:layout_width="match_parent"
+android:layout_height="650dp"
 android:layout_marginLeft="0dp"
 android:layout_marginRight="0dp"
 android:layout_marginTop="7dp"
@@ -13,12 +13,14 @@ android:background="@drawable/border">
     <TextView
         android:id="@+id/songName"
         style="@style/MyEditTextStyle"
-        android:layout_width="94dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="88dp"
+        android:layout_width="196dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="104dp"
         android:layout_marginTop="332dp"
         android:text="TextView"
-        android:textSize="12dp"
+        android:textSize="30dp"
+        android:textColor="@color/white"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,9 +29,10 @@ android:background="@drawable/border">
         style="@style/MyEditTextStyle"
         android:layout_width="100dp"
         android:layout_height="36dp"
-        android:layout_marginStart="88dp"
+        android:layout_marginStart="104dp"
         android:layout_marginTop="4dp"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/songName" />
@@ -38,25 +41,24 @@ android:background="@drawable/border">
         android:id="@+id/divider"
         android:layout_width="409dp"
         android:layout_height="3dp"
-        android:layout_marginBottom="180dp"
+        android:layout_marginBottom="332dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="52dp"
         android:layout_height="44dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="272dp"
         android:background="@drawable/roundedimage"
         android:clipToOutline="true"
         android:src="@drawable/profile"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-         />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/recImage"
@@ -75,30 +77,30 @@ android:background="@drawable/border">
         android:layout_width="299dp"
         android:layout_height="30dp"
         android:layout_marginBottom="68dp"
+        android:outlineSpotShadowColor="@color/white"
+        android:progressTint="#F0F30BCC"
+        android:thumb="#F0F30BCC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recImage"
-        app:layout_constraintVertical_bias="0.967" />
+        app:layout_constraintVertical_bias="0.573" />
 
     <ImageView
         android:id="@+id/playRecording"
-        android:layout_width="73dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="80dp"
+        android:layout_height="61dp"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/likePost"
-        app:layout_constraintHorizontal_bias="0.539"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_play_arrow_24" />
+        app:srcCompat="@drawable/ic_baseline_play_arrow_24"
+        tools:layout_editor_absoluteX="152dp" />
 
     <ImageView
         android:id="@+id/likePost"
         android:layout_width="52dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="176dp"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/commentPost"
         app:srcCompat="@drawable/ic_baseline_favorite_24" />
@@ -108,7 +110,7 @@ android:background="@drawable/border">
         android:layout_width="61dp"
         android:layout_height="48dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_comment_24" />
@@ -119,13 +121,14 @@ android:background="@drawable/border">
         android:layout_width="101dp"
         android:layout_height="29dp"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/songName"
         app:layout_constraintTop_toBottomOf="@+id/recImage"
-        app:layout_constraintVertical_bias="0.166" />
+        app:layout_constraintVertical_bias="0.26" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
