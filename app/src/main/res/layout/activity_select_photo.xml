@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ombre_background"
+    android:background="@drawable/backgroundApp"
     tools:context=".SelectPhoto">
 
     <!--Button to open the image selector-->
@@ -38,7 +38,7 @@
         android:checked="true"
         android:gravity="center"
         android:text="Private Recording"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textOff="No"
         android:textOn="Yes"
         android:textSize="25dp"

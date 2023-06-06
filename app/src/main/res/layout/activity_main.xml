@@ -10,8 +10,6 @@
     android:background="@drawable/backgroundLogin4"
     tools:context=".MainActivity">
 
-    <!--  android:background="#E8CAED"-->
-
 
     <TextView
         android:id="@+id/textView4"
