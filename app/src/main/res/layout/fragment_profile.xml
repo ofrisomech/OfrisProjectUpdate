@@ -4,83 +4,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/profilebackground"
     tools:context=".ProfileFragment"
     >
 
+
     <ImageView
-    android:id="@+id/imageProfile"
-    android:layout_width="90dp"
+        android:id="@+id/imageProfile"
+        android:layout_width="118dp"
+        android:layout_height="105dp"
+        android:layout_gravity="center_horizontal"
         android:background="@drawable/roundedimage"
         android:clipToOutline="true"
-    android:layout_height="90dp"
-    android:scaleType="centerCrop"
-    android:src="@drawable/profile"
-    />
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile" />
+
 
     <TextView
         android:id="@+id/nickname"
         style="@style/MyEditTextStyle"
         android:layout_width="wrap_content"
+        android:textSize="14dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:textColor="@color/white"
-        android:text="NickName" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="320dp" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:text="NickName"
+        android:textColor="@color/white" />
 
     <ImageButton
         android:id="@+id/imagePrivate"
         android:layout_width="205dp"
+        android:background="@null"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="190dp"
         android:src="@drawable/ic_baseline_lock_24" />
 
     <ImageButton
         android:id="@+id/imagePublic"
         android:layout_width="205dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:background="@null"
+        android:layout_marginTop="190dp"
         android:layout_marginLeft="205dp"
         android:src="@drawable/ic_baseline_people_alt_24" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_marginTop="140dp"
-        android:layout_height="match_parent"
-        android:id="@+id/profilerecycler"/>
+        android:id="@+id/profilerecycler"
+        android:layout_width="421dp"
+        android:layout_height="466dp"
+        android:layout_marginTop="220dp" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="109dp"
-        android:layout_height="34dp"
-        android:layout_marginLeft="300dp"
-        android:onClick="moveToSetting"
+        android:layout_width="93dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="330dp"
         android:layout_marginTop="10dp"
+        android:onClick="moveToSetting"
         android:src="@drawable/ic_baseline_settings_24" />
 
     <Button
         android:id="@+id/Followers"
-        android:layout_width="75dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="50dp"
-        android:text="0" />
+        android:layout_marginLeft="5dp"
+        android:textSize="12dp"
+        android:layout_marginTop="140dp"
+        android:text="0 Followers" />
 
     <Button
         android:id="@+id/Following"
-        android:layout_width="75dp"
+        android:layout_width="200dp"
+        android:textSize="12dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="200dp"
-        android:layout_marginTop="50dp"
-        android:text="0" />
+        android:layout_marginLeft="210dp"
+        android:layout_marginTop="140dp"
+        android:text="0 Following" />
+
+
 
 
 </FrameLayout>
