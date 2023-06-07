@@ -15,11 +15,12 @@
     <ImageView
         android:id="@+id/BSelectImage"
         style="@style/MyEditTextStyle"
-        android:layout_width="340dp"
-        android:layout_height="290dp"
-        android:background="@drawable/background_1"
+        android:layout_height="270dp"
+        android:background="@drawable/roundedimage"
+        android:clipToOutline="true"
         android:padding="3dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/profile"
         android:text="SELECT IMAGE"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -28,7 +29,7 @@
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.469" />
+        app:layout_constraintVertical_bias="0.668" />
 
     <Switch
         android:id="@+id/switch1"
@@ -44,9 +45,10 @@
         android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/BSelectImage"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.381" />
+        app:layout_constraintVertical_bias="0.69" />
 
     <Button
         android:id="@+id/button3"
@@ -64,5 +66,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BSelectImage"
         app:layout_constraintVertical_bias="0.62" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="62dp"
+        android:fontFamily="@font/modern_antiqua"
+        android:gravity="center_vertical"
+        android:text="Design your post"
+        android:textColor="#F0F30BCC"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/switch1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

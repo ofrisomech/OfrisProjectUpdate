@@ -15,6 +15,7 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-condensed-light"
+        android:gravity="center_vertical"
         android:text="OPRIX | KARAOKE"
         android:textColor="#BD186B"
         android:textSize="70px"
@@ -25,7 +26,7 @@
         android:layout_width="405dp"
         android:layout_height="510dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="140dp"
         android:layout_marginRight="0dp" />
 
     <ImageView
@@ -37,21 +38,38 @@
         android:layout_height="43dp"
         android:src="@drawable/ic_baseline_search_24" />
 
-    <Button
-        android:id="@+id/foryou"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="60dp"
-        android:text="For You" />
+
 
     <Button
         android:id="@+id/friends"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginLeft="200dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_marginLeft="5dp"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="90dp"
         android:text="Friends" />
+
+    <Button
+        android:id="@+id/foryou"
+        android:layout_width="200dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:textSize="12dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="210dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="90dp"
+        android:text="For you" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/roundedimage"
+        android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profileapp" />
 
 
 </FrameLayout>
