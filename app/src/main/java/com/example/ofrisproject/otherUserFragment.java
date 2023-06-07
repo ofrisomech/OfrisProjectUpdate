@@ -21,10 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 
@@ -59,13 +62,13 @@ public otherUserFragment() {
         textView.setText(user.getUserName());
         Button button=getView().findViewById(R.id.Followers1);
         String[] userFollowers = user.getFollowers().split(",");
-        button.setText(userFollowers.length);
+        button.setText(""+(userFollowers.length-1));
         Button button2=getView().findViewById(R.id.Following1);
         String[] userFollowings = user.getFollowing().split(",");
-        button2.setText(userFollowings.length);
+        button2.setText(""+(userFollowings.length-1));
        // ImageView imageView=getView().findViewById(R.id.imageProfile);
         //imageView.setImageResource(user.getProfileImage().getBytes());
-
+        recyclerView= getView().findViewById(R.id.otheruserposts);
         getOtherUserPosts();
 
         Button followCurrentUser= getView().findViewById(R.id.followButton);
@@ -76,6 +79,7 @@ public otherUserFragment() {
             public void onClick(View v)
             {
                 follow();
+                button.setText(userFollowers.length);
                 followCurrentUser.setBackgroundColor(R.color.teal_200);
                 followCurrentUser.setText("Following");
 
@@ -86,20 +90,43 @@ public otherUserFragment() {
     }
 
 
-
     public void follow(){
-        FBAuthentication auth = new FBAuthentication();
-        String mail =auth.getUserEmail();
-        String followers= user.getFollowers();
-        followers+=mail+",";
 
+        addFollowerToUser();
+        addFollowingToCurrentUser();
     }
 
-    public void unfollow(){
+    private void addFollowingToCurrentUser() {
         FBAuthentication auth = new FBAuthentication();
         String mail =auth.getUserEmail();
-        String followers= user.getFollowers();
-        //followers= followers.
+        FirebaseFirestore fb= FirebaseFirestore.getInstance();
+        fb.collection("User").whereEqualTo("email",mail).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                User currentUser = queryDocumentSnapshots.getDocuments().get(0).toObject(User.class);
+                DocumentReference ref = queryDocumentSnapshots.getDocuments().get(0).getReference();
+                currentUser.addFollowing(user.getEmail());
+                ref.update("following",currentUser.getFollowing());
+
+            }
+        });
+    }
+
+    private void addFollowerToUser() {
+        FBAuthentication auth = new FBAuthentication();
+        String mail =auth.getUserEmail();
+        FirebaseFirestore fb= FirebaseFirestore.getInstance();
+        fb.collection("User").whereEqualTo("email",user.getEmail()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                User other = queryDocumentSnapshots.getDocuments().get(0).toObject(User.class);
+                DocumentReference ref = queryDocumentSnapshots.getDocuments().get(0).getReference();
+                other.addFollower(mail);
+                ref.update("followers",other.getFollowers());
+
+            }
+        });
+
 
     }
 

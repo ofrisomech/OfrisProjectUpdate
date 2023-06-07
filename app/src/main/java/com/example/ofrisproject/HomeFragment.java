@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
                                 }
                                 //חיבור לתצוגה
                                 adapter = new RecordingAdapter(arr, (RecordingAdapter.AdapterCallback) getActivity());
-                                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1, GridLayoutManager.HORIZONTAL, false));
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 // display on recycler view
                                 recyclerView.setAdapter(adapter);
                             } else {

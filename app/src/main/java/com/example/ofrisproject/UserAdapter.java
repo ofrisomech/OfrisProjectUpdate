@@ -15,11 +15,13 @@ import java.util.ArrayList;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private ArrayList<User> users;
+    private FBStorage fbStorage;
 
     private AdapterCallback currentActivity;
 
     public UserAdapter(ArrayList<User> list, AdapterCallback activity) {
         users = list;
+        fbStorage = new FBStorage();
         this.currentActivity = activity;
     }
 
@@ -57,8 +59,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        User user=users.get(position);
         viewHolder.UserName.setText(users.get(position).getUserName());
-        //viewHolder.UserImage.setI(users.get(position).getProfileImage());
+        fbStorage.downloadImageFromStorage(viewHolder.UserImage,"profiles/" + user.getEmail() +".jpg");
         viewHolder.getAdapterPosition();
     }
 

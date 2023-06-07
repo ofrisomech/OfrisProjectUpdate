@@ -18,6 +18,7 @@
         />
 
     <TextView
+        android:textColor="@color/white"
         android:id="@+id/nickname"
         style="@style/MyEditTextStyle"
         android:layout_width="wrap_content"
@@ -45,9 +46,10 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/otheruserposts"
         android:layout_width="match_parent"
-        android:layout_marginTop="140dp"
-        android:layout_height="match_parent" />
+        android:layout_height="509dp"
+        android:layout_marginTop="140dp" />
 
     <Button
         android:id="@+id/Followers1"

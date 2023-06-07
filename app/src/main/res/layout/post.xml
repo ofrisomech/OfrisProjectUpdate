@@ -3,11 +3,11 @@
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
-android:layout_height="650dp"
+android:layout_height="610dp"
 android:layout_marginLeft="0dp"
 android:layout_marginRight="0dp"
 android:layout_marginTop="7dp"
-android:background="@drawable/backgroundApp">
+android:background="@drawable/backgroundapp">
 
 
     <TextView
@@ -79,7 +79,7 @@ android:background="@drawable/backgroundApp">
         android:layout_marginBottom="68dp"
         android:progressBackgroundTint="@color/white"
         android:progressTint="#F0F30BCC"
-        android:thumb="#F0F30BCC"
+        android:thumbTint="#F0F30BCC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.517"
@@ -91,19 +91,22 @@ android:background="@drawable/backgroundApp">
         android:id="@+id/playRecording"
         android:layout_width="80dp"
         android:layout_height="61dp"
-        android:layout_marginBottom="84dp"
+        android:layout_marginBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat="@drawable/ic_baseline_play_arrow_24"
-        tools:layout_editor_absoluteX="165dp" />
+        app:layout_constraintEnd_toStartOf="@+id/commentPost"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_play_arrow_24" />
 
     <ImageView
         android:id="@+id/likePost"
         android:layout_width="52dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="176dp"
+        android:layout_marginEnd="17dp"
         android:layout_marginBottom="96dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/commentPost"
+        app:layout_constraintEnd_toStartOf="@+id/playRecording"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_baseline_favorite_24" />
 
     <ImageView

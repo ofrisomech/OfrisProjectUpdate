@@ -12,9 +12,8 @@ public class Recording{
     private boolean isPrivate;
     private String url;
     private String email;
-    private ArrayList<String> likeArr;
+    private String like;
     //private ArrayList<Comment> commentsArr;
-    private int numLikes;
 
 
     public Recording(String songName, String userName, String artistName, boolean isPrivate, String url, String imageRec, String email) {
@@ -24,8 +23,7 @@ public class Recording{
         this.isPrivate=isPrivate;
         this.url=url;
         this.email=email;
-        numLikes=0;
-        likeArr=new ArrayList<>(numLikes);
+        this.like="";
     }
 
     public Recording() {
@@ -78,7 +76,5 @@ public class Recording{
         this.email = email;
     }
 
-    public int getNumLikes(){return numLikes;}
-    public void setNumLikes(int numLikes){this.numLikes=numLikes;}
 
 }

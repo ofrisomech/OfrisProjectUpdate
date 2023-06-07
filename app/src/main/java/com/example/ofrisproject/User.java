@@ -19,6 +19,9 @@ public class User {
         this.following=following;
     }
     public User() {
+        this.followers="";
+        this.following="";
+
     }
 
     public String getUserName() {
@@ -60,4 +63,56 @@ public class User {
     public void setFollowing(String following) {
         this.following = following;
     }
+
+
+    // String f = "asdsd,gfdgfd,lll";
+    // String[] s = f.spllit(",");
+
+    public boolean addFollowing(String mail)
+    {
+        if(this.following.isEmpty())
+        {
+            this.following =mail;
+            return true;
+        }
+
+        if(this.following.contains(mail))
+        {
+            if(this.following.indexOf(mail)==0)
+                this.following = this.following.replace(mail,"");
+            else
+                this.following = this.following.replace(","+ mail,"");
+            return true;
+        }
+
+        this.following+=","+mail;
+        return true;
+
+    }
+
+    public boolean addFollower(String mail)
+    {
+        if(this.followers.isEmpty())
+        {
+            this.followers=mail;
+            return true;
+        }
+        if(this.followers.contains(mail))
+        {
+            // no comma on first
+            if(this.followers.indexOf(mail)==0)
+                this.followers = this.followers.replace(mail,"");
+            else
+                this.followers = this.followers.replace(","+ mail,"");
+
+
+            return true;
+        }
+
+        this.followers+=","+mail;
+        return true;
+    }
+
+
+
 }

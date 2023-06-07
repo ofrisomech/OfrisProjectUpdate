@@ -44,6 +44,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         public final ImageView profileImage;
         public final ImageView playRec;
         public final SeekBar seekBarRec;
+        public final ImageView likePost;
 
         public ViewHolder(View view) {
             super(view);
@@ -55,10 +56,16 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
             singerName=view.findViewById(R.id.artistName);
             profileImage=view.findViewById(R.id.profileImage);
             seekBarRec=view.findViewById(R.id.seekBarRec);
+            likePost=view.findViewById(R.id.likePost);
         }
 
         public void select(View v){
             currentActivity.RecordingChosen(recordings.get(getAdapterPosition()), seekBarRec);
+        }
+
+        public void like(View view){
+            //likePost.setImageResource();
+
         }
     }
 

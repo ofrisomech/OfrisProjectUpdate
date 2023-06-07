@@ -154,7 +154,7 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
                         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                         @Override
                         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                            player.seekTo(i*1000);
+                            player.seekTo(i);
                         }
 
                         @Override
@@ -175,9 +175,10 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
                     timer.scheduleAtFixedRate(new TimerTask() {
                         @Override
                         public void run() {
-                            sb.setProgress(player.getCurrentPosition());
+                            int p = player.getCurrentPosition();
+                            sb.setProgress(p);
 
-                            if(player.getDuration() == player.getCurrentPosition())
+                            if(player.getDuration() < player.getCurrentPosition()+1000)
                                 timer.cancel();
                         }
                     },0,1000);
@@ -198,6 +199,17 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
     }
 
 
+    public void likePost(View view)
+    {
+
     }
+
+    public void CommentPost(View view)
+    {
+
+    }
+
+
+}
 
 

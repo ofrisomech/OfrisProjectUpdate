@@ -14,7 +14,7 @@ android:background="@drawable/border">
     <TextView
         android:id="@+id/userName"
         style="@style/MyEditTextStyle"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
