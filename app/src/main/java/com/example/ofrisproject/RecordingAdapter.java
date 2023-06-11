@@ -1,6 +1,8 @@
 package com.example.ofrisproject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
@@ -45,6 +49,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         public final ImageView playRec;
         public final SeekBar seekBarRec;
         public final ImageView likePost;
+        public final ImageView delRec;
 
         public ViewHolder(View view) {
             super(view);
@@ -57,16 +62,21 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
             profileImage=view.findViewById(R.id.profileImage);
             seekBarRec=view.findViewById(R.id.seekBarRec);
             likePost=view.findViewById(R.id.likePost);
+            delRec=view.findViewById(R.id.deleteRec);
+            delRec.setOnClickListener(this::select);
         }
 
         public void select(View v){
             currentActivity.RecordingChosen(recordings.get(getAdapterPosition()), seekBarRec);
+            //currentActivity.DeleteRecording(recordings.get(getAdapterPosition()));
         }
 
         public void like(View view){
             //likePost.setImageResource();
 
         }
+
+
     }
 
     @Override
@@ -85,7 +95,13 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         Recording r = recordings.get(position);
         viewHolder.UserName.setText(r.getUserName());
         viewHolder.songName.setText(r.getSongName());
+        viewHolder.songName.setSelected(true);
         viewHolder.singerName.setText(r.getArtistName());
+
+        String thisEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        if(!thisEmail.equals(r.getEmail()))
+            viewHolder.delRec.setVisibility(View.INVISIBLE);
+
         fbStorage.downloadImageFromStorage(viewHolder.profileImage,"profiles/" + r.getEmail() +".jpg");
         fbStorage.downloadImageFromStorage(viewHolder.recImage,"recordingphoto/" + r.getUrl() +".jpeg");
         fbStorage.playRecordingFromStorage();
@@ -169,6 +185,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
     public interface AdapterCallback
     {
         void RecordingChosen(Recording r, SeekBar s);
+        void DeleteRecording(Recording r);
     }
 }
 

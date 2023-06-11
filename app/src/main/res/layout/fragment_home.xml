@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-condensed-light"
         android:gravity="center_vertical"
         android:text="OPRIX | KARAOKE"
@@ -23,11 +23,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView1"
-        android:layout_width="405dp"
-        android:layout_height="510dp"
-        android:layout_marginLeft="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="140dp"
-        android:layout_marginRight="0dp" />
+        android:paddingBottom="60dp"/>
 
     <ImageView
         android:id="@+id/imageView"
@@ -63,13 +62,14 @@
         android:text="For you" />
 
     <ImageView
+        android:layout_marginStart="10dp"
         android:id="@+id/imageView4"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/roundedimage"
         android:clipToOutline="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/profileapp" />
+        android:src="@drawable/ombre_background" />
 
 
-</FrameLayout>
+</RelativeLayout>

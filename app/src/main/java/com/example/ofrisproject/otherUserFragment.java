@@ -71,6 +71,7 @@ public otherUserFragment() {
         recyclerView= getView().findViewById(R.id.otheruserposts);
         getOtherUserPosts();
 
+
         Button followCurrentUser= getView().findViewById(R.id.followButton);
         followCurrentUser.setOnClickListener(new View.OnClickListener()
         {
@@ -79,7 +80,8 @@ public otherUserFragment() {
             public void onClick(View v)
             {
                 follow();
-                button.setText(userFollowers.length);
+                int followers =Integer.valueOf(button.getText().toString());
+                button.setText(""+(followers+1));
                 followCurrentUser.setBackgroundColor(R.color.teal_200);
                 followCurrentUser.setText("Following");
 
@@ -88,6 +90,8 @@ public otherUserFragment() {
         });
 
     }
+
+
 
 
     public void follow(){
@@ -106,7 +110,8 @@ public otherUserFragment() {
                 User currentUser = queryDocumentSnapshots.getDocuments().get(0).toObject(User.class);
                 DocumentReference ref = queryDocumentSnapshots.getDocuments().get(0).getReference();
                 currentUser.addFollowing(user.getEmail());
-                ref.update("following",currentUser.getFollowing());
+               ref.update("following",currentUser.getFollowing());
+
 
             }
         });

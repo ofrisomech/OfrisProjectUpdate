@@ -1,5 +1,6 @@
 package com.example.ofrisproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -9,11 +10,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowInsetsController;
 import android.widget.Button;
@@ -22,10 +26,16 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.ofrisproject.databinding.ActivityBaseBinding;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -133,70 +143,75 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
     }
 
     public void RecordingChosen(Recording r, SeekBar sb) {
-        StorageReference ref = FirebaseStorage.getInstance().getReference();
-        ref = ref.child("recordings/" + r.getUrl() + ".mp3");
-        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                try {
+        StorageReference ref = FirebaseStorage.getInstance().getReference().child("recordings/" + r.getUrl() + ".mp3");
 
-                        MediaPlayer player = new MediaPlayer();
-                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            File localFile = File.createTempFile("audio", "mp3");
 
-                        String path = uri.toString();
-                        player.setDataSource(path);
-                        player.prepare();
-                        player.start();
+            ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    try {
+                        MediaPlayer mediaPlayer = new MediaPlayer();
+                        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
+                        FileInputStream fis = new FileInputStream(localFile);
+                        mediaPlayer.setDataSource(fis.getFD());
 
-                        sb.setMax(player.getDuration());
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
+
+                        sb.setMax(mediaPlayer.getDuration());
 
                         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                            player.seekTo(i);
-                        }
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                if (fromUser) {
+                                    mediaPlayer.seekTo(progress);
+                                }
+                            }
 
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+                                // No implementation needed
+                            }
 
-                        }
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+                                // No implementation needed
+                            }
+                        });
 
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
+                        Timer timer = new Timer();
+                        timer.scheduleAtFixedRate(new TimerTask() {
+                            @Override
+                            public void run() {
+                                int currentPosition = mediaPlayer.getCurrentPosition();
+                                sb.setProgress(currentPosition);
 
-                        }
-                    });
-
-
-
-
-                    Timer timer = new Timer();
-                    timer.scheduleAtFixedRate(new TimerTask() {
-                        @Override
-                        public void run() {
-                            int p = player.getCurrentPosition();
-                            sb.setProgress(p);
-
-                            if(player.getDuration() < player.getCurrentPosition()+1000)
-                                timer.cancel();
-                        }
-                    },0,1000);
-
-
-
-
+                                if (mediaPlayer.getDuration() < currentPosition + 1000) {
+                                    timer.cancel();
+                                }
+                            }
+                        }, 0, 1000);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(BaseActivity.this, "Error playing audio: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
-
-
-
-                catch (IOException e) {
-                    Toast.makeText(BaseActivity.this,"error playing recording " +e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(BaseActivity.this, "Error downloading audio: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(BaseActivity.this, "Error creating temporary file: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
+
 
 
     public void likePost(View view)
@@ -208,6 +223,53 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
     {
 
     }
+
+    public void AlertDeleteRecording(Recording r) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setIcon(R.drawable.backgroundlogin)
+                .setTitle("Are you sure you want to delete the post")
+                .setMessage("No way to ")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        DeleteRecording(r);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(BaseActivity.this, "Nothing Happened", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .show();
+    }
+
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    public void DeleteRecording(Recording r){
+        // FB and Storage
+        // delete from storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference ref = storage.getReference().child("recording/"+r.getUrl()+".mp3");
+        ref.delete();
+
+        db.collection("recording").whereEqualTo("url", r.getUrl()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        Toast.makeText(BaseActivity.this, "Recording deleted ", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(BaseActivity.this, "problem ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+    }
+
 
 
 }

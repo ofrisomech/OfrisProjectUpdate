@@ -8,33 +8,40 @@ android:layout_marginLeft="0dp"
 android:layout_marginRight="0dp"
 android:layout_marginTop="7dp"
     android:padding="7dp"
-android:background="@drawable/purple">
+android:background="@drawable/ombre_background">
 
 
     <TextView
         android:id="@+id/songName"
         style="@style/MyEditTextStyle"
-        android:layout_width="196dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="324dp"
+        android:layout_width="195dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="312dp"
         android:gravity="center"
         android:text="TextView"
         android:textColor="@color/white"
         android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <TextView
         android:id="@+id/UserName"
         style="@style/MyEditTextStyle"
         android:layout_width="118dp"
         android:layout_height="46dp"
-        android:layout_marginStart="144dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
         android:textColor="@color/white"
         android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/songName" />
 
@@ -53,8 +60,8 @@ android:background="@drawable/purple">
         android:id="@+id/profileImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="196dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="200dp"
         android:background="@drawable/roundedimage"
         android:clipToOutline="true"
         android:src="@drawable/profile"
@@ -75,6 +82,7 @@ android:background="@drawable/purple">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <SeekBar
         android:id="@+id/seekBarRec"
         android:layout_width="300dp"
@@ -88,40 +96,42 @@ android:background="@drawable/purple">
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recImage"
-        app:layout_constraintVertical_bias="0.719" />
+        app:layout_constraintVertical_bias="0.756" />
 
-    <ImageView
-        android:id="@+id/playRecording"
-        android:layout_width="99dp"
-        android:layout_height="79dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/commentPost"
-        app:layout_constraintHorizontal_bias="0.857"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_play_arrow_24" />
-
-    <ImageView
-        android:id="@+id/likePost"
-        android:layout_width="52dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/playRecording"
-        app:layout_constraintHorizontal_bias="0.71"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_favorite_24" />
-
-    <ImageView
-        android:id="@+id/commentPost"
-        android:layout_width="61dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginBottom="40dp"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_comment_24" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBarRec"
+        app:layout_constraintVertical_bias="0.36">
+
+
+        <ImageView
+            android:id="@+id/likePost"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/ic_baseline_favorite_24" />
+
+        <ImageView
+            android:id="@+id/playRecording"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/ic_baseline_play_arrow_24" />
+
+        <ImageView
+            android:id="@+id/commentPost"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/ic_baseline_comment_24" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
         android:id="@+id/artistName"
@@ -136,7 +146,17 @@ android:background="@drawable/purple">
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/songName"
         app:layout_constraintTop_toBottomOf="@+id/recImage"
-        app:layout_constraintVertical_bias="0.213" />
+        app:layout_constraintVertical_bias="0.236" />
+
+    <ImageView
+        android:id="@+id/deleteRec"
+        android:layout_width="28dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="324dp"
+        android:layout_marginBottom="156dp"
+        android:src="@drawable/ic_baseline_delete_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

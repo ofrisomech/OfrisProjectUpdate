@@ -19,8 +19,6 @@ public class User {
         this.following=following;
     }
     public User() {
-        this.followers="";
-        this.following="";
 
     }
 
@@ -92,7 +90,7 @@ public class User {
 
     public boolean addFollower(String mail)
     {
-        if(this.followers.isEmpty())
+        if(this.followers.isEmpty()|| this.followers.equals(""))
         {
             this.followers=mail;
             return true;
@@ -104,9 +102,7 @@ public class User {
                 this.followers = this.followers.replace(mail,"");
             else
                 this.followers = this.followers.replace(","+ mail,"");
-
-
-            return true;
+            return false;
         }
 
         this.followers+=","+mail;
