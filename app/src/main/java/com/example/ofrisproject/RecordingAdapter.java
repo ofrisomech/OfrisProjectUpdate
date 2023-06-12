@@ -50,6 +50,8 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         public final SeekBar seekBarRec;
         public final ImageView likePost;
         public final ImageView delRec;
+        public final TextView numlike;
+        public final TextView numComment;
 
         public ViewHolder(View view) {
             super(view);
@@ -62,8 +64,18 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
             profileImage=view.findViewById(R.id.profileImage);
             seekBarRec=view.findViewById(R.id.seekBarRec);
             likePost=view.findViewById(R.id.likePost);
+            likePost.setOnClickListener(this::like);
             delRec=view.findViewById(R.id.deleteRec);
-            delRec.setOnClickListener(this::select);
+            delRec.setOnClickListener(this::delete);
+            numlike=view.findViewById(R.id.numlike);
+            numComment=view.findViewById(R.id.numcomment);
+        }
+
+        private void delete(View view) {
+
+
+            currentActivity.AlertDeleteRecording(recordings.get(getAbsoluteAdapterPosition()));
+
         }
 
         public void select(View v){
@@ -72,7 +84,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         }
 
         public void like(View view){
-            //likePost.setImageResource();
+            currentActivity.LikeRecording(recordings.get(getAdapterPosition()), likePost, numlike);
 
         }
 
@@ -97,7 +109,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         viewHolder.songName.setText(r.getSongName());
         viewHolder.songName.setSelected(true);
         viewHolder.singerName.setText(r.getArtistName());
-
+        viewHolder.singerName.setSelected(true);
         String thisEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         if(!thisEmail.equals(r.getEmail()))
             viewHolder.delRec.setVisibility(View.INVISIBLE);
@@ -112,80 +124,12 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         return recordings.size();
     }
 
-    /*private void IsLikes(String RecId, ImageView imageView){
-        FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference= FirebaseDatabase.getInstance().getRefernce().child("likes").child(RecId);
-        reference.addValueEventListener(new ValueEventListener()){
-            public void onDataChange(DataSnapshot dataSnapshot){
-                if(dataSnapshot.child(firebaseUser.getUid()).exists()) {
-                imageView.setColorFilter(0xffff0000);
-                imageView.setTag("liked");
-
-                }
-                else {
-                    imageView.setColorFilter(0xffff0000);
-                    imageView.setTag("like");
-                }
-            }
-            }
-        });
-    }*/
-
-
-    /* public void displayNumberOfLikes(String postId, String currentUserId){
-        DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child('recording').child(postId);
-        likesRef.addValueEventListener(new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    long numOfLikes = 0;
-                    if(dataSnapshot.hasChild("likes")){
-                        numOfLikes = dataSnapshot.child("likes").getValue(Long.class);
-                    }
-
-                    //Populate numOfLikes on post i.e. textView.setText(""+numOfLikes)
-                    //This is to check if the user has liked the post or not
-                    btnLike.setSelected(dataSnapshot.hasChild(userId));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public void onLikeClicked(View v, String postId, String userId){
-        DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child('Post').child(postId).child("likes");
-        likesRef.addListenerForSingleValueEvent(new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                long numLikes = 0;
-                if(dataSnapshot.exists()){
-                    numLikes = dataSnapshot.getValue(Long.class);
-                }
-                boolean isLiked = btnLike.isSelected();
-                if(isLiked){
-                    //If already liked then user wants to unlike the post
-                    likesRef.set(numLikes-1);
-                }else {
-                    //If not liked already then user wants to like the post
-                    likesRef.set(numLikes+1);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }*/
 
     public interface AdapterCallback
     {
         void RecordingChosen(Recording r, SeekBar s);
-        void DeleteRecording(Recording r);
+        void AlertDeleteRecording(Recording r);
+        void LikeRecording(Recording r, ImageView like, TextView textView);
     }
 }
 

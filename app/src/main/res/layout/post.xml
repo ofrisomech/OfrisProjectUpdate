@@ -101,8 +101,9 @@ android:background="@drawable/ombre_background">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
+        android:id="@+id/linear"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -131,7 +132,41 @@ android:background="@drawable/ombre_background">
             android:layout_width="60dp"
             android:layout_height="50dp"
             app:srcCompat="@drawable/ic_baseline_comment_24" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="-20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linear">
+
+        <TextView
+            android:id="@+id/numlike"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginRight="184dp"
+            android:textColor="@color/white"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/numcomment"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:text="0" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
 
     <TextView
         android:id="@+id/artistName"
@@ -146,7 +181,14 @@ android:background="@drawable/ombre_background">
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/songName"
         app:layout_constraintTop_toBottomOf="@+id/recImage"
-        app:layout_constraintVertical_bias="0.236" />
+        app:layout_constraintVertical_bias="0.236"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <ImageView
         android:id="@+id/deleteRec"

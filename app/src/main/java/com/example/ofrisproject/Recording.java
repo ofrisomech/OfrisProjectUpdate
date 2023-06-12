@@ -76,5 +76,30 @@ public class Recording{
         this.email = email;
     }
 
+    public boolean addLike(String mail)
+    {
+        if(this.like.isEmpty())
+        {
+            this.like =mail;
+            return true;
+        }
+
+        if(this.like.contains(mail))
+        {
+            if(this.like.indexOf(mail)==0)
+                this.like = this.like.replace(mail,"");
+            else
+                this.like = this.like.replace(","+ mail,"");
+            return false;
+        }
+        this.like+=","+mail;
+        return true;
+
+    }
+
+    public String getLike(){return like; }
+    public void setLike(String like){this.like=like;}
+
+
 
 }
