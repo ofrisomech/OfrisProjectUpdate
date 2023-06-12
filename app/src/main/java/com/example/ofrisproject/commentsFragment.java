@@ -1,41 +1,51 @@
 package com.example.ofrisproject;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class commentsFragment extends Fragment {
 
-
-    public HomeFragment() {
+    private String urlRec;
+    public commentsFragment() {
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public commentsFragment(String url){
+        urlRec=url;
+    }
+
+    public static commentsFragment newInstance(String param1, String param2) {
+        commentsFragment fragment = new commentsFragment();
         Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -48,45 +58,51 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_comments, container, false);
     }
-
-
-    private RecyclerView recyclerView;
-    private RecordingAdapter adapter;
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = getView().findViewById(R.id.recyclerView1);
-
-        /* Button foryouB = getView().findViewById(R.id.foryou);
-        foryouB.setOnClickListener(new View.OnClickListener() {
+        EditText content= getView().findViewById(R.id.newComment);
+        ImageView addComment= getView().findViewById(R.id.addComment);
+        recyclerView=getView().findViewById(R.id.commentsRecyclerView);
+        getComment();
+        addComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getRecordingByPrivacy(false);
+                if(!content.toString().isEmpty())
+                    AddComment(content.toString());
+                else
+                    Toast.makeText(getContext(), "The comment is empty " , Toast.LENGTH_SHORT).show();
             }
         });
 
-        Button friendsB = getView().findViewById(R.id.friends);
-        friendsB.setOnClickListener(new View.OnClickListener() {
+
+    }
+
+    private FirebaseFirestore fb = FirebaseFirestore.getInstance();
+    private RecyclerView recyclerView;
+    private CommentAdapter adapter;
+
+    public void AddComment(String content){
+        FBAuthentication auth = new FBAuthentication();
+        String mail =auth.getUserEmail();
+        Comment comment=new Comment("", content, mail, urlRec);
+        fb.collection("Comment").add(comment).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
-            public void onClick(View view) {
-                getRecordingByPrivacy(true);
-            }
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
 
-        }); */
-
-        getPosts();
+                    Toast.makeText(getContext(), "The comment is upload " , Toast.LENGTH_SHORT).show();
+                }
+            };
+        });
     }
 
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference RecordingReference;
-
-
-    public void getPosts() {
-        ArrayList<Recording> arr = new ArrayList<>();
-        db.collection("recording").whereEqualTo("private", false).get()
+    public void getComment() {
+        ArrayList<Comment> arr = new ArrayList<>();
+        fb.collection("Comment").whereEqualTo("urlRec", urlRec).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -95,14 +111,12 @@ public class HomeFragment extends Fragment {
                             if (task.getResult().getDocuments().size() > 0) {
 
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Recording r = document.toObject(Recording.class);
-                                    RecordingReference = document.getReference();
-                                    arr.add(r);
+                                    Comment comment = document.toObject(Comment.class);
+                                    arr.add(comment);
                                 }
                                 //חיבור לתצוגה
-                                adapter = new RecordingAdapter(arr, (RecordingAdapter.AdapterCallback) getActivity());
+                                adapter = new CommentAdapter(arr, (CommentAdapter.AdapterCallback) getActivity());
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                // display on recycler view
                                 recyclerView.setAdapter(adapter);
                             } else {
                                 Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
@@ -112,6 +126,5 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-
 
 }

@@ -49,6 +49,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         public final ImageView playRec;
         public final SeekBar seekBarRec;
         public final ImageView likePost;
+        public final ImageView commentPost;
         public final ImageView delRec;
         public final TextView numlike;
         public final TextView numComment;
@@ -67,6 +68,8 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
             likePost.setOnClickListener(this::like);
             delRec=view.findViewById(R.id.deleteRec);
             delRec.setOnClickListener(this::delete);
+            commentPost=view.findViewById(R.id.commentPost);
+            commentPost.setOnClickListener(this::commentPage);
             numlike=view.findViewById(R.id.numlike);
             numComment=view.findViewById(R.id.numcomment);
         }
@@ -80,13 +83,16 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
 
         public void select(View v){
             currentActivity.RecordingChosen(recordings.get(getAdapterPosition()), seekBarRec);
-            //currentActivity.DeleteRecording(recordings.get(getAdapterPosition()));
         }
 
         public void like(View view){
             currentActivity.LikeRecording(recordings.get(getAdapterPosition()), likePost, numlike);
 
         }
+        public void commentPage(View v){
+            currentActivity.MoveToCommentFragment(recordings.get(getAdapterPosition()).getUrl());
+        }
+
 
 
     }
@@ -130,6 +136,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         void RecordingChosen(Recording r, SeekBar s);
         void AlertDeleteRecording(Recording r);
         void LikeRecording(Recording r, ImageView like, TextView textView);
+        void MoveToCommentFragment(String url);
     }
 }
 

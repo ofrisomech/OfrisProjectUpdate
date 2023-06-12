@@ -310,13 +310,12 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
 
             }
         });
-
-
-
-
-
-
     }
+
+    public void MoveToCommentFragment(String url){
+        replaceFragment(new commentsFragment(url));
+    }
+
 
 }
 
