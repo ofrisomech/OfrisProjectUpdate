@@ -21,8 +21,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -40,10 +43,15 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
-
         authentication=new FBAuthentication(this);
         if(authentication.isRegistered())//אם המשתמש כבר רשום למערכת
           MoveToHomePage();//עבור ישירות לעמוד הבית
+        else
+        {
+            EditText editTextNickName= findViewById(R.id.editTextPersonName);
+            String nickName = editTextNickName.getText().toString();
+            checkNickNameLength(nickName);
+        }
     }
 
 
@@ -53,6 +61,54 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
         //intent.putExtra("Uri",selectedProfileImageUri.toString());
         startActivity(intent);
     }
+
+    public void checkNickNameLength(String nickname) {
+        int maxLength = 12; // Set the desired maximum password length
+
+        if (nickname.length() > maxLength) {
+            // Password is too long
+            showMessage("Password is too long");
+        } else {
+            // Password length is within the limit
+            showMessage("Password is valid");
+        }
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    /*public boolean checkEmailExists(String email) {
+        try {
+            FirebaseAuth auth = FirebaseAuth.getInstance().(email);
+            // User with the specified email exists
+            showMessage("This email is already registered");
+            return true;
+        } catch (FirebaseAuthException e) {
+            // User with the specified email does not exist
+            return false;
+        }
+    }*/
+
+    public boolean checkNameExists(String nickname){
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        Query query = db.collection("User").whereEqualTo("userName", nickname).limit(1);
+        QuerySnapshot querySnapshot = query.get().getResult();
+        // Check if any document matches the query
+        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+            // The string exists in the collection
+            showMessage("The name is not available");
+            return true;
+        }
+
+        // The string does not exist in the collection
+        return false;
+
+
+    }
+
+
+
 
     public void Register(View view){
 

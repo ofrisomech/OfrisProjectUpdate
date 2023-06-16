@@ -10,12 +10,15 @@
 
     <ImageView
         android:id="@+id/profile"
-        android:layout_width="202dp"
-        android:layout_marginTop="25dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp"
         android:layout_marginLeft="100dp"
         android:onClick="setProfileImage"
-        android:layout_height="256dp"
-        android:src="@drawable/button2" />
+        android:background="@drawable/roundedimage"
+        android:clipToOutline="true"
+        android:src="@drawable/profile" />
+
 
     <EditText
         android:layout_marginTop="350dp"
