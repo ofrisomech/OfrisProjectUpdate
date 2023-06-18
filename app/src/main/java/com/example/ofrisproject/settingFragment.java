@@ -17,10 +17,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -34,6 +36,7 @@ public class settingFragment extends Fragment {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private  ImageView imageView;
     private FBStorage fbStorage = new FBStorage();
+    private FBDatabase fbDatabase=new FBDatabase();
 
     public settingFragment() {
         // Required empty public constructor
@@ -55,6 +58,10 @@ public class settingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        EditText newName= getView().findViewById(R.id.editTextTextPersonName);
+        String text = newName.getText().toString();
+
+
         imageView= getView().findViewById(R.id.profile);
         String mail=auth.getUserEmail();
         String path = "profiles/" + mail + ".jpg";
@@ -68,6 +75,8 @@ public class settingFragment extends Fragment {
 
             }
         });
+
+
 
     }
 
@@ -88,5 +97,11 @@ public class settingFragment extends Fragment {
                     e.printStackTrace();
                 }
             });
+
+    public void SetNickname(String nickname)
+    {
+        User u=fbDatabase.GetCurrentUser();
+        u.setUserName(nickname);
+    }
 
 }

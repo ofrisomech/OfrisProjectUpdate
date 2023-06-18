@@ -19,7 +19,7 @@ public class FBDatabase {
     private User currentUser;
 
 
-    public void GetCurrentUser(){
+    public User GetCurrentUser(){
         db.collection("User")
                 .whereEqualTo("email", mail).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -28,15 +28,14 @@ public class FBDatabase {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 currentUser= document.toObject(User.class);
-
                             }
+                            return currentUser;
                         }
                         else
                             Toast.makeText(getApplicationContext()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show(); };
                 });
+        return null;
     }
-
-
 
 
 }
