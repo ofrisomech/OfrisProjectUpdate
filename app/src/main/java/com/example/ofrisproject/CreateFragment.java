@@ -95,12 +95,15 @@ public class CreateFragment extends Fragment {
                 if (arr.get(i).getSongName().startsWith(text.trim()))
                     brr.add(arr.get(i));
             }
-            if (brr.size() == 0)
+            if (brr.size() == 0) {
                 Toast.makeText(getActivity(), "NO RESULTS FOUND", Toast.LENGTH_SHORT).show();
-            adapter.setSongs(brr);
-        } else
-            adapter.setSongs(arr);
-        adapter.notifyDataSetChanged();
+                adapter.setSongs(brr);
+            }
+
+            } else
+                adapter.setSongs(arr);
+            adapter.notifyDataSetChanged();
+
     }
 
 

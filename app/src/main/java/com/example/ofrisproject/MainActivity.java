@@ -1,5 +1,7 @@
 package com.example.ofrisproject;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -184,8 +187,13 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
    
     public void imageChooser(View v) {
 
+
+        mGetContent.launch("image/*");
+
         // create an instance of the
         // intent of the type image
+
+        /*
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
@@ -193,8 +201,11 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
         // pass the constant to compare it
         // with the returned requestCode
         startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+
+         */
     }
 
+    /*
     // this function is triggered when user
     // selects the image from the imageChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -214,4 +225,27 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback 
             }
         }
     }
+
+     */
+
+
+    // Launcher
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            uri -> {
+
+                // just an example of extracting an image
+                // Handle the returned Uri
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    ImageView imageView = findViewById(R.id.profileImage);
+                    imageView.setImageBitmap(bitmap);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+
+
 }
+

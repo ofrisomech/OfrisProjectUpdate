@@ -14,7 +14,6 @@
         android:layout_height="200dp"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="100dp"
-        android:onClick="setProfileImage"
         android:background="@drawable/roundedimage"
         android:clipToOutline="true"
         android:src="@drawable/profile" />

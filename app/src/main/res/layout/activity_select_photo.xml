@@ -16,6 +16,7 @@
         android:id="@+id/BSelectImage"
         style="@style/MyEditTextStyle"
         android:layout_height="270dp"
+        android:layout_width="270dp"
         android:background="@drawable/roundedimage"
         android:clipToOutline="true"
         android:padding="3dp"

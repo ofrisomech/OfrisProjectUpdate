@@ -6,9 +6,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +32,8 @@ public class settingFragment extends Fragment {
 
     private FBAuthentication auth = new FBAuthentication();
     private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private  ImageView imageView;
+    private FBStorage fbStorage = new FBStorage();
 
     public settingFragment() {
         // Required empty public constructor
@@ -43,18 +49,44 @@ public class settingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setting, container, false);
+
     }
 
-    public void setProfileImage(View view){
-
-        ImageView imageView= getView().findViewById(R.id.profile);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        imageView= getView().findViewById(R.id.profile);
         String mail=auth.getUserEmail();
-        StorageReference ref = storage.getReference().child("profiles/" + mail + ".jpeg");
-        File imgFile = new File(ref.toString());
-        if (imgFile.exists()) {
-            Bitmap imgBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            imageView.setImageBitmap(imgBitmap);
-        }
+        String path = "profiles/" + mail + ".jpg";
+
+        fbStorage.downloadImageFromStorage(imageView,path);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mGetContent.launch("image/*");
+
+            }
+        });
+
     }
+
+
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            uri -> {
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                    imageView.setImageBitmap(bitmap);
+                    String mail=auth.getUserEmail();
+                    String picturePath="profiles/" + mail + ".jpg";
+
+                    // upload new profile image to storage
+                    fbStorage.uploadImageToStorage(imageView,picturePath);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
 
 }
