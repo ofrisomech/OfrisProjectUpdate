@@ -1,5 +1,7 @@
 package com.example.ofrisproject;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,15 +44,11 @@ import java.util.ArrayList;
 
 public class SelectPhoto extends AppCompatActivity {
 
-
-    // One Preview Image
-    ImageView selectImage;
-
-    // constant to compare
-    // the activity result code
-    int SELECT_PICTURE = 200;
-
+    private ImageView selectImage;
+    private FBStorage fbStorage=new FBStorage();
     String imageRecUrl;
+    FBAuthentication auth = new FBAuthentication();
+    String mail =auth.getUserEmail();
 
 
     @Override
@@ -60,44 +59,24 @@ public class SelectPhoto extends AppCompatActivity {
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageChooser();
+                mGetContent.launch("image/*");
             }
         });
     }
 
-    public void imageChooser() {
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            uri -> {
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    selectImage.setImageBitmap(bitmap);
+                    String picturePath="profiles/" + mail + ".jpg";
+                    fbStorage.uploadImageToStorage(selectImage,picturePath);
 
-        // create an instance of the
-        // intent of the type image
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-
-        // pass the constant to compare it
-        // with the returned requestCode
-        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
-    }
-
-    // this function is triggered when user
-    // selects the image from the imageChooser
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-
-            // compare the resultCode with the
-            // SELECT_PICTURE constant
-            if (requestCode == SELECT_PICTURE) {
-                // Get the url of the image from data
-                Uri selectedImageUri = data.getData();
-                imageRecUrl=selectedImageUri.toString();
-                if (null != selectedImageUri) {
-                    // update the preview image in the layout
-                    selectImage.setImageURI(selectedImageUri);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }
-        }
-    }
+            });
+
 
 
     // 1
@@ -112,29 +91,61 @@ public class SelectPhoto extends AppCompatActivity {
         Recording r = new Recording(songName, userName, artistName, isPrivate, "", imageRecUrl, email);
 
         FirebaseFirestore fb = FirebaseFirestore.getInstance();
+        FBStorage fbStorage=new FBStorage();
 
         DocumentReference ref = fb.collection("recording").document();
         r.setUrl(ref.toString());
         ref.set(r).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                // recording document loaded to firebase
-                // upload file to strorage
+                // upload recording and recording image
+               fbStorage.uploadRecordingToStorage(r);
+               String path=  "profiles/" + email + ".jpg";
+                fbStorage.uploadImageToStorage(selectImage, path);
 
-                // My Projetc reference
-                UploadRecordingToFB(r);
             }
-        })
-                .addOnFailureListener(new OnFailureListener() {
+        }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         String m = e.getMessage();
-
                         Toast.makeText(SelectPhoto.this,m,Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-    public void UploadRecordingToFB(Recording r)
+
+
+    public boolean Isprivate()
+    {
+        Switch simpleSwitch = (Switch) findViewById(R.id.switch1);
+        if(simpleSwitch.isChecked())
+            return true;
+        return false;
+    }
+
+    public void GetCurrentUser(View v){
+        final User[] user = {new User()};
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("User")
+                .whereEqualTo("email", mail).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                user[0] = document.toObject(User.class);
+
+                            }
+                            createRecording(user[0]);
+
+                        }
+                        else
+                            Toast.makeText(getApplicationContext()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show(); };
+                });
+    }
+
+
+     /* public void UploadRecordingToFB(Recording r)
     {
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -200,39 +211,6 @@ public class SelectPhoto extends AppCompatActivity {
 
             }
         });
-    }
-
-
-    public boolean Isprivate()
-    {
-        Switch simpleSwitch = (Switch) findViewById(R.id.switch1);
-        if(simpleSwitch.isChecked())
-            return true;
-        return false;
-    }
-
-    public void GetCurrentUser(View v){
-        final User[] user = {new User()};
-        FBAuthentication auth = new FBAuthentication();
-        String mail =auth.getUserEmail();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("User")
-                .whereEqualTo("email", mail).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                user[0] = document.toObject(User.class);
-
-                            }
-                            createRecording(user[0]);
-
-                        }
-                        else
-                            Toast.makeText(getApplicationContext()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show(); };
-                });
-    }
+    }*/
 
 }

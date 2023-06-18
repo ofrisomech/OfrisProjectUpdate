@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -18,6 +19,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class FBStorage {
 
@@ -39,10 +44,12 @@ public class FBStorage {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
+                Toast.makeText(getActivity()," image failed " + exception.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
 
     }
+
 
     public void uploadImageToStorage(ImageView selectedImage, String picturePath){
 
@@ -66,6 +73,52 @@ public class FBStorage {
 
 
     }
+
+    public void downloadRecordingFromStorage(ImageView ivPostPhoto, String picturePath)
+    {
+        // at the moment add random name
+        StorageReference imageRef = storageRef.child(picturePath);
+        imageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Use the bytes to display the image
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                ivPostPhoto.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+    }
+
+    public void uploadRecordingToStorage(Recording r){
+        StorageReference sRef = storageRef.child("recordings/" + r.getUrl() + ".mp3");
+        File f= new File(getApplicationInfo().dataDir + "/" + "recordingAudio.mp3");
+        InputStream stream = null;
+        try {
+            stream = new FileInputStream(f);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        sRef.putStream(stream).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    Log.d("storage upload ", "onComplete: success ");
+                }
+
+                else
+                    Log.d("storage upload ", "onComplete: fail " + task.getException());
+
+            }
+        });
+
+
+    }
+
 
 
     public void playRecordingFromStorage(){

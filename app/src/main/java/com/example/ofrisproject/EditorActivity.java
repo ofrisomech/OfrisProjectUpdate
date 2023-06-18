@@ -212,8 +212,6 @@ public class EditorActivity extends AppCompatActivity {
 
                 mediaRecorder.stop();
                 mediaRecorder.release();
-
-
                 Toast.makeText(EditorActivity.this, "recording stopped", Toast.LENGTH_SHORT).show();
 
 

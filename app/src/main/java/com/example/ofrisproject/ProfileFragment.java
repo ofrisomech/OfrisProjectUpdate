@@ -37,6 +37,8 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
 
+    private FBStorage fbStorage=new FBStorage();
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -97,7 +99,8 @@ public class ProfileFragment extends Fragment {
 
                             }
                             tv.setText(user[0].getUserName());
-                            getImageFromFB(iv,user[0].getEmail());
+                            String path="profiles/" + user[0].getEmail() + ".jpg";
+                            fbStorage.downloadImageFromStorage(iv, path);
 
                         }
                         else
@@ -105,34 +108,6 @@ public class ProfileFragment extends Fragment {
                 });
     }
 
-    private void getImageFromFB(ImageView iv, String email) {
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference ref = storage.getReference().child("profiles/" + email + ".jpg");
-
-        final long ONE_MEGABYTE = 1024 * 1024;
-        ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
-                // convert bytes to bitmap.. and set in image view
-
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                iv.setImageBitmap(bitmap);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-
-                Toast.makeText(getActivity()," image failed " + exception.getMessage(),Toast.LENGTH_SHORT).show();
-
-
-            }
-        });
-
-    }
 
 
 
