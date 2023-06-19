@@ -1,4 +1,4 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.Objects;
 
 import android.widget.ImageView;
 

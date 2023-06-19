@@ -1,6 +1,5 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.ActivitysAndFragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,27 +10,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.example.ofrisproject.Adapters.SongAdapter;
+import com.example.ofrisproject.FireBase.FBDatabase;
+import com.example.ofrisproject.Objects.Song;
+import com.example.ofrisproject.R;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class CreateFragment extends Fragment {
+public class CreateFragment extends Fragment implements FBDatabase.OnDocumentsLoadedListener{
 
     private String genre;
     private ArrayList<Song> arr;
@@ -61,13 +57,17 @@ public class CreateFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private SongAdapter adapter;
+    private FBDatabase fbDatabase=new FBDatabase();
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
-        getSongsByGenre();
+
+        fbDatabase.getDocuments("Song","genre", genre, this);
+
+        //getSongsByGenre();
         EditText edittext = getView().findViewById(R.id.searchSongs);
         edittext.addTextChangedListener(new TextWatcher() {
             @Override
@@ -110,7 +110,28 @@ public class CreateFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference songReference;
 
-    public void getSongsByGenre() {
+
+    public void onDocumentsLoaded(List<DocumentSnapshot> documents) {
+        arr = new ArrayList<>();
+        for (DocumentSnapshot document : documents) {
+            Song s = document.toObject(Song.class);
+            arr.add(s);
+        }
+
+        adapter = new SongAdapter(arr,(SongAdapter.AdapterCallback) getActivity());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+    }
+
+    @Override
+    public void onDocumentsError(Exception e) {
+        // Handle the error here
+        e.printStackTrace();
+    }
+
+
+    /* public void getSongsByGenre() {
         arr = new ArrayList<>();
         db.collection("Song")
                .whereEqualTo("genre", genre).get()
@@ -141,4 +162,6 @@ public class CreateFragment extends Fragment {
                     }
                 });
     }
+
+     */
 }

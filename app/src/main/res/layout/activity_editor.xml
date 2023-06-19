@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="@drawable/backgroundapp"
     android:layout_height="match_parent"
-    tools:context=".EditorActivity">
+    tools:context=".ActivitysAndFragments.EditorActivity">
 
 <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
     android:id="@+id/youtube_player_view"

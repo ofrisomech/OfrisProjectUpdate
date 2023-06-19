@@ -1,4 +1,4 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.ActivitysAndFragments;
 
 import android.os.Bundle;
 
@@ -16,6 +16,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.ofrisproject.Adapters.UserAdapter;
+import com.example.ofrisproject.FireBase.FBAuthentication;
+import com.example.ofrisproject.Objects.User;
+import com.example.ofrisproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;

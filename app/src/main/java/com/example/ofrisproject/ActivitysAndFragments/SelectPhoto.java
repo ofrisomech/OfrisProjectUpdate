@@ -1,54 +1,34 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.ActivitysAndFragments;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.QuickContactBadge;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
+import com.example.ofrisproject.FireBase.FBAuthentication;
+import com.example.ofrisproject.FireBase.FBDatabase;
+import com.example.ofrisproject.FireBase.FBStorage;
+import com.example.ofrisproject.Objects.Recording;
+import com.example.ofrisproject.Objects.User;
+import com.example.ofrisproject.R;
 
 
-public class SelectPhoto extends AppCompatActivity {
+public class SelectPhoto extends AppCompatActivity implements FBDatabase.OnDocumentUploadedListener {
 
     private ImageView selectImage;
     private FBStorage fbStorage=new FBStorage();
     String imageRecUrl;
     FBAuthentication auth = new FBAuthentication();
     String mail =auth.getUserEmail();
+    User currentUser;
 
 
     @Override
@@ -56,6 +36,13 @@ public class SelectPhoto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_photo);
         selectImage = findViewById(R.id.BSelectImage);
+        Button postRecording=findViewById(R.id.postRecording);
+        postRecording.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createRecording(currentUser);
+            }
+        });
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +64,9 @@ public class SelectPhoto extends AppCompatActivity {
                 }
             });
 
+    private FBDatabase fbDatabase=new FBDatabase();
+    private Recording r;
+    private String email;
 
 
     // 1
@@ -86,11 +76,31 @@ public class SelectPhoto extends AppCompatActivity {
         String userName = u.getUserName();
         String artistName = getIntent().getStringExtra("artistName");
         boolean isPrivate = Isprivate();
-        String email=u.getEmail();
+        email = u.getEmail();
         //    String Url= getIntent().getStringExtra("url");
-        Recording r = new Recording(songName, userName, artistName, isPrivate, "", imageRecUrl, email);
+        r = new Recording(songName, userName, artistName, isPrivate, "", imageRecUrl, email);
 
-        FirebaseFirestore fb = FirebaseFirestore.getInstance();
+        fbDatabase.uploadDocument("recording",r, this);
+    }
+
+
+    @Override
+    public void onDocumentUploaded() {
+        // Document uploaded successfully
+        fbStorage.uploadRecordingToStorage(r);
+        String path=  "profiles/" + email + ".jpg";
+        fbStorage.uploadImageToStorage(selectImage, path);
+        Toast.makeText(this, "Document uploaded successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUploadError(Exception e) {
+        // Handle the error here
+        e.printStackTrace();
+        Toast.makeText(this, "Error uploading document: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+     /*   FirebaseFirestore fb = FirebaseFirestore.getInstance();
         FBStorage fbStorage=new FBStorage();
 
         DocumentReference ref = fb.collection("recording").document();
@@ -112,6 +122,8 @@ public class SelectPhoto extends AppCompatActivity {
                     }
                 });
     }
+*/
+
 
 
     public boolean Isprivate()
@@ -122,27 +134,6 @@ public class SelectPhoto extends AppCompatActivity {
         return false;
     }
 
-    public void GetCurrentUser(View v){
-        final User[] user = {new User()};
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("User")
-                .whereEqualTo("email", mail).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                user[0] = document.toObject(User.class);
-
-                            }
-                            createRecording(user[0]);
-
-                        }
-                        else
-                            Toast.makeText(getApplicationContext()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show(); };
-                });
-    }
 
 
      /* public void UploadRecordingToFB(Recording r)

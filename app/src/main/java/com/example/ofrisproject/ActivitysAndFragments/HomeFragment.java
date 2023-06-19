@@ -1,32 +1,31 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.ActivitysAndFragments;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.ofrisproject.Adapters.RecordingAdapter;
+import com.example.ofrisproject.FireBase.FBDatabase;
+import com.example.ofrisproject.Objects.Recording;
+import com.example.ofrisproject.R;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements FBDatabase.OnDocumentsLoadedListener {
 
+    private FBDatabase fbDatabase=new FBDatabase();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -76,15 +75,36 @@ public class HomeFragment extends Fragment {
 
         }); */
 
-        getPosts();
+        fbDatabase.getDocuments("recording","private", false, this);
     }
 
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference RecordingReference;
 
+    @Override
+    public void onDocumentsLoaded(List<DocumentSnapshot> documents) {
+        ArrayList<Recording> arr = new ArrayList<>();
+        for (DocumentSnapshot document : documents) {
+            Recording r = document.toObject(Recording.class);
+            arr.add(r);
+        }
 
-    public void getPosts() {
+        adapter = new RecordingAdapter(arr, (RecordingAdapter.AdapterCallback) getActivity());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void onDocumentsError(Exception e) {
+        // Handle the error here
+        e.printStackTrace();
+    }
+
+
+
+   /* public void getPosts() {
         ArrayList<Recording> arr = new ArrayList<>();
         db.collection("recording").whereEqualTo("private", false).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -112,6 +132,8 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
+*/
+
 
 
 }

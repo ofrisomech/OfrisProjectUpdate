@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="@drawable/ombre_background"
     android:layout_height="match_parent"
-    tools:context=".BaseActivity">
+    tools:context=".ActivitysAndFragments.BaseActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout"

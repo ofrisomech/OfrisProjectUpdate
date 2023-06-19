@@ -1,9 +1,9 @@
-package com.example.ofrisproject;
-
-import android.widget.Toast;
+package com.example.ofrisproject.FireBase;
 
 import androidx.annotation.NonNull;
 
+import com.example.ofrisproject.Registration.MainActivity;
+import com.example.ofrisproject.Registration.RegisterCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,6 +31,7 @@ public class FBAuthentication {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     MActivity.authenticateResult(true,"");
+
                 }
                 else
                 {
@@ -54,4 +55,13 @@ public class FBAuthentication {
         else
             return "";
     }
+
+    /* public User getCurrentUser(){
+        if(isRegistered())
+            return mAuth.getCurrentUser();
+        else
+            return null;
+    } */
+
+
 }

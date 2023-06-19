@@ -1,29 +1,20 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.Adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ofrisproject.FireBase.FBStorage;
+import com.example.ofrisproject.R;
+import com.example.ofrisproject.Objects.Recording;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 
 public class RecordingAdapter extends RecyclerView.Adapter<RecordingAdapter.ViewHolder>  {

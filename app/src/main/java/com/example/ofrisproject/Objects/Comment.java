@@ -1,4 +1,4 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.Objects;
 
 public class Comment {
     private String userName;

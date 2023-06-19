@@ -1,15 +1,14 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.FireBase;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.ofrisproject.Objects.Recording;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,7 +46,6 @@ public class FBStorage {
                 Log.d("image failed ", exception.getMessage());
             }
         });
-
 
     }
 
@@ -103,9 +101,7 @@ public class FBStorage {
             }
         });
 
-
     }
-
 
 
     public void playRecordingFromStorage(){

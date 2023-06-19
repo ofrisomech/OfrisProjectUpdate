@@ -1,9 +1,6 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.ActivitysAndFragments;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -13,22 +10,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.ofrisproject.FireBase.FBAuthentication;
+import com.example.ofrisproject.FireBase.FBDatabase;
+import com.example.ofrisproject.FireBase.FBStorage;
+import com.example.ofrisproject.R;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 public class settingFragment extends Fragment {
 
@@ -77,7 +69,6 @@ public class settingFragment extends Fragment {
         });
 
 
-
     }
 
 
@@ -98,10 +89,10 @@ public class settingFragment extends Fragment {
                 }
             });
 
-    public void SetNickname(String nickname)
+    /* public void SetNickname(String nickname)
     {
         User u=fbDatabase.GetCurrentUser();
         u.setUserName(nickname);
-    }
+    } */
 
 }

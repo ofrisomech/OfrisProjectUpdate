@@ -1,47 +1,46 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.AbstractCollection;
+import com.example.ofrisproject.Objects.Comment;
+import com.example.ofrisproject.R;
+
 import java.util.ArrayList;
 
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>  {
 
-    private ArrayList<Song> songs;
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder>  {
+
+    private ArrayList<Comment> comments;
 
     private AdapterCallback currentActivity;
-    public SongAdapter(ArrayList<Song> list, AdapterCallback activity) {
-        songs=list;
+    public CommentAdapter(ArrayList<Comment> list, AdapterCallback activity) {
+        comments=list;
         this.currentActivity = activity;
     }
-    public void setSongs(ArrayList<Song> brr) {
-        this.songs = brr;
+    public void setComments(ArrayList<Comment> brr) {
+        this.comments = brr;
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        public final TextView artistName;
-        public final TextView songName;
+        public final TextView UserName;
+        public final TextView Content;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this::select);
-            artistName = view.findViewById(R.id.artistName);
-            songName = view.findViewById(R.id.songName);
+            UserName = view.findViewById(R.id.userName1);
+            Content = view.findViewById(R.id.content);
         }
 
         public void select(View v){
-            currentActivity.songChosen(songs.get(getAdapterPosition()));
+            currentActivity.CommentChosen(comments.get(getAdapterPosition()));
         }
 
     }
@@ -50,7 +49,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>  {
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View contactView = inflater.inflate(R.layout.rc_row, viewGroup, false);
+        View contactView = inflater.inflate(R.layout.commentstyle, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
@@ -59,21 +58,22 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>  {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder,  int position)
     {
-        viewHolder.artistName.setText(songs.get(position).getArtistName());
-        viewHolder.songName.setText(songs.get(position).getSongName());
+        viewHolder.UserName.setText(comments.get(position).getUserName());
+        viewHolder.Content.setText(comments.get(position).getContent());
         viewHolder.getAdapterPosition();
     }
     @Override
     public int getItemCount() {
-        return songs.size();
+        return comments.size();
     }
 
 
 
     public interface AdapterCallback
     {
-        void songChosen(Song s);
+        void CommentChosen(Comment comment);
     }
 
 }
+
 

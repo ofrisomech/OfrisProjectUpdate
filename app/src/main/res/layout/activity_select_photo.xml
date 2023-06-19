@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ombre_background"
-    tools:context=".SelectPhoto">
+    tools:context=".ActivitysAndFragments.SelectPhoto">
 
     <!--Button to open the image selector-->
 
@@ -52,12 +52,11 @@
         app:layout_constraintVertical_bias="0.69" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/postRecording"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/MyEditTextStyle"
         android:text="POST"
-        android:onClick="GetCurrentUser"
         android:textSize="25dp"
         android:textColor="@color/white"
         android:backgroundTint="#DB5DF1"

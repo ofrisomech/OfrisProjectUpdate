@@ -1,4 +1,4 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.Adapters;
 
 
 import android.content.Context;
@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.ofrisproject.FireBase.FBStorage;
+import com.example.ofrisproject.R;
+import com.example.ofrisproject.Objects.User;
 
 import java.util.ArrayList;
 

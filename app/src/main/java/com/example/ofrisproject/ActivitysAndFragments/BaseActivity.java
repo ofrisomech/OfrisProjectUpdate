@@ -1,4 +1,4 @@
-package com.example.ofrisproject;
+package com.example.ofrisproject.ActivitysAndFragments;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,18 +15,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowInsetsController;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ofrisproject.Adapters.RecordingAdapter;
+import com.example.ofrisproject.Adapters.SongAdapter;
+import com.example.ofrisproject.Adapters.UserAdapter;
+import com.example.ofrisproject.FireBase.FBAuthentication;
+import com.example.ofrisproject.Objects.Recording;
+import com.example.ofrisproject.Objects.Song;
+import com.example.ofrisproject.Objects.User;
+import com.example.ofrisproject.R;
 import com.example.ofrisproject.databinding.ActivityBaseBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
