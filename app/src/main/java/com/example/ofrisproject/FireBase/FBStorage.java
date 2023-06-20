@@ -3,16 +3,22 @@ package com.example.ofrisproject.FireBase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.ofrisproject.ActivitysAndFragments.BaseActivity;
 import com.example.ofrisproject.Objects.Recording;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -21,7 +27,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FBStorage {
 
@@ -70,12 +79,81 @@ public class FBStorage {
             }
         });
 
+    }
+
+    public void downloadRecordingFromStorage(Recording r, SeekBar sb)
+    {
+        StorageReference recordingRef = storageRef.child("recordings/" + r.getUrl() + ".mp3");
+        try {
+            File localFile = File.createTempFile("audio", "mp3");
+            recordingRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    try {
+                        MediaPlayer mediaPlayer = new MediaPlayer();
+                        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+                        FileInputStream fis = new FileInputStream(localFile);
+                        mediaPlayer.setDataSource(fis.getFD());
+
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
+
+                        sb.setMax(mediaPlayer.getDuration());
+
+                        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                if (fromUser) {
+                                    mediaPlayer.seekTo(progress);
+                                }
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+                                // No implementation needed
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+                                // No implementation needed
+                            }
+                        });
+
+                        Timer timer = new Timer();
+                        timer.scheduleAtFixedRate(new TimerTask() {
+                            @Override
+                            public void run() {
+                                int currentPosition = mediaPlayer.getCurrentPosition();
+                                sb.setProgress(currentPosition);
+
+                                if (mediaPlayer.getDuration() < currentPosition + 1000) {
+                                    timer.cancel();
+                                }
+                            }
+                        }, 0, 1000);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.d("Error playing audio:  ", e.getMessage());}
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                    Log.d("Error downloading audio:  ", e.getMessage());
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("Error creating temporary file: ", e.getMessage());
+        }
 
     }
 
-    public void downloadRecordingFromStorage()
+    public void deleteRecordingFromStorage(Recording r)
     {
-
+        StorageReference ref = storageRef.child("recording/" + r.getUrl() + ".mp3");
+        ref.delete();
     }
 
     public void uploadRecordingToStorage(Recording r){
@@ -103,8 +181,4 @@ public class FBStorage {
 
     }
 
-
-    public void playRecordingFromStorage(){
-
-    }
 }

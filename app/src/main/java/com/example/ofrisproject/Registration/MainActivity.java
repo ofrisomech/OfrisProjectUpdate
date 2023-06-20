@@ -35,6 +35,16 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
+
+        profileImg= findViewById(R.id.profileImage);
+        profileImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mGetContent.launch("image/*");
+
+            }
+        });
+
         authentication=new FBAuthentication(this);
         if(authentication.isRegistered())//אם המשתמש כבר רשום למערכת
           MoveToHomePage();//עבור ישירות לעמוד הבית
@@ -46,18 +56,6 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback,
         }
     }
 
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        profileImg= getView().findViewById(R.id.profile);
-        profileImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mGetContent.launch("image/*");
-
-            }
-        });
-
-    }
 
     public void MoveToHomePage(){
         Intent intent = new Intent(this, BaseActivity.class);

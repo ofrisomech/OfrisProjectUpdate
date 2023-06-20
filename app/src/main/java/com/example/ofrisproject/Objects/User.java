@@ -1,6 +1,10 @@
 package com.example.ofrisproject.Objects;
 
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.ofrisproject.R;
 
 public class User {
 
@@ -109,6 +113,17 @@ public class User {
         return true;
     }
 
+    public int getNumFollowers(){
+        String[] userFollowers=followers.split(",");
+        return userFollowers.length-1;
+
+    }
+
+    public int getNumFollowing()
+    {
+        String[] userFollowings = following.split(",");
+        return userFollowings.length-1;
+    }
 
 
 }

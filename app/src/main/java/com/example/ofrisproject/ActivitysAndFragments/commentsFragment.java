@@ -16,19 +16,24 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.ofrisproject.Adapters.CommentAdapter;
+import com.example.ofrisproject.Adapters.SongAdapter;
 import com.example.ofrisproject.FireBase.FBAuthentication;
+import com.example.ofrisproject.FireBase.FBDatabase;
 import com.example.ofrisproject.Objects.Comment;
+import com.example.ofrisproject.Objects.Song;
 import com.example.ofrisproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class commentsFragment extends Fragment {
+public class commentsFragment extends Fragment implements  FBDatabase.OnDocumentsLoadedListener{
 
     private String urlRec;
     public commentsFragment() {
@@ -96,31 +101,34 @@ public class commentsFragment extends Fragment {
     }
 
 
-    public void getComment() {
-        ArrayList<Comment> arr = new ArrayList<>();
-        fb.collection("Comment").whereEqualTo("urlRec", urlRec).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // task.getResult() -> array of songs
-                            if (task.getResult().getDocuments().size() > 0) {
+    private FBDatabase fbDatabase=new FBDatabase();
+    private ArrayList<Comment> arr;
 
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Comment comment = document.toObject(Comment.class);
-                                    arr.add(comment);
-                                }
-                                //חיבור לתצוגה
-                                adapter = new CommentAdapter(arr, (CommentAdapter.AdapterCallback) getActivity());
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                recyclerView.setAdapter(adapter);
-                            } else {
-                                Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
-                            }
-                        } else
-                            Toast.makeText(getActivity(), " " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+    public void getComment(){
+        fbDatabase.getDocuments("Comment", "urlRec", urlRec, this);
     }
+
+    public void onDocumentsLoaded(List<DocumentSnapshot> documents) {
+        arr = new ArrayList<>();
+        if(documents.size()>0){
+            for (DocumentSnapshot document : documents) {
+                Comment comment = document.toObject(Comment.class);
+                arr.add(comment);
+        }
+            adapter = new CommentAdapter(arr, (CommentAdapter.AdapterCallback) getActivity());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setAdapter(adapter);
+        }
+        else {
+            Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onDocumentsError(Exception e) {
+        Toast.makeText(getActivity(), " " + e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
 
 }

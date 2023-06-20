@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.ofrisproject.Adapters.RecordingAdapter;
 import com.example.ofrisproject.FireBase.FBDatabase;
@@ -85,15 +86,19 @@ public class HomeFragment extends Fragment implements FBDatabase.OnDocumentsLoad
     @Override
     public void onDocumentsLoaded(List<DocumentSnapshot> documents) {
         ArrayList<Recording> arr = new ArrayList<>();
-        for (DocumentSnapshot document : documents) {
-            Recording r = document.toObject(Recording.class);
-            arr.add(r);
+        if (documents.size() > 0) {
+            for (DocumentSnapshot document : documents) {
+                Recording r = document.toObject(Recording.class);
+                arr.add(r);
+            }
+
+            adapter = new RecordingAdapter(arr, (RecordingAdapter.AdapterCallback) getActivity());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setAdapter(adapter);
+
         }
-
-        adapter = new RecordingAdapter(arr, (RecordingAdapter.AdapterCallback) getActivity());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
-
+        else
+            Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
     }
 
     @Override

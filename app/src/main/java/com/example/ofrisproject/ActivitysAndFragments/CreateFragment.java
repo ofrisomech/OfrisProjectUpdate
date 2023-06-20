@@ -107,11 +107,8 @@ public class CreateFragment extends Fragment implements FBDatabase.OnDocumentsLo
     }
 
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference songReference;
-
-
     public void onDocumentsLoaded(List<DocumentSnapshot> documents) {
+        if(documents.size()>0){
         arr = new ArrayList<>();
         for (DocumentSnapshot document : documents) {
             Song s = document.toObject(Song.class);
@@ -120,8 +117,9 @@ public class CreateFragment extends Fragment implements FBDatabase.OnDocumentsLo
 
         adapter = new SongAdapter(arr,(SongAdapter.AdapterCallback) getActivity());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));}
+        else
+            Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 import android.app.AlertDialog;
@@ -27,6 +28,8 @@ import com.example.ofrisproject.Adapters.RecordingAdapter;
 import com.example.ofrisproject.Adapters.SongAdapter;
 import com.example.ofrisproject.Adapters.UserAdapter;
 import com.example.ofrisproject.FireBase.FBAuthentication;
+import com.example.ofrisproject.FireBase.FBDatabase;
+import com.example.ofrisproject.FireBase.FBStorage;
 import com.example.ofrisproject.Objects.Recording;
 import com.example.ofrisproject.Objects.Song;
 import com.example.ofrisproject.Objects.User;
@@ -35,6 +38,7 @@ import com.example.ofrisproject.databinding.ActivityBaseBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
@@ -44,11 +48,13 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class BaseActivity extends AppCompatActivity implements SongAdapter.AdapterCallback , UserAdapter.AdapterCallback, RecordingAdapter.AdapterCallback {
+public class BaseActivity extends AppCompatActivity implements SongAdapter.AdapterCallback , UserAdapter.AdapterCallback, RecordingAdapter.AdapterCallback, FBDatabase.OnDocumentsLoadedListener{
 
 
     com.example.ofrisproject.databinding.ActivityBaseBinding binding;
@@ -120,18 +126,9 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
     }
 
     public void moveToSetting(View view) {
+
         replaceFragment(new settingFragment());
     }
-
-    public void MoveToEditorPage(Song s) {
-        //ImageButton b = (ImageButton) view;
-        Intent i = new Intent(getApplicationContext(), EditorActivity.class);
-        i.putExtra("songName", s.getSongName());
-        i.putExtra("artistName", s.getArtistName());
-        i.putExtra("songId", s.getSongId());
-        startActivity(i);
-    }
-
 
     public void MoveToProfilePage(View view) {
         replaceFragment(new ProfileFragment());
@@ -140,6 +137,20 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
     public void MoveToHomePage(View view) {
         replaceFragment(new HomeFragment());
     }
+
+    public void MoveToCommentFragment(String url){
+        replaceFragment(new commentsFragment(url));
+    }
+
+    public void MoveToEditorPage(Song s) {
+        Intent i = new Intent(getApplicationContext(), EditorActivity.class);
+        i.putExtra("songName", s.getSongName());
+        i.putExtra("artistName", s.getArtistName());
+        i.putExtra("songId", s.getSongId());
+        startActivity(i);
+    }
+
+
 
     @Override
     public void songChosen(Song s) {
@@ -153,84 +164,13 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
         replaceFragment(new otherUserFragment(u));
     }
 
-    public void RecordingChosen(Recording r, SeekBar sb) {
-        StorageReference ref = FirebaseStorage.getInstance().getReference().child("recordings/" + r.getUrl() + ".mp3");
-
-        try {
-            File localFile = File.createTempFile("audio", "mp3");
-
-            ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    try {
-                        MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
-                        FileInputStream fis = new FileInputStream(localFile);
-                        mediaPlayer.setDataSource(fis.getFD());
-
-                        mediaPlayer.prepare();
-                        mediaPlayer.start();
-
-                        sb.setMax(mediaPlayer.getDuration());
-
-                        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                            @Override
-                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                if (fromUser) {
-                                    mediaPlayer.seekTo(progress);
-                                }
-                            }
-
-                            @Override
-                            public void onStartTrackingTouch(SeekBar seekBar) {
-                                // No implementation needed
-                            }
-
-                            @Override
-                            public void onStopTrackingTouch(SeekBar seekBar) {
-                                // No implementation needed
-                            }
-                        });
-
-                        Timer timer = new Timer();
-                        timer.scheduleAtFixedRate(new TimerTask() {
-                            @Override
-                            public void run() {
-                                int currentPosition = mediaPlayer.getCurrentPosition();
-                                sb.setProgress(currentPosition);
-
-                                if (mediaPlayer.getDuration() < currentPosition + 1000) {
-                                    timer.cancel();
-                                }
-                            }
-                        }, 0, 1000);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(BaseActivity.this, "Error playing audio: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(BaseActivity.this, "Error downloading audio: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(BaseActivity.this, "Error creating temporary file: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
-    public void likePost(View view) {
+    public void RecordingChosen(Recording r, SeekBar sb){
+        fbStorage.downloadRecordingFromStorage(r, sb);
 
     }
 
-    public void CommentPost(View view) {
-
-    }
 
     public void AlertDeleteRecording(Recording r) {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
@@ -254,37 +194,26 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
 
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FBStorage fbStorage=new FBStorage();
+    private FBDatabase fbDatabase=new FBDatabase();
 
     public void DeleteRecording(Recording r) {
-        // FB and Storage
-        // delete from storage
-
-
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference ref = storage.getReference().child("recording/" + r.getUrl() + ".mp3");
-        ref.delete();
-
-
-        // deletre from database
-        db.collection("recording").whereEqualTo("url", r.getUrl()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Toast.makeText(BaseActivity.this, "Recording deleted ", Toast.LENGTH_SHORT).show();
-                        DocumentReference ref = queryDocumentSnapshots.getDocuments().get(0).getReference();
-
-                        ref.delete();
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(BaseActivity.this, "problem ", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+        fbStorage.deleteRecordingFromStorage(r);
+        fbDatabase.getDocuments("recording", "url", r.getUrl(), this);
     }
+
+    @Override
+    public void onDocumentsLoaded(List<DocumentSnapshot> documents) {
+        DocumentReference ref = documents.get(0).getReference();
+        ref.delete();
+        Toast.makeText(BaseActivity.this, "Recording deleted ", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDocumentsError(Exception e) {
+        Toast.makeText(BaseActivity.this, "problem ", Toast.LENGTH_SHORT).show();
+    }
+
 
     public void LikeRecording(Recording r, ImageView likeImg, TextView likeNum){
         FBAuthentication auth = new FBAuthentication();
@@ -300,14 +229,14 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
                 DocumentReference ref = queryDocumentSnapshots.getDocuments().get(0).getReference();
                 if(r.addLike(mail))// עדיין לא עשה לייק
                 {
-                    //likeImg.setImageResou;
+                    likeImg.setImageResource(R.drawable.ic_baseline_favorite2_24);
                     likeNum.setText(""+(numlikes+1));
 
 
                 }
                 else{
                     r.addLike(mail);
-                    //likeImg.setImageResou;
+                    likeImg.setImageResource(R.drawable.ic_baseline_favorite_24);
                     likeNum.setText(""+(numlikes-1));
                 }
                 ref.update("like",currentRec.getLike());
@@ -316,11 +245,6 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
         });
     }
 
-    public void MoveToCommentFragment(String url){
-        replaceFragment(new commentsFragment(url));
-    }
-
 
 }
-
 

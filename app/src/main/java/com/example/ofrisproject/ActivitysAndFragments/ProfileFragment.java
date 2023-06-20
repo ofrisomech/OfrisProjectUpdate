@@ -35,6 +35,8 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment {
 
     private FBStorage fbStorage=new FBStorage();
+    private FBAuthentication fbAuthentication=new FBAuthentication();
+    private User currentUser=fbAuthentication.getCurrentUser();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -57,9 +59,19 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.profilerecycler);
+
         ImageView imageView= getView().findViewById(R.id.imageProfile);
+        String path = "profiles/" + currentUser.getEmail() + ".jpg";
+        fbStorage.downloadImageFromStorage(imageView, path);
+
         TextView textView=getView().findViewById(R.id.nickname);
-        getCurrentUser(imageView,textView);
+        textView.setText(currentUser.getUserName());
+
+        TextView follow=getView().findViewById(R.id.Followers);
+        follow.setText(currentUser.getNumFollowers());
+
+        TextView following=getView().findViewById(R.id.Following);
+        following.setText(currentUser.getNumFollowing());
 
         ImageButton ibPublic = getView().findViewById(R.id.imagePublic);
         ibPublic.setOnClickListener(new View.OnClickListener() {
@@ -78,35 +90,6 @@ public class ProfileFragment extends Fragment {
 
         });
     }
-
-     public void getCurrentUser(ImageView iv,TextView tv){
-        final User[] user = {new User()};
-        FBAuthentication auth = new FBAuthentication();
-        String mail =auth.getUserEmail();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("User")
-                .whereEqualTo("email", mail).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                user[0] = document.toObject(User.class);
-
-                            }
-                            tv.setText(user[0].getUserName());
-                            String path="profiles/" + user[0].getEmail() + ".jpg";
-                            fbStorage.downloadImageFromStorage(iv, path);
-
-                        }
-                        else
-                            Toast.makeText(getActivity()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show(); };
-                });
-    }
-
-
-
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference RecordingReference;

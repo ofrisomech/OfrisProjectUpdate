@@ -13,11 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ofrisproject.Adapters.RecordingAdapter;
 import com.example.ofrisproject.FireBase.FBAuthentication;
+import com.example.ofrisproject.FireBase.FBStorage;
 import com.example.ofrisproject.Objects.Recording;
 import com.example.ofrisproject.Objects.User;
 import com.example.ofrisproject.R;
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 
 public class otherUserFragment extends Fragment {
 private User user;
+private FBStorage fbStorage=new FBStorage();
 
 public otherUserFragment() {
         // Required empty public constructor
@@ -61,13 +64,15 @@ public otherUserFragment() {
         TextView textView=getView().findViewById(R.id.nickname);
         textView.setText(user.getUserName());
         Button button=getView().findViewById(R.id.Followers1);
-        String[] userFollowers = user.getFollowers().split(",");
-        button.setText(""+(userFollowers.length-1));
+        button.setText(""+user.getNumFollowers());
         Button button2=getView().findViewById(R.id.Following1);
-        String[] userFollowings = user.getFollowing().split(",");
-        button2.setText(""+(userFollowings.length-1));
-       // ImageView imageView=getView().findViewById(R.id.imageProfile);
-        //imageView.setImageResource(user.getProfileImage().getBytes());
+        button2.setText(""+user.getNumFollowing());
+
+
+        ImageView imageView= getView().findViewById(R.id.imageProfile);
+        String path = "profiles/" + user.getEmail() + ".jpg";
+        fbStorage.downloadImageFromStorage(imageView, path);
+
         recyclerView= getView().findViewById(R.id.otheruserposts);
         getOtherUserPosts();
 
@@ -92,8 +97,6 @@ public otherUserFragment() {
     }
 
 
-
-
     public void follow(){
 
         addFollowerToUser();
@@ -111,7 +114,6 @@ public otherUserFragment() {
                 DocumentReference ref = queryDocumentSnapshots.getDocuments().get(0).getReference();
                 currentUser.addFollowing(user.getEmail());
                ref.update("following",currentUser.getFollowing());
-
 
             }
         });

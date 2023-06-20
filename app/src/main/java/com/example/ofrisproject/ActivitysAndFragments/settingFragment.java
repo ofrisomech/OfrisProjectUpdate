@@ -25,7 +25,6 @@ import com.google.firebase.storage.FirebaseStorage;
 public class settingFragment extends Fragment {
 
     private FBAuthentication auth = new FBAuthentication();
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private  ImageView imageView;
     private FBStorage fbStorage = new FBStorage();
     private FBDatabase fbDatabase=new FBDatabase();
@@ -52,7 +51,6 @@ public class settingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         EditText newName= getView().findViewById(R.id.editTextTextPersonName);
         String text = newName.getText().toString();
-
 
         imageView= getView().findViewById(R.id.profile);
         String mail=auth.getUserEmail();
