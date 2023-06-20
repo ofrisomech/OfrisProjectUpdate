@@ -21,7 +21,7 @@ import com.example.ofrisproject.Objects.User;
 import com.example.ofrisproject.R;
 
 
-public class SelectPhoto extends AppCompatActivity implements FBDatabase.OnDocumentUploadedListener {
+public class PostActivity extends AppCompatActivity implements FBDatabase.OnDocumentUploadedListener {
 
     private ImageView selectImage;
     private FBStorage fbStorage=new FBStorage();

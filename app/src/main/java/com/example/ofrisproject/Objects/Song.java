@@ -2,7 +2,7 @@ package com.example.ofrisproject.Objects;
 
 public class Song {
     private String songName;
-    private String genre;// מתוך סט אפשרויות
+    private String genre;
     private String artistName;
     private String songId;
 

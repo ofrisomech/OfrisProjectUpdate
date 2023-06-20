@@ -1,12 +1,9 @@
 package com.example.ofrisproject.FireBase;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.ofrisproject.Adapters.SongAdapter;
-import com.example.ofrisproject.Objects.Song;
 import com.example.ofrisproject.Objects.User;
-import com.example.ofrisproject.Registration.MainActivity;
+import com.example.ofrisproject.Registration.registerActivity;
 import com.example.ofrisproject.Registration.RegisterCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -14,21 +11,21 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FBAuthentication implements FBDatabase.OnDocumentsLoadedListener{
 
-    private FirebaseAuth mAuth= FirebaseAuth.getInstance();
-    private RegisterCallback MActivity;
-    private FBDatabase fbDatabase= new FBDatabase();
+    private FirebaseAuth mAuth;
     private RegisterCallback registerCallback;
+    private FBDatabase fbDatabase;
 
     public FBAuthentication() {
     }
 
-    public FBAuthentication(MainActivity activity){
-        this.MActivity=activity;
+    public FBAuthentication(registerActivity activity){
+        this.registerCallback=activity;
+        this.mAuth=FirebaseAuth.getInstance();
+        this.fbDatabase= new FBDatabase();
     }
 
 
@@ -39,12 +36,12 @@ public class FBAuthentication implements FBDatabase.OnDocumentsLoadedListener{
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    MActivity.authenticateResult(true,"");
+                    registerCallback.authenticateResult(true,"");
 
                 }
                 else
                 {
-                    MActivity.authenticateResult(false,task.getException().getMessage());
+                    registerCallback.authenticateResult(false,task.getException().getMessage());
 
                 }
             }
@@ -82,13 +79,6 @@ public class FBAuthentication implements FBDatabase.OnDocumentsLoadedListener{
         else
             return "";
     }
-
-    /* public User getCurrentUser(){
-        if(isRegistered())
-            return mAuth.getCurrentUser();
-        else
-            return null;
-    } */
 
 
 }

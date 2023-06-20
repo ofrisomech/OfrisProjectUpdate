@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ombre_background"
-    tools:context=".ActivitysAndFragments.SelectPhoto">
+    tools:context=".ActivitysAndFragments.PostActivity">
 
     <!--Button to open the image selector-->
 

@@ -13,7 +13,7 @@ public class Recording{
     private String url;
     private String email;
     private String like;
-    //private ArrayList<Comment> commentsArr;
+
 
 
     public Recording(String songName, String userName, String artistName, boolean isPrivate, String url, String imageRec, String email) {
@@ -76,23 +76,23 @@ public class Recording{
         this.email = email;
     }
 
-    public boolean addLike(String mail)
+    public boolean isLiked(String mail)
     {
-        if(this.like.isEmpty())
+        if(this.like.isEmpty())// אם המחרוזת ריקה- לא עשו עדיין לייק
         {
-            this.like =mail;
+            this.like =mail;// הוסף את הלייק הראשון
             return true;
         }
 
-        if(this.like.contains(mail))
+        if(this.like.contains(mail))// אם המייל כבר מוכל במחרוזת- המשתמש כבר עשה לייק
         {
-            if(this.like.indexOf(mail)==0)
-                this.like = this.like.replace(mail,"");
+            if(this.like.indexOf(mail)==0)// אם הוא היה הלייק הראשון
+                this.like = this.like.replace(mail,"");// הורד את המשתמש הזה
             else
-                this.like = this.like.replace(","+ mail,"");
+                this.like = this.like.replace(","+ mail,"");// הורד את המשתמש ואת הפסיק שלפניו
             return false;
         }
-        this.like+=","+mail;
+        this.like+=","+mail;// הוסף את המייל בכל מקרה אחר
         return true;
 
     }

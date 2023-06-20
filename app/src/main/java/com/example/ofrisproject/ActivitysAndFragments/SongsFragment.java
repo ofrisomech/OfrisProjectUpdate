@@ -20,23 +20,21 @@ import com.example.ofrisproject.Adapters.SongAdapter;
 import com.example.ofrisproject.FireBase.FBDatabase;
 import com.example.ofrisproject.Objects.Song;
 import com.example.ofrisproject.R;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateFragment extends Fragment implements FBDatabase.OnDocumentsLoadedListener{
+public class SongsFragment extends Fragment implements FBDatabase.OnDocumentsLoadedListener{
 
     private String genre;
     private ArrayList<Song> arr;
 
-    public CreateFragment() {
+    public SongsFragment() {
         // Required empty public constructor
     }
 
-    public CreateFragment(String genre) {
+    public SongsFragment(String genre) {
         this.genre = genre;
     }
 

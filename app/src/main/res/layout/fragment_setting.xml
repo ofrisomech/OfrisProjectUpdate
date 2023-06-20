@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ombre_background"
     tools:context=".ActivitysAndFragments.settingFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -35,6 +36,14 @@
         android:layout_height="58dp"
         android:onClick="MoveToProfilePage"
         android:src="@drawable/ic_outline_arrow_back_24" />
+
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="450dp"
+        android:text="Update" />
 
 
 </FrameLayout>

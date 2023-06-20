@@ -131,7 +131,7 @@ public class EditorActivity extends AppCompatActivity {
                 public boolean onLongClick(View v) {
                     youTubePlayer.pause();
                     StopRecording();
-                    Intent intent=new Intent(EditorActivity.this, SelectPhoto.class);
+                    Intent intent=new Intent(EditorActivity.this, PostActivity.class);
                     intent.putExtra("songName", songName);
                     intent.putExtra("artistName",artistName);
                     startActivity(intent);

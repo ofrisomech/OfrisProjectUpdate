@@ -2,8 +2,6 @@ package com.example.ofrisproject.Registration;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -24,7 +22,7 @@ import com.example.ofrisproject.R;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MainActivity extends AppCompatActivity implements RegisterCallback, FBDatabase.OnDocumentUploadedListener{
+public class registerActivity extends AppCompatActivity implements RegisterCallback, FBDatabase.OnDocumentUploadedListener{
 
     private FBAuthentication authentication;
     private String nickname="";
@@ -213,7 +211,5 @@ public class MainActivity extends AppCompatActivity implements RegisterCallback,
                     e.printStackTrace();
                 }
             });
-
-
 }
 

@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/backgroundLogin4"
-    tools:context=".Registration.MainActivity">
+    tools:context=".Registration.registerActivity">
 
 
     <TextView

@@ -23,7 +23,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ActivitysAndFragments.SelectPhoto"
+            android:name=".ActivitysAndFragments.PostActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -40,7 +40,7 @@
             android:name=".ActivitysAndFragments.BaseActivity"
             android:exported="true" />
         <activity
-            android:name=".Registration.MainActivity"
+            android:name=".Registration.registerActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"

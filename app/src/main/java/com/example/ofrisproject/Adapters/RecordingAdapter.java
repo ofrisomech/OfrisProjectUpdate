@@ -113,7 +113,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
 
         fbStorage.downloadImageFromStorage(viewHolder.profileImage,"profiles/" + r.getEmail() +".jpg");
         fbStorage.downloadImageFromStorage(viewHolder.recImage,"recordingphoto/" + r.getUrl() +".jpeg");
-        fbStorage.playRecordingFromStorage();
+        fbStorage.downloadRecordingFromStorage(r, viewHolder.seekBarRec);
         viewHolder.getAdapterPosition();
     }
     @Override

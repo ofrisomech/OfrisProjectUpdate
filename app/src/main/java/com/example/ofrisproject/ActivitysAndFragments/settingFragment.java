@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -52,6 +53,10 @@ public class settingFragment extends Fragment {
         EditText newName= getView().findViewById(R.id.editTextTextPersonName);
         String text = newName.getText().toString();
 
+        Button updateB= getView().findViewById(R.id.updateButton);
+
+        boolean changeImg=false;
+
         imageView= getView().findViewById(R.id.profile);
         String mail=auth.getUserEmail();
         String path = "profiles/" + mail + ".jpg";
@@ -62,24 +67,33 @@ public class settingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mGetContent.launch("image/*");
+                changeImg=true;
+
+            }
+        });
+
+        updateB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               if(changeImg)
+                   fbStorage.uploadImageToStorage(imageView,picturePath);
 
             }
         });
 
 
+
+
     }
 
+
+    private String picturePath="profiles/" + auth.getUserEmail() + ".jpg";
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             uri -> {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     imageView.setImageBitmap(bitmap);
-                    String mail=auth.getUserEmail();
-                    String picturePath="profiles/" + mail + ".jpg";
-
-                    // upload new profile image to storage
-                    fbStorage.uploadImageToStorage(imageView,picturePath);
 
 
                 } catch (Exception e) {
