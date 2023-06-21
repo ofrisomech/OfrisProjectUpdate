@@ -1,5 +1,8 @@
 package com.example.ofrisproject.FireBase;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -156,9 +159,9 @@ public class FBStorage {
         ref.delete();
     }
 
-    public void uploadRecordingToStorage(Recording r){
+    public void uploadRecordingToStorage(Recording r, Context c){
         StorageReference sRef = storageRef.child("recordings/" + r.getUrl() + ".mp3");
-        File f= new File(getApplicationInfo().dataDir + "/" + "recordingAudio.mp3");
+        File f= new File(c.getApplicationInfo().dataDir + "/" + "recordingAudio.mp3");
         InputStream stream = null;
         try {
             stream = new FileInputStream(f);
@@ -171,6 +174,10 @@ public class FBStorage {
                 if (task.isSuccessful()) {
 
                     Log.d("storage upload ", "onComplete: success ");
+
+                  //  ((Activity)c).finish();
+                    Intent i = new Intent(c,BaseActivity.class);
+                    c.startActivity(i);
                 }
 
                 else

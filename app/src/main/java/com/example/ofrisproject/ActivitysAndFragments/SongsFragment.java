@@ -63,7 +63,7 @@ public class SongsFragment extends Fragment implements FBDatabase.OnDocumentsLoa
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
 
-        fbDatabase.getDocuments("Song","genre", genre, this);
+        fbDatabase.getDocuments("Song","genre", genre, this, FBDatabase.DEFAULT_ACTION);
 
         //getSongsByGenre();
         EditText edittext = getView().findViewById(R.id.searchSongs);
@@ -105,7 +105,7 @@ public class SongsFragment extends Fragment implements FBDatabase.OnDocumentsLoa
     }
 
 
-    public void onDocumentsLoaded(List<DocumentSnapshot> documents) {
+    public void onDocumentsLoaded(List<DocumentSnapshot> documents, int action) {
         if(documents.size()>0){
         arr = new ArrayList<>();
         for (DocumentSnapshot document : documents) {

@@ -105,24 +105,24 @@ public class commentsFragment extends Fragment implements  FBDatabase.OnDocument
     private ArrayList<Comment> arr;
 
     public void getComment(){
-        fbDatabase.getDocuments("Comment", "urlRec", urlRec, this);
+        fbDatabase.getDocuments("Comment", "urlRec", urlRec, this, FBDatabase.UPDATE_ACTION);
     }
 
-    public void onDocumentsLoaded(List<DocumentSnapshot> documents) {
+    public void onDocumentsLoaded(List<DocumentSnapshot> documents, int action) {
         arr = new ArrayList<>();
-        if(documents.size()>0){
-            for (DocumentSnapshot document : documents) {
-                Comment comment = document.toObject(Comment.class);
-                arr.add(comment);
+        if(action==FBDatabase.UPDATE_ACTION) {
+            if (documents.size() > 0) {
+                for (DocumentSnapshot document : documents) {
+                    Comment comment = document.toObject(Comment.class);
+                    arr.add(comment);
+                }
+                adapter = new CommentAdapter(arr, (CommentAdapter.AdapterCallback) getActivity());
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setAdapter(adapter);
+            } else {
+                Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
+            }
         }
-            adapter = new CommentAdapter(arr, (CommentAdapter.AdapterCallback) getActivity());
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.setAdapter(adapter);
-        }
-        else {
-            Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     @Override

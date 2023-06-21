@@ -42,13 +42,15 @@ import java.util.List;
 
 public class BaseActivity extends AppCompatActivity implements SongAdapter.AdapterCallback , UserAdapter.AdapterCallback, RecordingAdapter.AdapterCallback, FBDatabase.OnDocumentsLoadedListener{
 
-
+public static  User user = null;
     com.example.ofrisproject.databinding.ActivityBaseBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityBaseBinding.inflate(getLayoutInflater());
+
+
 
         //לכל המסכים- העלמת ה
         WindowInsetsControllerCompat windowInsetsController =
@@ -60,6 +62,22 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
 
         setContentView(binding.getRoot());
+
+        if(user!=null)
+            setNavigationView();
+
+        else
+        {
+            FBAuthentication authentication = new FBAuthentication();
+            String email =authentication.getUserEmail();
+            FBDatabase fbDatabase = new FBDatabase();
+            fbDatabase.getDocuments("User","email",email,this,FBDatabase.GET_USER_ACTION);
+        }
+
+    }
+
+    private void setNavigationView()
+    {
         replaceFragment(new HomeFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -80,7 +98,6 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
             }
             return true;
         });
-
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -120,6 +137,7 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
         replaceFragment(new ProfileFragment());
     }
 
+    public void MoveToFollowersPage(View view){replaceFragment(new FollowersFragment());}
     public void MoveToHomePage(View view) {
         replaceFragment(new HomeFragment());
     }
@@ -185,14 +203,26 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
 
     public void DeleteRecording(Recording r) {
         fbStorage.deleteRecordingFromStorage(r);
-        fbDatabase.getDocuments("recording", "url", r.getUrl(), this);
+        fbDatabase.getDocuments("recording", "url", r.getUrl(), this,FBDatabase.DELETE_ACTION);
     }
 
     @Override
-    public void onDocumentsLoaded(List<DocumentSnapshot> documents) {
-        DocumentReference ref = documents.get(0).getReference();
-        ref.delete();
-        Toast.makeText(BaseActivity.this, "Recording deleted ", Toast.LENGTH_SHORT).show();
+    public void onDocumentsLoaded(List<DocumentSnapshot> documents,int action) {
+
+        if(action == FBDatabase.DELETE_ACTION) {
+            DocumentReference ref = documents.get(0).getReference();
+            ref.delete();
+            Toast.makeText(BaseActivity.this, "Recording deleted ", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(action == FBDatabase.GET_USER_ACTION)
+        {
+            user = documents.get(0).toObject(User.class);
+
+            setNavigationView();
+
+
+        }
     }
 
     @Override
@@ -213,7 +243,7 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 Recording currentRec = queryDocumentSnapshots.getDocuments().get(0).toObject(Recording.class);
                 DocumentReference ref = queryDocumentSnapshots.getDocuments().get(0).getReference();
-                if(r.addLike(mail))// עדיין לא עשה לייק
+                if(r.isLiked(mail))// עדיין לא עשה לייק
                 {
                     likeImg.setImageResource(R.drawable.ic_baseline_favorite2_24);
                     likeNum.setText(""+(numlikes+1));
@@ -221,7 +251,7 @@ public class BaseActivity extends AppCompatActivity implements SongAdapter.Adapt
 
                 }
                 else{
-                    r.addLike(mail);
+                    r.isLiked(mail);
                     likeImg.setImageResource(R.drawable.ic_baseline_favorite_24);
                     likeNum.setText(""+(numlikes-1));
                 }

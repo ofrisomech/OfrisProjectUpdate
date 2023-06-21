@@ -48,6 +48,7 @@
         android:textSize="12dp"
         android:textColor="@color/black"
         android:layout_marginTop="90dp"
+
         android:text="Friends" />
 
     <Button
@@ -59,6 +60,7 @@
         android:layout_marginLeft="210dp"
         android:textColor="@color/black"
         android:layout_marginTop="90dp"
+
         android:text="For you" />
 
     <ImageView

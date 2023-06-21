@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivitysAndFragments.FollowersFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:textSize="28dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="Your Followers" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/commentsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_marginTop="80dp" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:onClick="MoveToProfilePage"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_outline_arrow_back_24" />
+</FrameLayout>

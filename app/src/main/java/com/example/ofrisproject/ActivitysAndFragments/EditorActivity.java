@@ -136,6 +136,8 @@ public class EditorActivity extends AppCompatActivity {
                     intent.putExtra("artistName",artistName);
                     startActivity(intent);
 
+                    finish();
+
                     return true;
                 }
             });

@@ -26,9 +26,7 @@ public class PostActivity extends AppCompatActivity implements FBDatabase.OnDocu
     private ImageView selectImage;
     private FBStorage fbStorage=new FBStorage();
     String imageRecUrl;
-    FBAuthentication auth = new FBAuthentication();
-    String mail =auth.getUserEmail();
-    User currentUser;
+    User currentUser= BaseActivity.user;
 
 
     @Override
@@ -56,7 +54,7 @@ public class PostActivity extends AppCompatActivity implements FBDatabase.OnDocu
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                     selectImage.setImageBitmap(bitmap);
-                    String picturePath="profiles/" + mail + ".jpg";
+                    String picturePath="profiles/" + currentUser.getEmail() + ".jpg";
                     fbStorage.uploadImageToStorage(selectImage,picturePath);
 
                 } catch (Exception e) {
@@ -87,10 +85,12 @@ public class PostActivity extends AppCompatActivity implements FBDatabase.OnDocu
     @Override
     public void onDocumentUploaded() {
         // Document uploaded successfully
-        fbStorage.uploadRecordingToStorage(r);
+        fbStorage.uploadRecordingToStorage(r,this);
         String path=  "profiles/" + email + ".jpg";
         fbStorage.uploadImageToStorage(selectImage, path);
         Toast.makeText(this, "Document uploaded successfully", Toast.LENGTH_SHORT).show();
+
+
     }
 
     @Override

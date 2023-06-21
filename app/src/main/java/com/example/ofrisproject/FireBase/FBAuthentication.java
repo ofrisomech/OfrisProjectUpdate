@@ -13,21 +13,20 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 
-public class FBAuthentication implements FBDatabase.OnDocumentsLoadedListener{
+public class FBAuthentication {
 
     private FirebaseAuth mAuth;
     private RegisterCallback registerCallback;
-    private FBDatabase fbDatabase;
 
     public FBAuthentication() {
+        this.mAuth=FirebaseAuth.getInstance();
+
     }
 
     public FBAuthentication(registerActivity activity){
         this.registerCallback=activity;
         this.mAuth=FirebaseAuth.getInstance();
-        this.fbDatabase= new FBDatabase();
     }
-
 
     public void registerUser(String email, String password) {
         //יצירת החשבון והרשמת המחשבון בFireBase
@@ -37,35 +36,15 @@ public class FBAuthentication implements FBDatabase.OnDocumentsLoadedListener{
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     registerCallback.authenticateResult(true,"");
-
                 }
                 else
                 {
                     registerCallback.authenticateResult(false,task.getException().getMessage());
-
                 }
             }
         });
     }
 
-    private User currentUser;
-
-    public User getCurrentUser(){
-            fbDatabase.getDocuments("User","email", getUserEmail(), this);
-            return currentUser;
-    }
-
-    public void onDocumentsLoaded(List<DocumentSnapshot> documents) {
-        for (DocumentSnapshot document : documents) {
-            currentUser= document.toObject(User.class);
-        }
-    }
-
-    @Override
-    public void onDocumentsError(Exception e) {
-        // Handle the error here
-        e.printStackTrace();
-    }
 
     public boolean isRegistered()
     {
@@ -79,6 +58,5 @@ public class FBAuthentication implements FBDatabase.OnDocumentsLoadedListener{
         else
             return "";
     }
-
 
 }

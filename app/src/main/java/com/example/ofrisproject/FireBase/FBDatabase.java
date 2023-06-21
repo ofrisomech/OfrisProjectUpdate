@@ -5,6 +5,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.ofrisproject.ActivitysAndFragments.BaseActivity;
+import com.example.ofrisproject.Objects.Recording;
 import com.example.ofrisproject.Objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,57 +22,17 @@ import java.util.List;
 public class FBDatabase {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FBAuthentication auth = new FBAuthentication();
-    private String mail =auth.getUserEmail();
-    private User currentUser;
+
+    public static final int DEFAULT_ACTION = 0;
+    public static final int DELETE_ACTION = 1;
+    public static final int GET_USER_ACTION = 2;
+    public static final int GET_USER_FRIENDS_ACTION = 3;
+    public static final int GET_USER_NOT_FRIENDS_ACTION = 4;
+    public static final int UPDATE_ACTION = 5;
 
 
-    /*
-    public User GetCurrentUser(){
-        db.collection("User")
-                .whereEqualTo("email", mail).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                currentUser= document.toObject(User.class);
-                            }
-                            return currentUser;
-                        }
-                        else
-                            Toast.makeText(getApplicationContext()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show(); };
-                });
-        return null;
-    }*/
 
-
-/*
-    public void getDocuments(Object type, String collectionPath, String field, Boolean valueField) {
-        ArrayList<Object> arr = new ArrayList<>();
-        // פעולה של עצמים בכללי
-        db.collection(collectionPath).whereEqualTo(field, valueField).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // task.getResult() -> array of songs
-                            if (task.getResult().getDocuments().size() > 0) {
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Recording r = document.toObject(Recording.class);
-                                    RecordingReference = document.getReference();
-                                    arr.add(r);
-                                }
-                            } else {
-                                Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
-                            }
-                        } else
-                            Toast.makeText(getActivity(), " " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }*/
-
-    public void getDocuments(String collectionName, String fieldName, Object fieldValue, final OnDocumentsLoadedListener listener) {
+    public void getDocuments(String collectionName, String fieldName, Object fieldValue, final OnDocumentsLoadedListener listener,int action) {
         db.collection(collectionName).whereEqualTo(fieldName, fieldValue).get().
                 addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -82,7 +43,7 @@ public class FBDatabase {
                         // Retrieve the results
                         List<DocumentSnapshot> documents = querySnapshot.getDocuments();
                         // Pass the documents to the listener
-                        listener.onDocumentsLoaded(documents);
+                        listener.onDocumentsLoaded(documents,action);
                     }
                 } else {
                     // Handle the error
@@ -94,12 +55,22 @@ public class FBDatabase {
     }
 
     public interface OnDocumentsLoadedListener {
-        void onDocumentsLoaded(List<DocumentSnapshot> documents);
+        void onDocumentsLoaded(List<DocumentSnapshot> documents,int action);
         void onDocumentsError(Exception e);
+
+
     }
 
     public void uploadDocument(String collectionName, Object object, final OnDocumentUploadedListener listener) {
         // Create a reference to the document
+
+        DocumentReference ref = db.collection("recording").document();
+
+        if(object instanceof Recording)
+        {
+            Recording r = (Recording) object;
+            r.setUrl(ref.toString());
+        }
         db.collection(collectionName).document().set(object)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -122,12 +93,25 @@ public class FBDatabase {
     }
 
 
-
-
-
-
-
-
-
+    public void getAllDocuments(String collectionName, final OnDocumentsLoadedListener listener,int action) {
+        db.collection(collectionName).get().
+                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (querySnapshot != null) {
+                                // Retrieve the results
+                                List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+                                listener.onDocumentsLoaded(documents,action);
+                            }
+                        } else {
+                            // Handle the error
+                            Exception e = task.getException();
+                            listener.onDocumentsError(e);
+                        }
+                    }
+                });
+    }
 
 }

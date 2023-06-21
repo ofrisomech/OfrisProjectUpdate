@@ -67,7 +67,7 @@ public class settingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mGetContent.launch("image/*");
-                changeImg=true;
+                //changeImg=true;
 
             }
         });

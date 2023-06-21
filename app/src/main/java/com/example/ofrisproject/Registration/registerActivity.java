@@ -60,52 +60,6 @@ public class registerActivity extends AppCompatActivity implements RegisterCallb
         startActivity(intent);
     }
 
-   /* public void checkNickNameLength(String nickname) {
-        int maxLength = 12; // Set the desired maximum password length
-
-        if (nickname.length() > maxLength) {
-            // Password is too long
-            showMessage("Password is too long");
-        } else {
-            // Password length is within the limit
-            showMessage("Password is valid");
-        }
-    }
-
-    private void showMessage(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-    }*/
-
-    /*public boolean checkEmailExists(String email) {
-        try {
-            FirebaseAuth auth = FirebaseAuth.getInstance().(email);
-            // User with the specified email exists
-            showMessage("This email is already registered");
-            return true;
-        } catch (FirebaseAuthException e) {
-            // User with the specified email does not exist
-            return false;
-        }
-    }*/
-
-    /*
-    public boolean checkNameExists(String nickname){
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
-        Query query = db.collection("User").whereEqualTo("userName", nickname).limit(1);
-        QuerySnapshot querySnapshot = query.get().getResult();
-        // Check if any document matches the query
-        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-            // The string exists in the collection
-            showMessage("The name is not available");
-            return true;
-        }
-
-        // The string does not exist in the collection
-        return false;
-
-
-    }*/
-
 
     public void Register(View view){
 

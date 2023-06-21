@@ -36,7 +36,7 @@ public class ProfileFragment extends Fragment {
 
     private FBStorage fbStorage=new FBStorage();
     private FBAuthentication fbAuthentication=new FBAuthentication();
-    private User currentUser=fbAuthentication.getCurrentUser();
+    private User currentUser=BaseActivity.user;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -59,7 +59,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.profilerecycler);
-
+/*
         ImageView imageView= getView().findViewById(R.id.imageProfile);
         String path = "profiles/" + currentUser.getEmail() + ".jpg";
         fbStorage.downloadImageFromStorage(imageView, path);
@@ -72,6 +72,8 @@ public class ProfileFragment extends Fragment {
 
         TextView following=getView().findViewById(R.id.Following);
         following.setText(currentUser.getNumFollowing());
+
+ */
 
         ImageButton ibPublic = getView().findViewById(R.id.imagePublic);
         ibPublic.setOnClickListener(new View.OnClickListener() {
