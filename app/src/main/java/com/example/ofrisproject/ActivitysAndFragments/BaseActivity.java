@@ -49,9 +49,6 @@ public static  User user = null;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityBaseBinding.inflate(getLayoutInflater());
-
-
-
         //לכל המסכים- העלמת ה
         WindowInsetsControllerCompat windowInsetsController =
                 WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
@@ -65,7 +62,6 @@ public static  User user = null;
 
         if(user!=null)
             setNavigationView();
-
         else
         {
             FBAuthentication authentication = new FBAuthentication();
@@ -73,13 +69,10 @@ public static  User user = null;
             FBDatabase fbDatabase = new FBDatabase();
             fbDatabase.getDocuments("User","email",email,this,FBDatabase.GET_USER_ACTION);
         }
-
     }
 
-    private void setNavigationView()
-    {
+    private void setNavigationView() {
         replaceFragment(new HomeFragment());
-
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
@@ -106,6 +99,7 @@ public static  User user = null;
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
     }
+
 
 
     public void getGenre(View view) {
@@ -146,6 +140,7 @@ public static  User user = null;
         replaceFragment(new commentsFragment(url));
     }
 
+
     public void MoveToEditorPage(Song s) {
         Intent i = new Intent(getApplicationContext(), EditorActivity.class);
         i.putExtra("songName", s.getSongName());
@@ -158,29 +153,24 @@ public static  User user = null;
 
     @Override
     public void songChosen(Song s) {
-        // intent -> name,
-        Toast.makeText(this, "received " + s.getSongName(), Toast.LENGTH_SHORT).show();
         MoveToEditorPage(s);
     }
 
     public void userChosen(User u) {
-        Toast.makeText(this, "received " + u.getUserName(), Toast.LENGTH_SHORT).show();
         replaceFragment(new otherUserFragment(u));
     }
 
 
-
     public void RecordingChosen(Recording r, SeekBar sb){
         fbStorage.downloadRecordingFromStorage(r, sb);
-
     }
 
 
     public void AlertDeleteRecording(Recording r) {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setIcon(R.drawable.ombre_background)
-                .setTitle("Are you sure you want to delete the post")
-                .setMessage("No way to ")
+                .setTitle("Are you sure you want to delete the recording?")
+                .setMessage("There is no way to restore the recording")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -189,15 +179,11 @@ public static  User user = null;
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(BaseActivity.this, "Nothing Happened", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .show();
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                }).show();
     }
 
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FBStorage fbStorage=new FBStorage();
     private FBDatabase fbDatabase=new FBDatabase();
 
@@ -218,9 +204,7 @@ public static  User user = null;
         else if(action == FBDatabase.GET_USER_ACTION)
         {
             user = documents.get(0).toObject(User.class);
-
             setNavigationView();
-
 
         }
     }

@@ -29,6 +29,9 @@ public class SongsFragment extends Fragment implements FBDatabase.OnDocumentsLoa
 
     private String genre;
     private ArrayList<Song> arr;
+    private RecyclerView recyclerView;
+    private SongAdapter adapter;
+    private FBDatabase fbDatabase=new FBDatabase();
 
     public SongsFragment() {
         // Required empty public constructor
@@ -42,7 +45,6 @@ public class SongsFragment extends Fragment implements FBDatabase.OnDocumentsLoa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -53,37 +55,25 @@ public class SongsFragment extends Fragment implements FBDatabase.OnDocumentsLoa
 
     }
 
-    private RecyclerView recyclerView;
-    private SongAdapter adapter;
-    private FBDatabase fbDatabase=new FBDatabase();
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView);
-
         fbDatabase.getDocuments("Song","genre", genre, this, FBDatabase.DEFAULT_ACTION);
-
-        //getSongsByGenre();
         EditText edittext = getView().findViewById(R.id.searchSongs);
         edittext.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
                 findSongs(editable.toString());
             }
         });
-
     }
 
     public void findSongs(String text) {
@@ -125,39 +115,4 @@ public class SongsFragment extends Fragment implements FBDatabase.OnDocumentsLoa
         // Handle the error here
         e.printStackTrace();
     }
-
-
-    /* public void getSongsByGenre() {
-        arr = new ArrayList<>();
-        db.collection("Song")
-               .whereEqualTo("genre", genre).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // task.getResult() -> array of songs
-                            if (task.getResult().getDocuments().size() > 0) {
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Song s = document.toObject(Song.class);
-                                    songReference = document.getReference();
-                                    arr.add(s);
-                                }
-                                    //חיבור לתצוגה
-                                    adapter = new SongAdapter(arr,(SongAdapter.AdapterCallback) getActivity());
-                                    recyclerView.setAdapter(adapter);
-                                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                    // display oin recycler view
-                                }
-                             else {
-                                Toast.makeText(getContext(), "Error getting documents: " + task.getException(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        else
-                            Toast.makeText(getActivity()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-     */
 }

@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment implements FBDatabase.OnDocumentsLoad
 
     private FBDatabase fbDatabase=new FBDatabase();
     private  ArrayList<Recording> arr = new ArrayList<>();
-
+    private RecyclerView recyclerView;
     private  Button foryouB;
 
 
@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment implements FBDatabase.OnDocumentsLoad
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
     }
@@ -55,105 +55,52 @@ public class HomeFragment extends Fragment implements FBDatabase.OnDocumentsLoad
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-
-    private RecyclerView recyclerView;
-    private RecordingAdapter adapter;
-
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView1);
         fbDatabase.getDocuments("recording","private", false, HomeFragment.this,FBDatabase.GET_USER_NOT_FRIENDS_ACTION);
 
-
-        //   fbDatabase.getDocuments("recording","private", false, this,FBDatabase.GET_USER_NOT_FRIENDS_ACTION);
-         foryouB = getView().findViewById(R.id.foryou);
+        foryouB = getView().findViewById(R.id.foryou);
         foryouB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 ArrayList<Recording> subArray = new ArrayList<>();
-
                 for (Recording r:arr) {
-                    if (!currentUser.getFollowing().contains(r.getEmail()))
+                    if (!BaseActivity.user.getFollowing().contains(r.getEmail()))
                         subArray.add(r);
-
                 }
-
                 displayAdapter(subArray);
-
-
-
-
-
             }
         });
-
-
         Button friendsB = getView().findViewById(R.id.friends);
         friendsB.setOnClickListener(new View.OnClickListener() {
             @Override
-
             public void onClick(View view) {
-
                 ArrayList<Recording> subArray = new ArrayList<>();
-
                 for (Recording r:arr) {
-                    if (currentUser.getFollowing().contains(r.getEmail()))
+                    if (BaseActivity.user.getFollowing().contains(r.getEmail()))
                         subArray.add(r);
-
                 }
-
                 displayAdapter(subArray);
-
-
-
             }
-
         });
-
-
-     //   foryouB.performClick();
-
     }
 
     private void displayAdapter(ArrayList<Recording> arr) {
-
-        adapter = new RecordingAdapter(arr, (RecordingAdapter.AdapterCallback) getActivity());
+        RecordingAdapter adapter= new RecordingAdapter(arr, (RecordingAdapter.AdapterCallback) getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
     }
 
-    private User currentUser= BaseActivity.user;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference RecordingReference;
-
     @Override
     public void onDocumentsLoaded(List<DocumentSnapshot> documents,int action) {
-
         arr.clear();
         if (documents.size() > 0) {
             for (DocumentSnapshot document : documents) {
                 Recording r = document.toObject(Recording.class);
-
-
                         arr.add(r);
-
-
             }
-
-
-
             foryouB.callOnClick();
-
-
-
-
-
-
-
-
-
         }
         else
             Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
@@ -164,6 +111,5 @@ public class HomeFragment extends Fragment implements FBDatabase.OnDocumentsLoad
         // Handle the error here
         e.printStackTrace();
     }
-
 
 }

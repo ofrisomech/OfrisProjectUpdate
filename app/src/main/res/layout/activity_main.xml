@@ -61,7 +61,6 @@
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:layout_marginTop="20dp"
-        android:onClick="imageChooser"
         android:src="@drawable/profile"
         android:background="@drawable/roundedimage"
         android:clipToOutline="true"

@@ -18,22 +18,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ofrisproject.Adapters.RecordingAdapter;
+import com.example.ofrisproject.Adapters.SongAdapter;
 import com.example.ofrisproject.FireBase.FBAuthentication;
+import com.example.ofrisproject.FireBase.FBDatabase;
 import com.example.ofrisproject.FireBase.FBStorage;
 import com.example.ofrisproject.Objects.Recording;
+import com.example.ofrisproject.Objects.Song;
 import com.example.ofrisproject.Objects.User;
 import com.example.ofrisproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class otherUserFragment extends Fragment {
+public class otherUserFragment extends Fragment implements FBDatabase.OnDocumentsLoadedListener{
 private User user;
 private FBStorage fbStorage=new FBStorage();
 
@@ -74,8 +79,7 @@ public otherUserFragment() {
         fbStorage.downloadImageFromStorage(imageView, path);
 
         recyclerView= getView().findViewById(R.id.otheruserposts);
-        getOtherUserPosts();
-
+        fbDatabase.getDocuments("recording", "email", user.getEmail(), otherUserFragment.this, FBDatabase.DEFAULT_ACTION);
 
         Button followCurrentUser= getView().findViewById(R.id.followButton);
         followCurrentUser.setOnClickListener(new View.OnClickListener()
@@ -84,7 +88,8 @@ public otherUserFragment() {
             @Override
             public void onClick(View v)
             {
-                follow();
+                follow(currentUser.getEmail(), FBDatabase.FOLLOW_CURRENT_USER);//addFollowingToCurrentUser
+                follow(user.getEmail(), FBDatabase.FOLLOW_OTHER_USER);//addFollowerToUser
                 int followers =Integer.valueOf(button.getText().toString());
                 button.setText(""+(followers+1));
                 followCurrentUser.setBackgroundColor(R.color.teal_200);
@@ -96,80 +101,51 @@ public otherUserFragment() {
 
     }
 
+    private User currentUser= BaseActivity.user;
 
-    public void follow(){
 
-        addFollowerToUser();
-        addFollowingToCurrentUser();
+    public void follow(String mail, int action){
+        fbDatabase.getDocuments("user", "email", mail, otherUserFragment.this, action);
     }
 
-    private void addFollowingToCurrentUser() {
-        FBAuthentication auth = new FBAuthentication();
-        String mail =auth.getUserEmail();
-        FirebaseFirestore fb= FirebaseFirestore.getInstance();
-        fb.collection("User").whereEqualTo("email",mail).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                User currentUser = queryDocumentSnapshots.getDocuments().get(0).toObject(User.class);
-                DocumentReference ref = queryDocumentSnapshots.getDocuments().get(0).getReference();
-                currentUser.addFollowing(user.getEmail());
-               ref.update("following",currentUser.getFollowing());
-
-            }
-        });
-    }
-
-    private void addFollowerToUser() {
-        FBAuthentication auth = new FBAuthentication();
-        String mail =auth.getUserEmail();
-        FirebaseFirestore fb= FirebaseFirestore.getInstance();
-        fb.collection("User").whereEqualTo("email",user.getEmail()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                User other = queryDocumentSnapshots.getDocuments().get(0).toObject(User.class);
-                DocumentReference ref = queryDocumentSnapshots.getDocuments().get(0).getReference();
-                other.addFollower(mail);
-                ref.update("followers",other.getFollowers());
-
-            }
-        });
-
-
-    }
-
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RecyclerView recyclerView;
     private RecordingAdapter adapter;
+    private FBDatabase fbDatabase=new FBDatabase();
+    ArrayList<Recording> arr = new ArrayList<>();
 
 
-    public void getOtherUserPosts(){
-        ArrayList<Recording> arr = new ArrayList<>();
-        db.collection("recording").whereEqualTo("private", false).whereEqualTo("email", user.getEmail()).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // task.getResult() -> array of songs
-                            if (task.getResult().getDocuments().size() > 0) {
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Recording r = document.toObject(Recording.class);
-                                    arr.add(r);
-                                }
-                                //חיבור לתצוגה
-                                adapter = new RecordingAdapter(arr, (RecordingAdapter.AdapterCallback) getActivity());
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                // display on recycler view
-                                recyclerView.setAdapter(adapter);
-                            } else {
-                                Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
-                            }
-                        } else
-                            Toast.makeText(getActivity(), " " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+    public void onDocumentsLoaded(List<DocumentSnapshot> documents, int action){
+        if(action==FBDatabase.DEFAULT_ACTION) {
+            if (documents.size() > 0) {
+                for (DocumentSnapshot document : documents) {
+                    Recording r = document.toObject(Recording.class);
+                    if (!r.isPrivate())
+                        arr.add(r);
+                }
+                adapter = new RecordingAdapter(arr, (RecordingAdapter.AdapterCallback) getActivity());
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setAdapter(adapter);
+            } else {
+                Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(action==FBDatabase.FOLLOW_CURRENT_USER){
+            User currentUser = documents.get(0).toObject(User.class);
+            DocumentReference ref = documents.get(0).getReference();
+            currentUser.addFollowing(user.getEmail());
+            ref.update("following",currentUser.getFollowing());
+        }
+        if(action==FBDatabase.FOLLOW_OTHER_USER){
+            User other = documents.get(0).toObject(User.class);
+            DocumentReference ref = documents.get(0).getReference();
+            other.addFollower(currentUser.getEmail());
+            ref.update("followers",other.getFollowers());
+        }
     }
 
+    public void onDocumentsError(Exception e){
 
+
+    }
 
 }

@@ -25,36 +25,26 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.io.IOException;
 
 public class EditorActivity extends AppCompatActivity {
-    YouTubePlayerView youTubePlayerView;
-    YouTubePlayer youTubePlayer;
-    boolean playerReady = false;
+    private YouTubePlayerView youTubePlayerView;
+    private YouTubePlayer youTubePlayer;
+    private boolean playerReady = false;
     private boolean isPlaying = false;
-
-    FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-
-
     private String songName;
     private String artistName;
     private String videoId;
-
-
-    ImageView imageView;
-
-
-
+    private boolean startedRecoding = false;
+    private ImageView imageView;
+    private MediaRecorder mediaRecorder;
+    private String AudioSavePath=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-
         imageView = (ImageView) findViewById(R.id.startVideo);
-
         songName= getIntent().getStringExtra("songName");
          artistName=getIntent().getStringExtra("artistName");
          videoId= getIntent().getStringExtra("songId");
-
         if(!checkPermissions())
         {
             ActivityCompat.requestPermissions(EditorActivity.this, new String[]{
@@ -62,34 +52,20 @@ public class EditorActivity extends AppCompatActivity {
         }
         else
             startTheProcess();
-
-           }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        {
             startTheProcess();
-
-        }
     }
 
     private void startTheProcess() {
 
         youTubePlayerView = findViewById(R.id.youtube_player_view);
-
-        /*youTubePlayerView.getPlayerUIController().showVideoTitle(false);
-        youTubePlayerView.getPlayerUIController().showMenuButton(false);
-        youTubePlayerView.getPlayerUIController().showYouTubeButton(false);
-
-        player.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
-        */
-
-     //   youTubePlayer.setPlayerStyle(youTubePlayer.PlayerStyle.CHROMELESS);
-
-
+        youTubePlayer.pause();
 
         getLifecycle().addObserver(youTubePlayerView);
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
@@ -107,7 +83,6 @@ public class EditorActivity extends AppCompatActivity {
 
     }
 
-    private boolean startedRecoding = false;
 
     public void PlayVideo(View view) {
         if(!playerReady)
@@ -159,10 +134,6 @@ public class EditorActivity extends AppCompatActivity {
     }
 
 
-    private MediaRecorder mediaRecorder;
-    private MediaPlayer mediaPlayer;
-    private String AudioSavePath=null;
-
     private boolean checkPermissions(){
         int first= ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO);
         return first== PackageManager.PERMISSION_GRANTED;
@@ -194,14 +165,10 @@ public class EditorActivity extends AppCompatActivity {
 
 
 
-
     public void StopRecording(){
-
-                mediaRecorder.stop();
-                mediaRecorder.release();
-                Toast.makeText(EditorActivity.this, "recording stopped", Toast.LENGTH_SHORT).show();
-
-
-            }
+        mediaRecorder.stop();
+        mediaRecorder.release();
+        Toast.makeText(EditorActivity.this, "recording stopped", Toast.LENGTH_SHORT).show();
+    }
 
 }

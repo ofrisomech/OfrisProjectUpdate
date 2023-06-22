@@ -1,6 +1,5 @@
 package com.example.ofrisproject.FireBase;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,7 +10,6 @@ import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -37,33 +35,29 @@ import java.util.TimerTask;
 
 public class FBStorage {
 
-    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-    private StorageReference storageRef = firebaseStorage.getReference();
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageRef;
 
-    public void downloadImageFromStorage(ImageView ivPostPhoto, String picturePath)
-    {
-        // at the moment add random name
+    public FBStorage(){
+        firebaseStorage= FirebaseStorage.getInstance();
+        storageRef = firebaseStorage.getReference();
+    }
+    public void downloadImageFromStorage(ImageView ivPostPhoto, String picturePath) {
         StorageReference imageRef = storageRef.child(picturePath);
         imageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                // Use the bytes to display the image
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 ivPostPhoto.setImageBitmap(bitmap);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
                 Log.d("image failed ", exception.getMessage());
             }
         });
-
     }
-
-
-    public void uploadImageToStorage(ImageView selectedImage, String picturePath){
-
+    public void uploadImageToStorage(ImageView selectedImage, String picturePath) {
         Bitmap b = ((BitmapDrawable) selectedImage.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         b.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -75,17 +69,12 @@ public class FBStorage {
                 if (task.isSuccessful()) {
 
                     Log.d("storage upload ", "onComplete: success ");
-                }
-                else
+                } else
                     Log.d("storage upload ", "onComplete: fail " + task.getException());
-
             }
         });
-
     }
-
-    public void downloadRecordingFromStorage(Recording r, SeekBar sb)
-    {
+    public void downloadRecordingFromStorage(Recording r, SeekBar sb) {
         StorageReference recordingRef = storageRef.child("recordings/" + r.getUrl() + ".mp3");
         try {
             File localFile = File.createTempFile("audio", "mp3");
@@ -95,15 +84,11 @@ public class FBStorage {
                     try {
                         MediaPlayer mediaPlayer = new MediaPlayer();
                         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
                         FileInputStream fis = new FileInputStream(localFile);
                         mediaPlayer.setDataSource(fis.getFD());
-
                         mediaPlayer.prepare();
                         mediaPlayer.start();
-
                         sb.setMax(mediaPlayer.getDuration());
-
                         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -111,16 +96,11 @@ public class FBStorage {
                                     mediaPlayer.seekTo(progress);
                                 }
                             }
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) { }
 
                             @Override
-                            public void onStartTrackingTouch(SeekBar seekBar) {
-                                // No implementation needed
-                            }
-
-                            @Override
-                            public void onStopTrackingTouch(SeekBar seekBar) {
-                                // No implementation needed
-                            }
+                            public void onStopTrackingTouch(SeekBar seekBar) {}
                         });
 
                         Timer timer = new Timer();
@@ -129,7 +109,6 @@ public class FBStorage {
                             public void run() {
                                 int currentPosition = mediaPlayer.getCurrentPosition();
                                 sb.setProgress(currentPosition);
-
                                 if (mediaPlayer.getDuration() < currentPosition + 1000) {
                                     timer.cancel();
                                 }
@@ -137,7 +116,8 @@ public class FBStorage {
                         }, 0, 1000);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        Log.d("Error playing audio:  ", e.getMessage());}
+                        Log.d("Error playing audio:  ", e.getMessage());
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -152,16 +132,13 @@ public class FBStorage {
         }
 
     }
-
-    public void deleteRecordingFromStorage(Recording r)
-    {
+    public void deleteRecordingFromStorage(Recording r) {
         StorageReference ref = storageRef.child("recording/" + r.getUrl() + ".mp3");
         ref.delete();
     }
-
-    public void uploadRecordingToStorage(Recording r, Context c){
+    public void uploadRecordingToStorage(Recording r, Context c) {
         StorageReference sRef = storageRef.child("recordings/" + r.getUrl() + ".mp3");
-        File f= new File(c.getApplicationInfo().dataDir + "/" + "recordingAudio.mp3");
+        File f = new File(c.getApplicationInfo().dataDir + "/" + "recordingAudio.mp3");
         InputStream stream = null;
         try {
             stream = new FileInputStream(f);
@@ -175,17 +152,12 @@ public class FBStorage {
 
                     Log.d("storage upload ", "onComplete: success ");
 
-                  //  ((Activity)c).finish();
-                    Intent i = new Intent(c,BaseActivity.class);
+                    //  ((Activity)c).finish();
+                    Intent i = new Intent(c, BaseActivity.class);
                     c.startActivity(i);
-                }
-
-                else
+                } else
                     Log.d("storage upload ", "onComplete: fail " + task.getException());
-
             }
         });
-
     }
-
 }

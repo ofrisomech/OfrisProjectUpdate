@@ -18,10 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
-
 public class FBDatabase {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FBAuthentication auth = new FBAuthentication();
 
     public static final int DEFAULT_ACTION = 0;
     public static final int DELETE_ACTION = 1;
@@ -29,6 +27,8 @@ public class FBDatabase {
     public static final int GET_USER_FRIENDS_ACTION = 3;
     public static final int GET_USER_NOT_FRIENDS_ACTION = 4;
     public static final int UPDATE_ACTION = 5;
+    public static final int FOLLOW_CURRENT_USER=9;
+    public static final int FOLLOW_OTHER_USER=10;
 
 
 

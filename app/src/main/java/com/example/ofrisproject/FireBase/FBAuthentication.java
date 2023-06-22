@@ -20,7 +20,6 @@ public class FBAuthentication {
 
     public FBAuthentication() {
         this.mAuth=FirebaseAuth.getInstance();
-
     }
 
     public FBAuthentication(registerActivity activity){
@@ -29,18 +28,14 @@ public class FBAuthentication {
     }
 
     public void registerUser(String email, String password) {
-        //יצירת החשבון והרשמת המחשבון בFireBase
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
+                if (task.isSuccessful())
                     registerCallback.authenticateResult(true,"");
-                }
                 else
-                {
                     registerCallback.authenticateResult(false,task.getException().getMessage());
-                }
             }
         });
     }
