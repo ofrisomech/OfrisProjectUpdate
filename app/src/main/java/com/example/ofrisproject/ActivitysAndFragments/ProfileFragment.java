@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.ofrisproject.Adapters.RecordingAdapter;
 import com.example.ofrisproject.FireBase.FBAuthentication;
+import com.example.ofrisproject.FireBase.FBDatabase;
 import com.example.ofrisproject.FireBase.FBStorage;
 import com.example.ofrisproject.Objects.Recording;
 import com.example.ofrisproject.Objects.User;
@@ -25,18 +27,24 @@ import com.example.ofrisproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements FBDatabase.OnDocumentsLoadedListener {
 
     private FBStorage fbStorage=new FBStorage();
-    private FBAuthentication fbAuthentication=new FBAuthentication();
+    private FBDatabase fbDatabase= new FBDatabase();
     private User currentUser=BaseActivity.user;
+    private  ArrayList<Recording> arr = new ArrayList<>();
+    private ImageButton imgButtonPrivate;
+    private RecyclerView recyclerView;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -59,7 +67,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.profilerecycler);
-/*
         ImageView imageView= getView().findViewById(R.id.imageProfile);
         String path = "profiles/" + currentUser.getEmail() + ".jpg";
         fbStorage.downloadImageFromStorage(imageView, path);
@@ -73,68 +80,61 @@ public class ProfileFragment extends Fragment {
         TextView following=getView().findViewById(R.id.Following);
         following.setText(currentUser.getNumFollowing());
 
- */
+        fbDatabase.getDocuments("recording", "email", currentUser.getEmail(), this, FBDatabase.DEFAULT_ACTION);
 
-        ImageButton ibPublic = getView().findViewById(R.id.imagePublic);
-        ibPublic.setOnClickListener(new View.OnClickListener() {
+        imgButtonPrivate= getView().findViewById(R.id.imagePrivate);
+        imgButtonPrivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getRecordingByPrivacy(false);
+                ArrayList<Recording> subArray = new ArrayList<>();
+                for (Recording r:arr) {
+                    if (r.isPrivate())
+                        subArray.add(r);
+                }
+                displayAdapter(subArray);
             }
         });
 
-        ImageButton ibPrivate = getView().findViewById(R.id.imagePrivate);
-        ibPrivate.setOnClickListener(new View.OnClickListener() {
+        ImageButton imgButtonPublic = getView().findViewById(R.id.imagePublic);
+        imgButtonPublic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getRecordingByPrivacy(true);
+                ArrayList<Recording> subArray = new ArrayList<>();
+                for (Recording r:arr) {
+                    if (!r.isPrivate())
+                        subArray.add(r);
+                }
+                displayAdapter(subArray);
             }
-
         });
     }
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference RecordingReference;
-    private RecyclerView recyclerView;
-    private RecordingAdapter adapter;
-    private FBAuthentication auth = new FBAuthentication();
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
+    private void displayAdapter(ArrayList<Recording> arr) {
+        RecordingAdapter adapter= new RecordingAdapter(arr, (RecordingAdapter.AdapterCallback) getActivity());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+    }
 
-    public void getRecordingByPrivacy(boolean isPrivate) {
-        String mail =auth.getUserEmail();
-
-        ArrayList<Recording> arr = new ArrayList<>();
-        db.collection("recording").whereEqualTo("email", mail)
-                .whereEqualTo("private", isPrivate).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // task.getResult() -> array of recordings
-                            if (task.getResult().getDocuments().size() > 0) {
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Recording r = document.toObject(Recording.class);
-                                    RecordingReference = document.getReference();
-                                    arr.add(r);
-                                }
-                                    //חיבור לתצוגה
-                                    adapter = new RecordingAdapter(arr,(RecordingAdapter.AdapterCallback) getActivity());
-                                    recyclerView.setAdapter(adapter);
-                                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                    // display oin recycler view
-
-                            } else {
-                                Toast.makeText(getContext(), "Error getting documents: " + task.getException(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        else
-                            Toast.makeText(getActivity()," " + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                    }
-                });
+    @Override
+    public void onDocumentsLoaded(List<DocumentSnapshot> documents, int action) {
+        arr.clear();
+        if (documents.size() > 0) {
+            for (DocumentSnapshot document : documents) {
+                Recording r = document.toObject(Recording.class);
+                arr.add(r);
+            }
+            imgButtonPrivate.callOnClick();
+        }
+        else
+            Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
     }
 
 
+    @Override
+    public void onDocumentsError(Exception e) {
+        // Handle the error here
+        e.printStackTrace();
+    }
 
 }

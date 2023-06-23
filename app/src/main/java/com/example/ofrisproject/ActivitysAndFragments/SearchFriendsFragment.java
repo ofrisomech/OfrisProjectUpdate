@@ -30,6 +30,10 @@ import java.util.ArrayList;
 
 public class SearchFriendsFragment extends Fragment {
     private ArrayList<User> arr;
+    private RecyclerView recyclerView;
+    private UserAdapter adapter;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     public SearchFriendsFragment() {
         // Required empty public constructor
@@ -48,10 +52,6 @@ public class SearchFriendsFragment extends Fragment {
 
     }
 
-
-    private RecyclerView recyclerView;
-    private UserAdapter adapter;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
