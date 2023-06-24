@@ -46,7 +46,6 @@ public otherUserFragment() {
         // Required empty public constructor
     }
 
-
     public otherUserFragment(User u) {
         // Required empty public constructor
         this.user = u;
@@ -94,7 +93,6 @@ public otherUserFragment() {
                 button.setText(""+(followers+1));
                 followCurrentUser.setBackgroundColor(R.color.teal_200);
                 followCurrentUser.setText("Following");
-
 
             }
         });
