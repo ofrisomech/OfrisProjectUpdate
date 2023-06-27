@@ -37,7 +37,7 @@ public class PostActivity extends AppCompatActivity implements FBDatabase.OnDocu
         postRecording.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createRecording();
+                uploadRecording();
             }
         });
         selectedImage.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +59,7 @@ public class PostActivity extends AppCompatActivity implements FBDatabase.OnDocu
             });
 
 
-    public void createRecording() {
+    public void uploadRecording() {
         String songName = getIntent().getStringExtra("songName");
         String userName = currentUser.getUserName();
         String artistName = getIntent().getStringExtra("artistName");

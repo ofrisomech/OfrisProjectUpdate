@@ -18,22 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ofrisproject.Adapters.RecordingAdapter;
-import com.example.ofrisproject.Adapters.SongAdapter;
-import com.example.ofrisproject.FireBase.FBAuthentication;
 import com.example.ofrisproject.FireBase.FBDatabase;
 import com.example.ofrisproject.FireBase.FBStorage;
 import com.example.ofrisproject.Objects.Recording;
-import com.example.ofrisproject.Objects.Song;
 import com.example.ofrisproject.Objects.User;
 import com.example.ofrisproject.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,13 +78,12 @@ public otherUserFragment() {
             @Override
             public void onClick(View v)
             {
-                follow(currentUser.getEmail(), FBDatabase.FOLLOW_CURRENT_USER);//addFollowingToCurrentUser
-                follow(user.getEmail(), FBDatabase.FOLLOW_OTHER_USER);//addFollowerToUser
+                follow(currentUser.getEmail(), FBDatabase.FOLLOW_CURRENT_USER_ACTION);//addFollowingToCurrentUser
+                follow(user.getEmail(), FBDatabase.FOLLOW_OTHER_USER_ACTION);//addFollowerToUser
                 int followers =Integer.valueOf(button.getText().toString());
                 button.setText(""+(followers+1));
                 followCurrentUser.setBackgroundColor(R.color.teal_200);
                 followCurrentUser.setText("Following");
-
             }
         });
 
@@ -127,13 +117,13 @@ public otherUserFragment() {
                 Toast.makeText(getActivity(), "Error getting documents: no documents ", Toast.LENGTH_SHORT).show();
             }
         }
-        if(action==FBDatabase.FOLLOW_CURRENT_USER){
+        if(action==FBDatabase.FOLLOW_CURRENT_USER_ACTION){
             User currentUser = documents.get(0).toObject(User.class);
             DocumentReference ref = documents.get(0).getReference();
             currentUser.addFollowing(user.getEmail());
             ref.update("following",currentUser.getFollowing());
         }
-        if(action==FBDatabase.FOLLOW_OTHER_USER){
+        if(action==FBDatabase.FOLLOW_OTHER_USER_ACTION){
             User other = documents.get(0).toObject(User.class);
             DocumentReference ref = documents.get(0).getReference();
             other.addFollower(currentUser.getEmail());
@@ -142,7 +132,6 @@ public otherUserFragment() {
     }
 
     public void onDocumentsError(Exception e){
-
 
     }
 

@@ -67,7 +67,7 @@ public static  User user = null;
             FBAuthentication authentication = new FBAuthentication();
             String email =authentication.getUserEmail();
             FBDatabase fbDatabase = new FBDatabase();
-            fbDatabase.getDocuments("User","email",email,this,FBDatabase.GET_USER_ACTION);
+            fbDatabase.getDocuments("User","email",email,this,FBDatabase.DEFAULT_ACTION);
         }
     }
 
@@ -200,11 +200,19 @@ public static  User user = null;
             ref.delete();
             Toast.makeText(BaseActivity.this, "Recording deleted ", Toast.LENGTH_SHORT).show();
         }
-
-        else if(action == FBDatabase.GET_USER_ACTION)
+        if(action == FBDatabase.DEFAULT_ACTION)
         {
             user = documents.get(0).toObject(User.class);
             setNavigationView();
+        }
+        if(action== FBDatabase.UPDATE_ACTION){
+            Recording currentRec = documents.get(0).toObject(Recording.class);
+            DocumentReference ref = documents.get(0).getReference();
+
+            //כל התצוגה
+
+            ref.update("like",currentRec.getLike());
+
 
         }
     }
@@ -214,6 +222,31 @@ public static  User user = null;
         Toast.makeText(BaseActivity.this, "problem ", Toast.LENGTH_SHORT).show();
     }
 
+
+
+    public void likeRecording(Recording r, ImageView likeImg, TextView likeNum){
+        fbDatabase.getDocuments("recording", "url", r.getUrl(), this, FBDatabase.UPDATE_ACTION);
+
+    }
+
+    public String displayLike(Recording currentRec, ImageView likeImg, TextView likeNum){
+        String mail =user.getEmail();
+        int numlikes=Integer.valueOf(likeNum.getText().toString());
+        if(currentRec.isLiked(mail))// עדיין לא עשה לייק
+        {
+            likeImg.setImageResource(R.drawable.ic_baseline_favorite2_24);
+            likeNum.setText(""+(numlikes+1));
+        }
+        else{
+            currentRec.isLiked(mail);
+            likeImg.setImageResource(R.drawable.ic_baseline_favorite_24);
+            likeNum.setText(""+(numlikes-1));
+        }
+        return currentRec.getLike();
+        //ref.update("like",currentRec.getLike());
+
+
+    }
 
     public void LikeRecording(Recording r, ImageView likeImg, TextView likeNum){
         FBAuthentication auth = new FBAuthentication();
@@ -231,8 +264,6 @@ public static  User user = null;
                 {
                     likeImg.setImageResource(R.drawable.ic_baseline_favorite2_24);
                     likeNum.setText(""+(numlikes+1));
-
-
                 }
                 else{
                     r.isLiked(mail);

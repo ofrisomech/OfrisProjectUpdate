@@ -24,35 +24,25 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class registerActivity extends AppCompatActivity implements RegisterCallback, FBDatabase.OnDocumentUploadedListener {
 
-    private FBAuthentication authentication;
-    private String nickname = "";
-    private ImageView profileImg;
+    private FBAuthentication authentication=new FBAuthentication(this);;
     private FBDatabase fbDatabase = new FBDatabase();
     private FBStorage fbStorage = new FBStorage();
+    private ImageView profileImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
-
         profileImg = findViewById(R.id.profileImage);
         profileImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mGetContent.launch("image/*");
-
             }
         });
-
-        authentication = new FBAuthentication(this);
         if (authentication.isRegistered())//אם המשתמש כבר רשום למערכת
             MoveToHomePage();//עבור ישירות לעמוד הבית
-        else {
-            EditText editTextNickName = findViewById(R.id.editTextPersonName);
-            String nickName = editTextNickName.getText().toString();
-            //checkNickNameLength(nickName);
-        }
     }
 
 
@@ -89,7 +79,7 @@ public class registerActivity extends AppCompatActivity implements RegisterCallb
         fbDatabase.uploadDocument("User", user, this);
     }
 
-
+    @Override
     public void onDocumentUploaded() {
         // Document uploaded successfully
         String mail = authentication.getUserEmail();
@@ -112,7 +102,6 @@ public class registerActivity extends AppCompatActivity implements RegisterCallb
             EditText etMail = findViewById(R.id.editTextTextEmailAddress);
             String mail = etMail.getText().toString();
             EditText nickName = findViewById(R.id.editTextPersonName);
-            nickname = nickName.toString();
             String userName = nickName.getText().toString();
             profileImg = findViewById(R.id.profileImage);
             UploadUserToFirebase(userName, mail, profileImg);

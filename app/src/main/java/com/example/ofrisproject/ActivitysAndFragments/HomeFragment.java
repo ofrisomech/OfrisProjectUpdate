@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment implements FBDatabase.OnDocumentsLoad
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = getView().findViewById(R.id.recyclerView1);
-        fbDatabase.getDocuments("recording","private", false, HomeFragment.this,FBDatabase.GET_USER_NOT_FRIENDS_ACTION);
+        fbDatabase.getDocuments("recording","private", false, HomeFragment.this,FBDatabase.DEFAULT_ACTION);
 
         foryouB = getView().findViewById(R.id.foryou);
         foryouB.setOnClickListener(new View.OnClickListener() {
