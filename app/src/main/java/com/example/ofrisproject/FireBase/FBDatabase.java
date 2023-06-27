@@ -76,9 +76,8 @@ public class FBDatabase {
         void onUploadError(Exception e);
     }
 
-
-    public void getAllDocuments(String collectionName, final OnDocumentsLoadedListener listener,int action) {
-        db.collection(collectionName).get().
+    public void getDocumentsExceptSpecificObject(String collectionName, String fieldName, Object fieldValue, final OnDocumentsLoadedListener listener,int action) {
+        db.collection(collectionName).whereNotEqualTo(fieldName, fieldValue).get().
                 addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(Task<QuerySnapshot> task) {
@@ -87,6 +86,7 @@ public class FBDatabase {
                             if (querySnapshot != null) {
                                 // Retrieve the results
                                 List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+                                // Pass the documents to the listener
                                 listener.onDocumentsLoaded(documents,action);
                             }
                         } else {
@@ -97,5 +97,6 @@ public class FBDatabase {
                     }
                 });
     }
+
 
 }

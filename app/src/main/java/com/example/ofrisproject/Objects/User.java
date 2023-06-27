@@ -66,35 +66,28 @@ public class User {
         this.following = following;
     }
 
-
-    // String f = "asdsd,gfdgfd,lll";
-    // String[] s = f.spllit(",");
-
     public boolean addFollowing(String mail)
     {
-        if(this.following.isEmpty())
+        if(this.following.isEmpty())//אם המשתמש לא עוקב אחרי אף אחד לראשונה
         {
-            this.following =mail;
+            this.following =mail;// הוסף את המשתמש השני למחרוזת
             return true;
         }
-
-        if(this.following.contains(mail))
+        if(this.following.contains(mail))// אם המשתמש הנוכחי כבר עוקב אחרי המשתמש השני
         {
-            if(this.following.indexOf(mail)==0)
-                this.following = this.following.replace(mail,"");
+            if(this.following.indexOf(mail)==0)// אם הוא הראשון שעקב אחריו
+                this.following = this.following.replace(mail,"");// הורד אותו
             else
-                this.following = this.following.replace(","+ mail,"");
-            return true;
+                this.following = this.following.replace(","+ mail,"");// הורד אותו ואת הפסיק אם הוא לא הראשון
+            return false;
         }
-
-        this.following+=","+mail;
+        this.following+=","+mail;// בכל מקרה אחר- הוסף אותו לנעקבים
         return true;
-
     }
 
     public boolean addFollower(String mail)
     {
-        if(this.followers.isEmpty()|| this.followers.equals(""))
+        if(this.followers.isEmpty())
         {
             this.followers=mail;
             return true;
@@ -108,21 +101,19 @@ public class User {
                 this.followers = this.followers.replace(","+ mail,"");
             return false;
         }
-
         this.followers+=","+mail;
         return true;
     }
 
     public int getNumFollowers(){
         String[] userFollowers=followers.split(",");
-        return userFollowers.length-1;
-
+        return userFollowers.length;
     }
 
     public int getNumFollowing()
     {
         String[] userFollowings = following.split(",");
-        return userFollowings.length-1;
+        return userFollowings.length;
     }
 
 

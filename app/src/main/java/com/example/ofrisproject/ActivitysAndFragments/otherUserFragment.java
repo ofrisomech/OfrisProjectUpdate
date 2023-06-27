@@ -30,16 +30,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class otherUserFragment extends Fragment implements FBDatabase.OnDocumentsLoadedListener{
-private User user;
-private FBStorage fbStorage=new FBStorage();
+    private User otherUser;
+    private FBStorage fbStorage=new FBStorage();
+    private RecyclerView recyclerView;
+    private RecordingAdapter adapter;
+    private FBDatabase fbDatabase=new FBDatabase();
+    private ArrayList<Recording> arr = new ArrayList<>();
+    private User currentUser= BaseActivity.user;
 
-public otherUserFragment() {
+
+    public otherUserFragment() {
         // Required empty public constructor
     }
 
     public otherUserFragment(User u) {
         // Required empty public constructor
-        this.user = u;
+        this.otherUser = u;
     }
 
     @Override
@@ -57,19 +63,19 @@ public otherUserFragment() {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TextView textView=getView().findViewById(R.id.nickname);
-        textView.setText(user.getUserName());
+        textView.setText(otherUser.getUserName());
         Button button=getView().findViewById(R.id.Followers1);
-        button.setText(""+user.getNumFollowers());
+        button.setText(""+ otherUser.getNumFollowers());
         Button button2=getView().findViewById(R.id.Following1);
-        button2.setText(""+user.getNumFollowing());
+        button2.setText(""+ otherUser.getNumFollowing());
 
 
         ImageView imageView= getView().findViewById(R.id.imageProfile);
-        String path = "profiles/" + user.getEmail() + ".jpg";
+        String path = "profiles/" + otherUser.getEmail() + ".jpg";
         fbStorage.downloadImageFromStorage(imageView, path);
 
         recyclerView= getView().findViewById(R.id.otheruserposts);
-        fbDatabase.getDocuments("recording", "email", user.getEmail(), otherUserFragment.this, FBDatabase.DEFAULT_ACTION);
+        fbDatabase.getDocuments("recording", "email", otherUser.getEmail(), otherUserFragment.this, FBDatabase.DEFAULT_ACTION);
 
         Button followCurrentUser= getView().findViewById(R.id.followButton);
         followCurrentUser.setOnClickListener(new View.OnClickListener()
@@ -79,7 +85,7 @@ public otherUserFragment() {
             public void onClick(View v)
             {
                 follow(currentUser.getEmail(), FBDatabase.FOLLOW_CURRENT_USER_ACTION);//addFollowingToCurrentUser
-                follow(user.getEmail(), FBDatabase.FOLLOW_OTHER_USER_ACTION);//addFollowerToUser
+                follow(otherUser.getEmail(), FBDatabase.FOLLOW_OTHER_USER_ACTION);//addFollowerToUser
                 int followers =Integer.valueOf(button.getText().toString());
                 button.setText(""+(followers+1));
                 followCurrentUser.setBackgroundColor(R.color.teal_200);
@@ -89,17 +95,10 @@ public otherUserFragment() {
 
     }
 
-    private User currentUser= BaseActivity.user;
-
 
     public void follow(String mail, int action){
         fbDatabase.getDocuments("user", "email", mail, otherUserFragment.this, action);
     }
-
-    private RecyclerView recyclerView;
-    private RecordingAdapter adapter;
-    private FBDatabase fbDatabase=new FBDatabase();
-    ArrayList<Recording> arr = new ArrayList<>();
 
 
     public void onDocumentsLoaded(List<DocumentSnapshot> documents, int action){
@@ -120,7 +119,7 @@ public otherUserFragment() {
         if(action==FBDatabase.FOLLOW_CURRENT_USER_ACTION){
             User currentUser = documents.get(0).toObject(User.class);
             DocumentReference ref = documents.get(0).getReference();
-            currentUser.addFollowing(user.getEmail());
+            currentUser.addFollowing(otherUser.getEmail());
             ref.update("following",currentUser.getFollowing());
         }
         if(action==FBDatabase.FOLLOW_OTHER_USER_ACTION){

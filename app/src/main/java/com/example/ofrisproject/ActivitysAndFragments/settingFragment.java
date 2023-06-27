@@ -20,13 +20,19 @@ import android.widget.ImageView;
 import com.example.ofrisproject.FireBase.FBAuthentication;
 import com.example.ofrisproject.FireBase.FBDatabase;
 import com.example.ofrisproject.FireBase.FBStorage;
+import com.example.ofrisproject.Objects.User;
 import com.example.ofrisproject.R;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
-public class settingFragment extends Fragment {
+import java.util.List;
 
-    private FBAuthentication auth = new FBAuthentication();
+public class settingFragment extends Fragment implements FBDatabase.OnDocumentsLoadedListener{
+
+    private User currentUser= BaseActivity.user;
     private  ImageView imageView;
+    private String newName;
     private FBStorage fbStorage = new FBStorage();
     private FBDatabase fbDatabase=new FBDatabase();
 
@@ -44,30 +50,28 @@ public class settingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setting, container, false);
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        EditText newName= getView().findViewById(R.id.editTextTextPersonName);
-        String text = newName.getText().toString();
-
+        EditText nickname= getView().findViewById(R.id.editTextTextPersonName);
+        newName = nickname.getText().toString();
+        if(newName!=currentUser.getUserName())// אם השם חדש
+            SetNickname();
         Button updateB= getView().findViewById(R.id.updateButton);
+        imageView= getView().findViewById(R.id.profile);
 
         boolean changeImg=false;
+        String picturePath = "profiles/" + currentUser.getEmail() + ".jpg";
 
-        imageView= getView().findViewById(R.id.profile);
-        String mail=auth.getUserEmail();
-        String path = "profiles/" + mail + ".jpg";
-
-        fbStorage.downloadImageFromStorage(imageView,path);
+        fbStorage.downloadImageFromStorage(imageView,picturePath);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                changeImg=true;
                 mGetContent.launch("image/*");
-                //changeImg=true;
 
             }
         });
@@ -77,7 +81,6 @@ public class settingFragment extends Fragment {
             public void onClick(View view) {
                if(changeImg)
                    fbStorage.uploadImageToStorage(imageView,picturePath);
-
             }
         });
 
@@ -85,24 +88,38 @@ public class settingFragment extends Fragment {
     }
 
 
-    private String picturePath="profiles/" + auth.getUserEmail() + ".jpg";
-
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             uri -> {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     imageView.setImageBitmap(bitmap);
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
 
-    /* public void SetNickname(String nickname)
+    public void SetNickname()
     {
-        User u=fbDatabase.GetCurrentUser();
-        u.setUserName(nickname);
-    } */
+       fbDatabase.getDocuments("User", "email", currentUser.getEmail(), this, FBDatabase.UPDATE_ACTION);
+    }
+
+
+    public void onDocumentsLoaded(List<DocumentSnapshot> documents, int action){
+
+        User current = documents.get(0).toObject(User.class);
+        DocumentReference ref = documents.get(0).getReference();
+        current.setUserName(newName);
+        ref.update("userName",newName);
+    }
+
+     public void onDocumentsError(Exception e){
+
+    }
+
+
+
+
+
+
 
 }
