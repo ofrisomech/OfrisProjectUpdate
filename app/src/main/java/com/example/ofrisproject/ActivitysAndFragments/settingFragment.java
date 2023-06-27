@@ -72,7 +72,6 @@ public class settingFragment extends Fragment implements FBDatabase.OnDocumentsL
             public void onClick(View view) {
                 changeImg=true;
                 mGetContent.launch("image/*");
-
             }
         });
 
@@ -83,10 +82,7 @@ public class settingFragment extends Fragment implements FBDatabase.OnDocumentsL
                    fbStorage.uploadImageToStorage(imageView,picturePath);
             }
         });
-
-
     }
-
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             uri -> {
