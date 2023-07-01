@@ -131,7 +131,6 @@ public static  User user = null;
         replaceFragment(new ProfileFragment());
     }
 
-    public void MoveToFollowersPage(View view){replaceFragment(new FollowersFragment());}
     public void MoveToHomePage(View view) {
         replaceFragment(new HomeFragment());
     }

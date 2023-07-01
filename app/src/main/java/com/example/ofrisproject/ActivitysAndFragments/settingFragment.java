@@ -101,7 +101,6 @@ public class settingFragment extends Fragment implements FBDatabase.OnDocumentsL
 
 
     public void onDocumentsLoaded(List<DocumentSnapshot> documents, int action){
-
         User current = documents.get(0).toObject(User.class);
         DocumentReference ref = documents.get(0).getReference();
         current.setUserName(newName);

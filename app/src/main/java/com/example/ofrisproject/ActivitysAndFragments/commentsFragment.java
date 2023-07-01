@@ -35,9 +35,15 @@ import java.util.List;
 
 public class commentsFragment extends Fragment implements  FBDatabase.OnDocumentsLoadedListener{
 
+    private FBDatabase fbDatabase=new FBDatabase();
+    private ArrayList<Comment> arr;
+    private FirebaseFirestore fb = FirebaseFirestore.getInstance();
+    private RecyclerView recyclerView;
+    private CommentAdapter adapter;
     private String urlRec;
+
+
     public commentsFragment() {
-        // Required empty public constructor
     }
 
     public commentsFragment(String url){
@@ -46,7 +52,6 @@ public class commentsFragment extends Fragment implements  FBDatabase.OnDocument
 
     public static commentsFragment newInstance(String param1, String param2) {
         commentsFragment fragment = new commentsFragment();
-        Bundle args = new Bundle();
         return fragment;
     }
 
@@ -78,12 +83,8 @@ public class commentsFragment extends Fragment implements  FBDatabase.OnDocument
             }
         });
 
-
     }
 
-    private FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    private RecyclerView recyclerView;
-    private CommentAdapter adapter;
 
     public void AddComment(String content){
         FBAuthentication auth = new FBAuthentication();
@@ -100,9 +101,6 @@ public class commentsFragment extends Fragment implements  FBDatabase.OnDocument
         });
     }
 
-
-    private FBDatabase fbDatabase=new FBDatabase();
-    private ArrayList<Comment> arr;
 
     public void getComment(){
         fbDatabase.getDocuments("Comment", "urlRec", urlRec, this, FBDatabase.UPDATE_ACTION);
