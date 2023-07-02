@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/backgroundlogin4"
+    android:background="@drawable/backgroundLogin4"
     tools:context=".Registration.registerActivity">
 
 

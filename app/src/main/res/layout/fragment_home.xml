@@ -71,7 +71,7 @@
         android:background="@drawable/roundedimage"
         android:clipToOutline="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/ombre_background" />
+        android:src="@drawable/profileapp" />
 
 
 </RelativeLayout>
