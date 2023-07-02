@@ -70,7 +70,7 @@ public class settingFragment extends Fragment implements FBDatabase.OnDocumentsL
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeImg=true;
+                //changeImg=true;
                 mGetContent.launch("image/*");
             }
         });

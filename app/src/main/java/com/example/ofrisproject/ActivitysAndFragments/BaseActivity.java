@@ -71,15 +71,20 @@ public static  User user = null;
         }
     }
 
+    private Fragment currentFragment=null;
+
     private void setNavigationView() {
-        replaceFragment(new HomeFragment());
+        currentFragment=new HomeFragment();
+        replaceFragment(currentFragment);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
-                    replaceFragment(new HomeFragment());
+                    currentFragment = new HomeFragment();
+                    replaceFragment(currentFragment);//new HomeFragment());
                     break;
                 case R.id.profile:
-                    replaceFragment(new ProfileFragment());
+                    currentFragment = new ProfileFragment();
+                    replaceFragment(currentFragment);//new ProfileFragment());
                     break;
                 case R.id.music:
                     replaceFragment(new MusicFragment());
@@ -205,13 +210,20 @@ public static  User user = null;
             setNavigationView();
         }
         if(action== FBDatabase.UPDATE_ACTION){
+
             Recording currentRec = documents.get(0).toObject(Recording.class);
+
+            currentRec.isLiked(user.getEmail());
             DocumentReference ref = documents.get(0).getReference();
-
-            //כל התצוגה
-
-            ref.update("like",currentRec.getLike());
-
+            ref.update("like",currentRec.getLike()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    if(currentFragment instanceof HomeFragment) {
+                        currentFragment = new HomeFragment();
+                        replaceFragment(currentFragment);
+                    }
+                }
+            });
 
         }
     }
@@ -222,59 +234,11 @@ public static  User user = null;
     }
 
 
-
-    public void likeRecording(Recording r, ImageView likeImg, TextView likeNum){
+    public void LikeRecording(Recording r){
+        // choose whether like or unlike?
+     //   r.isLiked(user.getEmail());
         fbDatabase.getDocuments("recording", "url", r.getUrl(), this, FBDatabase.UPDATE_ACTION);
 
     }
-
-    public String displayLike(Recording currentRec, ImageView likeImg, TextView likeNum){
-        String mail =user.getEmail();
-        int numlikes=Integer.valueOf(likeNum.getText().toString());
-        if(currentRec.isLiked(mail))// עדיין לא עשה לייק
-        {
-            likeImg.setImageResource(R.drawable.ic_baseline_favorite2_24);
-            likeNum.setText(""+(numlikes+1));
-        }
-        else{
-            currentRec.isLiked(mail);
-            likeImg.setImageResource(R.drawable.ic_baseline_favorite_24);
-            likeNum.setText(""+(numlikes-1));
-        }
-        return currentRec.getLike();
-        //ref.update("like",currentRec.getLike());
-
-
-    }
-
-    public void LikeRecording(Recording r, ImageView likeImg, TextView likeNum){
-        FBAuthentication auth = new FBAuthentication();
-        String mail =auth.getUserEmail();
-        FirebaseFirestore fb= FirebaseFirestore.getInstance();
-        String likes=r.getLike();
-        String[] userLike = likes.split(",");
-        int numlikes=Integer.valueOf(likeNum.getText().toString());
-        fb.collection("recording").whereEqualTo("url",r.getUrl()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                Recording currentRec = queryDocumentSnapshots.getDocuments().get(0).toObject(Recording.class);
-                DocumentReference ref = queryDocumentSnapshots.getDocuments().get(0).getReference();
-                if(r.isLiked(mail))// עדיין לא עשה לייק
-                {
-                    likeImg.setImageResource(R.drawable.ic_baseline_favorite2_24);
-                    likeNum.setText(""+(numlikes+1));
-                }
-                else{
-                    r.isLiked(mail);
-                    likeImg.setImageResource(R.drawable.ic_baseline_favorite_24);
-                    likeNum.setText(""+(numlikes-1));
-                }
-                ref.update("like",currentRec.getLike());
-
-            }
-        });
-    }
-
-
 }
 

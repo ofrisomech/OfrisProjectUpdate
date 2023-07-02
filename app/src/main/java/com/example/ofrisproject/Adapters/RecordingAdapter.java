@@ -4,12 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ofrisproject.ActivitysAndFragments.BaseActivity;
 import com.example.ofrisproject.FireBase.FBStorage;
 import com.example.ofrisproject.R;
 import com.example.ofrisproject.Objects.Recording;
@@ -73,11 +75,35 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         }
 
         public void select(View v){
+            ImageView iv = (ImageView)v;
+
+            if( iv.getDrawable().getConstantState() == ((Context)currentActivity).getResources().getDrawable( R.drawable.ic_baseline_pause_24).getConstantState())
+                playRec.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+            else {
+                playRec.setImageResource(R.drawable.ic_baseline_pause_24);
+                // pause playback
+
+            }
             currentActivity.RecordingChosen(recordings.get(getAdapterPosition()), seekBarRec);
         }
 
         public void like(View view){
-            currentActivity.LikeRecording(recordings.get(getAdapterPosition()), likePost, numlike);
+            Recording r = recordings.get(getAbsoluteAdapterPosition());
+        /*    if(r.getLike().contains(BaseActivity.user.getEmail()))
+            {
+                // this means i already liked it
+                // change the color to white
+                // decrease counter
+                // update in firebase
+
+                ViewParent parentView = view.getParent();
+
+
+            }
+
+         */
+
+            currentActivity.LikeRecording(r);
 
         }
         public void commentPage(View v){
@@ -107,6 +133,19 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         viewHolder.songName.setSelected(true);
         viewHolder.singerName.setText(r.getArtistName());
         viewHolder.singerName.setSelected(true);
+
+        // the image - red or white
+        if(r.getLike().contains(BaseActivity.user.getEmail()))
+        {
+            viewHolder.likePost.setImageResource(R.drawable.ic_baseline_favorite2_24);
+        }
+        else
+            viewHolder.likePost.setImageResource(R.drawable.ic_baseline_favorite_24);
+        viewHolder.numlike.setText(""+ r.getNumLikes());
+
+
+
+
         String thisEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         if(!thisEmail.equals(r.getEmail()))
             viewHolder.delRec.setVisibility(View.INVISIBLE);
@@ -116,6 +155,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         fbStorage.downloadRecordingFromStorage(r, viewHolder.seekBarRec);
         viewHolder.getAdapterPosition();
     }
+
     @Override
     public int getItemCount() {
         return recordings.size();
@@ -126,7 +166,7 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
     {
         void RecordingChosen(Recording r, SeekBar s);
         void AlertDeleteRecording(Recording r);
-        void LikeRecording(Recording r, ImageView like, TextView textView);
+        void LikeRecording(Recording r);
         void MoveToCommentFragment(String url);
     }
 }

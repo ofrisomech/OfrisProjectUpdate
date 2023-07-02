@@ -102,4 +102,14 @@ public class Recording{
 
 
 
+    public int getNumLikes()
+    {
+        if(like.isEmpty())
+            return 0;
+        String[] recLikes=like.split(",");
+        return recLikes.length;
+    }
+
+
+
 }

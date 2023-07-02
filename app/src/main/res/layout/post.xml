@@ -142,31 +142,30 @@ android:background="@drawable/ombre_background">
         android:layout_marginTop="-20dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linear">
+        app:layout_constraintTop_toBottomOf="@+id/linear"
+        tools:layout_editor_absoluteX="-15dp">
 
         <TextView
             android:id="@+id/numlike"
             android:layout_width="15dp"
             android:layout_height="20dp"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:layout_marginRight="184dp"
+            android:layout_marginLeft="65dp"
+            android:layout_marginRight="185dp"
+            android:text="0"
             android:textColor="@color/white"
-            android:text="0" />
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/numcomment"
-            android:layout_width="15dp"
+            android:layout_width="80dp"
             android:layout_height="20dp"
-            android:textSize="15dp"
-            android:textStyle="bold"
+            android:text="comments"
             android:textColor="@color/white"
-            android:text="0" />
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-
 
     <TextView
         android:id="@+id/artistName"
