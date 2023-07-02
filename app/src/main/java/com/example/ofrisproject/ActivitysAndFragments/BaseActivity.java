@@ -118,18 +118,9 @@ public static  User user = null;
         replaceFragment(new MusicFragment());
     }
 
-    public void oveToSearchPage(View view) {
-
-        replaceFragment(new SearchFriendsFragment());
-    }
 
     public void searchFriends(View view) {
         replaceFragment(new SearchFriendsFragment());
-    }
-
-    public void moveToSetting(View view) {
-
-        replaceFragment(new settingFragment());
     }
 
     public void MoveToProfilePage(View view) {
@@ -141,6 +132,7 @@ public static  User user = null;
     }
 
     public void MoveToCommentFragment(String url){
+
         replaceFragment(new commentsFragment(url));
     }
 

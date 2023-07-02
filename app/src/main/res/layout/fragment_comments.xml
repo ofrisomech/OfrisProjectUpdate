@@ -26,7 +26,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="597dp"
+        android:layout_height="550dp"
         android:id="@+id/commentsRecyclerView"
         android:layout_marginTop="5dp" />
 
@@ -35,9 +35,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Add a comment"
+        android:inputType="textPersonName"
         android:textColor="@color/white"
-        android:textColorHint="#837474"
-        android:inputType="textPersonName" />
+        android:textColorHint="#837474" />
 
     <ImageView
         android:id="@+id/addComment"

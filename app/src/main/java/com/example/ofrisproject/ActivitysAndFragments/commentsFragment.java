@@ -21,6 +21,7 @@ import com.example.ofrisproject.FireBase.FBAuthentication;
 import com.example.ofrisproject.FireBase.FBDatabase;
 import com.example.ofrisproject.Objects.Comment;
 import com.example.ofrisproject.Objects.Song;
+import com.example.ofrisproject.Objects.User;
 import com.example.ofrisproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,11 +34,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class commentsFragment extends Fragment implements  FBDatabase.OnDocumentsLoadedListener{
+public class commentsFragment extends Fragment implements  FBDatabase.OnDocumentsLoadedListener, FBDatabase.OnDocumentUploadedListener{
 
     private FBDatabase fbDatabase=new FBDatabase();
     private ArrayList<Comment> arr;
-    private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     private RecyclerView recyclerView;
     private CommentAdapter adapter;
     private String urlRec;
@@ -87,29 +87,35 @@ public class commentsFragment extends Fragment implements  FBDatabase.OnDocument
 
 
     public void AddComment(String content){
-        FBAuthentication auth = new FBAuthentication();
-        String mail =auth.getUserEmail();
-        Comment comment=new Comment("", content, mail, urlRec);
-        fb.collection("Comment").add(comment).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                if (task.isSuccessful()) {
+        User currentUser= BaseActivity.user;
+        Comment comment=new Comment(currentUser.getUserName(), content, currentUser.getEmail(), urlRec);
+        fbDatabase.uploadDocument("Comment", comment, this);
+    }
 
-                    Toast.makeText(getContext(), "The comment is upload " , Toast.LENGTH_SHORT).show();
-                }
-            };
-        });
+     @Override
+    public void onDocumentUploaded() {
+        // Document uploaded successfully
+         Toast.makeText(getContext(), "The comment has been uploaded " , Toast.LENGTH_SHORT).show();
+         getComment();// הצג גם את ההקלטה הנוספת
+    }
+
+    @Override
+    public void onUploadError(Exception e) {
+        // Handle the error here
+        e.printStackTrace();
+        Toast.makeText(getContext(), "Error uploading document: " + e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
 
     public void getComment(){
-        fbDatabase.getDocuments("Comment", "urlRec", urlRec, this, FBDatabase.UPDATE_ACTION);
+        fbDatabase.getDocuments("Comment", "urlRec", urlRec, this, FBDatabase.DEFAULT_ACTION);
     }
 
     public void onDocumentsLoaded(List<DocumentSnapshot> documents, int action) {
         arr = new ArrayList<>();
-        if(action==FBDatabase.UPDATE_ACTION) {
+        if(action==FBDatabase.DEFAULT_ACTION) {
             if (documents.size() > 0) {
+                arr.clear(); // שלא יהיו כפילויות
                 for (DocumentSnapshot document : documents) {
                     Comment comment = document.toObject(Comment.class);
                     arr.add(comment);

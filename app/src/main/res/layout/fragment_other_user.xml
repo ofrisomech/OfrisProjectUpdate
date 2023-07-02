@@ -71,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_marginLeft="320dp"
         android:layout_marginTop="10dp"
-        android:onClick="oveToSearchPage"
+        android:onClick="searchFriends"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_outline_arrow_back_24" />
 

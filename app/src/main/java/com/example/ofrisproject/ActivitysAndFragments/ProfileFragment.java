@@ -71,14 +71,14 @@ public class ProfileFragment extends Fragment implements FBDatabase.OnDocumentsL
         String path = "profiles/" + currentUser.getEmail() + ".jpg";
         fbStorage.downloadImageFromStorage(imageView, path);
 
-        /* TextView textView=getView().findViewById(R.id.nickname);
+        TextView textView=getView().findViewById(R.id.nickname);
         textView.setText(currentUser.getUserName());
 
         TextView follow=getView().findViewById(R.id.Followers);
         follow.setText(currentUser.getNumFollowers());
 
         TextView following=getView().findViewById(R.id.Following);
-        following.setText(currentUser.getNumFollowing());*/
+        following.setText(currentUser.getNumFollowing());
 
         fbDatabase.getDocuments("recording", "email", currentUser.getEmail(), this, FBDatabase.DEFAULT_ACTION);
 

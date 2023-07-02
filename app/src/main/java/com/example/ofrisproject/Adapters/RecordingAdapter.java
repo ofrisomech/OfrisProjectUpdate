@@ -24,7 +24,6 @@ public class RecordingAdapter extends RecyclerView.Adapter<RecordingAdapter.View
 private ArrayList<Recording> recordings;
 private AdapterCallback currentActivity;
 private FBStorage fbStorage;
-//private ArrayList<String>
 
 public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         recordings=list;
@@ -68,50 +67,25 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
         }
 
         private void delete(View view) {
-
-
             currentActivity.AlertDeleteRecording(recordings.get(getAbsoluteAdapterPosition()));
-
         }
 
         public void select(View v){
             ImageView iv = (ImageView)v;
-
             if( iv.getDrawable().getConstantState() == ((Context)currentActivity).getResources().getDrawable( R.drawable.ic_baseline_pause_24).getConstantState())
                 playRec.setImageResource(R.drawable.ic_baseline_play_arrow_24);
-            else {
+            else
                 playRec.setImageResource(R.drawable.ic_baseline_pause_24);
-                // pause playback
-
-            }
             currentActivity.RecordingChosen(recordings.get(getAdapterPosition()), seekBarRec);
         }
 
         public void like(View view){
-            Recording r = recordings.get(getAbsoluteAdapterPosition());
-        /*    if(r.getLike().contains(BaseActivity.user.getEmail()))
-            {
-                // this means i already liked it
-                // change the color to white
-                // decrease counter
-                // update in firebase
-
-                ViewParent parentView = view.getParent();
-
-
-            }
-
-         */
-
-            currentActivity.LikeRecording(r);
+            currentActivity.LikeRecording(recordings.get(getAdapterPosition()));
 
         }
         public void commentPage(View v){
             currentActivity.MoveToCommentFragment(recordings.get(getAdapterPosition()).getUrl());
         }
-
-
-
     }
 
     @Override
@@ -136,15 +110,10 @@ public RecordingAdapter(ArrayList<Recording> list, AdapterCallback activity) {
 
         // the image - red or white
         if(r.getLike().contains(BaseActivity.user.getEmail()))
-        {
             viewHolder.likePost.setImageResource(R.drawable.ic_baseline_favorite2_24);
-        }
         else
             viewHolder.likePost.setImageResource(R.drawable.ic_baseline_favorite_24);
         viewHolder.numlike.setText(""+ r.getNumLikes());
-
-
-
 
         String thisEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         if(!thisEmail.equals(r.getEmail()))

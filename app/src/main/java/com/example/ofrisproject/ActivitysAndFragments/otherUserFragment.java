@@ -69,7 +69,6 @@ public class otherUserFragment extends Fragment implements FBDatabase.OnDocument
         Button button2=getView().findViewById(R.id.Following1);
         button2.setText(""+ otherUser.getNumFollowing());
 
-
         ImageView imageView= getView().findViewById(R.id.imageProfile);
         String path = "profiles/" + otherUser.getEmail() + ".jpg";
         fbStorage.downloadImageFromStorage(imageView, path);

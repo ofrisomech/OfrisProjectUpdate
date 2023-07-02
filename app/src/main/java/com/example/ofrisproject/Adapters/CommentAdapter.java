@@ -23,10 +23,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         comments=list;
         this.currentActivity = activity;
     }
-    public void setComments(ArrayList<Comment> brr) {
-        this.comments = brr;
-    }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public final TextView UserName;
@@ -34,15 +30,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         public ViewHolder(View view) {
             super(view);
-            view.setOnClickListener(this::select);
             UserName = view.findViewById(R.id.userName1);
             Content = view.findViewById(R.id.content);
         }
-
-        public void select(View v){
-            currentActivity.CommentChosen(comments.get(getAdapterPosition()));
-        }
-
     }
 
     @Override

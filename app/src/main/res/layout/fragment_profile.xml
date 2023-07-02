@@ -55,15 +55,6 @@
         android:layout_height="434dp"
         android:layout_marginTop="220dp" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="93dp"
-        android:layout_height="35dp"
-        android:layout_marginLeft="330dp"
-        android:layout_marginTop="10dp"
-        android:onClick="moveToSetting"
-        android:src="@drawable/ic_baseline_settings_24" />
-
     <Button
         android:id="@+id/Followers"
         android:onClick="MoveToFollowersPage"
